@@ -15,7 +15,7 @@ class TestAccess
         $testPublished = boolval($test->published);
         $testAttempts = $test->attempts;
 
-        if (!$testPublished){
+        if (!$testPublished) {
             return new Response('Test not found', 404);
         }
 
@@ -26,18 +26,15 @@ class TestAccess
             ->latest()
             ->first();
 
-        if ($lastUserTest && !empty($testAttempts) && $testAttempts <= $lastUserTest->attempt ) {
+        if (!empty($lastUserTest) && !empty($testAttempts) && $testAttempts <= $lastUserTest->attempt && !empty($lastUserTest->score)) {
             return new Response('User has reached maximum attempts for this test', 403);
         }
-        // переписать, в случае если будет отправка теста, то эти проверки будут и спратывать при отправки ответов
-//        if (empty($lastUserTest))
-//        {
-//            $user->tests()->attach($test->id, ['attempt' => 1]);
-//        }
-//
-//        if (isset($lastUserTest->score) && isset($lastUserTest->percent)){
-//            $user->tests()->attach($test->id, ['attempt' => $lastUserTest->attempt + 1]);
-//        }
+
+        if (empty($lastUserTest)) {
+            $user->tests()->attach($test->id, ['attempt' => 1]);
+        } elseif (isset($lastUserTest->score)) {
+            $user->tests()->attach($test->id, ['attempt' => $lastUserTest->attempt + 1]);
+        }
 
         return $next($request);
     }
