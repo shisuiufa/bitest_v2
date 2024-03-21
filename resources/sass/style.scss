@@ -1,0 +1,18 @@
+h1,h2,h3,h4,h5,h6,p,label {
+    color: var(--main-color);
+}
+.bg-success {
+    background-color: #2dce89 !important;
+}
+
+.form-check-input{
+    &:focus {
+        border-color: var(--brand-color) !important;
+        outline: 0;
+        box-shadow: none;
+    }
+    &:checked {
+        background-color: var(--brand-color) !important;
+        border-color: var(--brand-color) !important;
+    }
+}
