@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Test\CreatePassRequest;
 use App\Http\Resources\TestPassResource;
 use App\Models\Test;
 
 class TestUserController extends Controller
 {
-    public function show(Test $test)
+    public function show(Test $test): TestPassResource
     {
         $testUser = auth()->user()->test()
             ->where('test_id', $test->id)
@@ -30,11 +31,13 @@ class TestUserController extends Controller
             $testUser->load('questions');
         }
 
-        return new TestPassResource($testUser);
+        return new TestPassResource($testUser); //возращаем рандом вопросы пользователя
     }
 
-    public function store()
+    public function store(CreatePassRequest $request, Test $test)
     {
+        $answers = $request->safe(['answers']);
+
 
     }
 }

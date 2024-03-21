@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Test;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +12,10 @@ class TestAccess
     public function handle(Request $request, Closure $next): Response
     {
         $test = $request->route()->parameter('test');
+
+        if (!is_object($test)) {
+            $test = Test::findOrFail($test);
+        }
 
         $testPublished = boolval($test->published);
         $testAttempts = $test->attempts;
