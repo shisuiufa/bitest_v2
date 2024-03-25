@@ -3,6 +3,8 @@ import CreatedTestLayout from "@/layouts/CreatedTestLayout.vue";
 
 import LoginView from "@/views/Auth/LoginView.vue";
 
+import NotFoundView from "@/views/NotFound.vue";
+
 import HomeView from "@/views/HomeView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import TestView from "@/views/TestView.vue";
@@ -90,6 +92,12 @@ const routes = [
             }
         ],
     },
+    {
+        path: '/:pathMatch(.*)*',
+        component: NotFoundView,
+        name: 'not-found',
+        meta: {breadcrumb: 'Страница не найдена'},
+    }
 ]
 
 export default routes;
