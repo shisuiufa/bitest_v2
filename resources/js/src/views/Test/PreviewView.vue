@@ -7,7 +7,7 @@
                 <div class="preview__meta">
                     <div class="preview__attempts">
                         <template v-if="this.test.attempts">
-                            Количество попыток: 1 / {{ this.test.attempts }}
+                            Количество попыток: {{ this.userResult.attempt }} / {{ this.test.attempts }}
                         </template>
                         <template v-else>
                             Количество попыток: неограниченно
@@ -49,7 +49,8 @@ export default {
                 attempts: 0,
                 time: 0,
                 image: '',
-            }
+            },
+            userResult: null,
         }
     },
     mounted() {
@@ -60,15 +61,12 @@ export default {
             axios.get(`/api/tests/${testId}`)
                 .then(res => {
                     const test = res.data.data;
-
-                    if (!Boolean(test.published)) {
-                        this.$router.push({name: 'home'})
-                    }
                     this.test.title = test.title;
                     this.test.desc = test.desc;
                     this.test.attempts = test.attempts;
                     this.test.time = test.time;
                     this.test.image = test.image;
+                    this.userResult = test.user_result;
                 })
                 .catch(err => {
                     console.log(err)
@@ -101,11 +99,18 @@ export default {
 
     &__wrap {
         width: 100%;
+        height: 600px;
         overflow: hidden;
         border-radius: 15px;
+        position: relative;
+        background-color: #2B2E33;
     }
 
     &__img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: inherit;
         object-fit: cover;
         -khtml-user-select: none;
