@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use App\Http\Resources\QuestionResource;
-use App\Models\Access;
 use App\Models\Option;
 use App\Models\QuestionType;
 use App\Models\Test;
 use App\Models\Question;
+use App\Models\TestUser;
+use App\Models\UserAnswer;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Ramsey\Collection\Collection;
+use Illuminate\Support\Collection;
 
 class TestService
 {
@@ -178,6 +178,94 @@ class TestService
             Log::error($e->getMessage());
 
             return false;
+        }
+    }
+
+    public function getTestUser(int $testId): TestUser
+    {
+        return auth()->user()->test()
+            ->where('test_id', $testId)
+            ->whereNull('score')
+            ->whereNull('percent')
+            ->latest()
+            ->first();
+    }
+
+    public function createAnswers(TestUser $test, array $answers): void
+    {
+        try {
+            DB::beginTransaction();
+
+            foreach ($answers as $item) {
+                $questionId = $item['id'];
+                $answers = $item['userAnswer'];
+                $correct = null;
+                $questionDb = Question::find($questionId);
+
+                if (boolval($questionDb->type->value)) {
+                    $correctOptions = $questionDb->options->where('correct', true)->pluck('id')->toArray();
+                    $selectedAnswers = $answers['selectedAnswers'];
+
+                    $correct = count(array_diff($correctOptions, $selectedAnswers)) === 0 && count(array_diff($selectedAnswers, $correctOptions)) === 0;
+
+                    if (empty($selectedAnswers) || !$correct) {
+                        $correct = false;
+                    }
+                }
+
+                $userAnswer = new UserAnswer();
+                $userAnswer->test_user_id = $test->id;
+                $userAnswer->question_id = $questionId;
+                $userAnswer->answers = json_encode($answers);
+                $userAnswer->correct = $correct;
+                $userAnswer->save();
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            abort(400, 'Что-то пошло не так. Попробуйте еще раз.');
+        }
+    }
+
+    public function checkTest(TestUser $test): void
+    {
+        $questions = $test->questions;
+        $userAnswers = $test->answers;
+
+        $totalQuestions = $questions->count();
+        $correctAnswers = 0;
+        $openAnswer = false;
+
+        foreach ($userAnswers as $answer) {
+            if ($answer->correct === null) {
+                $openAnswer = true;
+            } elseif ($answer->correct) {
+                $correctAnswers++;
+            }
+        }
+
+        if (!$openAnswer) {
+            $percentageCorrect = ($correctAnswers / $totalQuestions) * 100;
+
+            switch (true) {
+                case $percentageCorrect >= 80:
+                    $score = 5;
+                    break;
+                case $percentageCorrect >= 68:
+                    $score = 4;
+                    break;
+                case $percentageCorrect >= 56:
+                    $score = 3;
+                    break;
+                default:
+                    $score = 2;
+                    break;
+            }
+
+            $test->score = $score;
+            $test->percent = $percentageCorrect;
+            $test->update();
         }
     }
 }
