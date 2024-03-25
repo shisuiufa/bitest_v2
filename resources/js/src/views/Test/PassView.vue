@@ -119,7 +119,7 @@ export default {
                     this.checkAnswers();
                 })
                 .catch(err => {
-                    console.log(err)
+
                 })
         },
         postTest(testId) {
@@ -130,9 +130,6 @@ export default {
                     console.log(res)
                 })
                 .catch(err => {
-                    console.log(err)
-                })
-                .finally(res => {
 
                 })
         }
