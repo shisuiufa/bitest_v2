@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Test\CreatePassRequest;
 use App\Http\Resources\TestPassResource;
 use App\Http\Resources\TestResource;
+use App\Http\Resources\TestShowResource;
 use App\Models\Test;
 use App\Services\TestService;
 use Illuminate\Http\Request;
@@ -23,21 +24,41 @@ class TestController extends Controller
         return TestResource::collection($tests);
     }
 
-    public function show(Test $test)
+    public function show(Test $test): TestShowResource
     {
-        return new TestResource($test);
+
+        return new TestShowResource($test);
     }
 
-    public function testPass(Test $test)
+    public function showPass(Test $test, TestService $service): TestPassResource
     {
-        return new TestPassResource($test);
+        $testUser = $service->getTestUser($test->id);
+
+        if ($testUser->questions->isEmpty()) {
+            $randomQuestions = $test->questions()->inRandomOrder();
+
+            if (!empty($test->limit_questions)) {
+                $randomQuestions->take($test->limit_questions);
+            }
+
+            $questionIds = $randomQuestions->pluck('id');
+
+            $testUser->questions()->attach($questionIds);
+
+            $testUser->load('questions');
+        }
+
+        return new TestPassResource($testUser);
     }
 
-    public function storeTestPass(Test $test, CreatePassRequest $request, TestService $service)
+    public function storePass(CreatePassRequest $request, Test $test, TestService $service): void
     {
         $answers = $request->input('answers');
 
-//        $created = $service->createPassTest($test, $answers);
+        $userTest = $service->getTestUser($test->id);
 
+        $service->createAnswers($userTest, $answers);
+
+        $service->checkTest($userTest);
     }
 }

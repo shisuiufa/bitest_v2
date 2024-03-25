@@ -27,17 +27,21 @@ class TestAccess
         $user = $request->user();
         $lastUserTest = $user->test()
             ->where('test_id', $test->id)
-            ->select('attempt', 'score')
             ->latest()
             ->first();
 
-        if (!empty($lastUserTest) && !empty($testAttempts) && $testAttempts <= $lastUserTest->attempt && !empty($lastUserTest->score)) {
+        if (
+            !empty($lastUserTest)
+            && !empty($testAttempts)
+            && $testAttempts <= $lastUserTest->attempt
+            && !$lastUserTest->answers->isEmpty()
+        ) {
             return new Response('User has reached maximum attempts for this test', 403);
         }
 
         if (empty($lastUserTest)) {
             $user->tests()->attach($test->id, ['attempt' => 1]);
-        } elseif (isset($lastUserTest->score)) {
+        } elseif (!$lastUserTest->answers->isEmpty()) {
             $user->tests()->attach($test->id, ['attempt' => $lastUserTest->attempt + 1]);
         }
 
