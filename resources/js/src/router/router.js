@@ -8,6 +8,21 @@ const router = createRouter({
     routes: routes,
 })
 
+axios.interceptors.response.use(
+    response => {
+        return response;
+    },
+    error => {
+        const status = error.response.status;
+        if (status === 404) {
+            router.push({ name: 'not-found' });
+        } else if (status === 403){
+            router.push({ name: 'home' });
+        }
+        return Promise.reject(error);
+    }
+);
+
 router.beforeEach((to, from, next) => {
     document.title = "BITEST " + to.meta.breadcrumb;
 
