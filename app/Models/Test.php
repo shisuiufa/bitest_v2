@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Test extends Model
@@ -41,4 +40,21 @@ class Test extends Model
     {
         return $this->belongsToMany(User::class, 'test_users');
     }
+
+    public function testUsers(): HasMany
+    {
+        return $this->hasMany(TestUser::class);
+    }
+
+    public function lastTestUser(): Model
+    {
+        $user = auth()->user();
+
+        return $this->testUsers()
+            ->where('user_id', $user->id)
+            ->whereHas('answers')
+            ->latest()
+            ->first();
+    }
+
 }
