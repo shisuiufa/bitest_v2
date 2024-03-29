@@ -19,6 +19,7 @@ class UserResultResource extends JsonResource
             'attempt' => $this->attempt,
             'score' => $this->score,
             'percent' => $this->percent,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

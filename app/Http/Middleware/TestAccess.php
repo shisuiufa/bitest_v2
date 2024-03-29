@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\TestStatus;
 use App\Models\Test;
 use Closure;
 use Illuminate\Http\Request;
@@ -34,15 +35,15 @@ class TestAccess
             !empty($lastUserTest)
             && !empty($testAttempts)
             && $testAttempts <= $lastUserTest->attempt
-            && !$lastUserTest->answers->isEmpty()
+            && $lastUserTest->status !== TestStatus::ONGOING->value
         ) {
             return new Response('User has reached maximum attempts for this test', 403);
         }
 
         if (empty($lastUserTest)) {
-            $user->tests()->attach($test->id, ['attempt' => 1]);
-        } elseif (!$lastUserTest->answers->isEmpty()) {
-            $user->tests()->attach($test->id, ['attempt' => $lastUserTest->attempt + 1]);
+            $user->tests()->attach($test->id, ['attempt' => 1, 'status' => TestStatus::ONGOING]);
+        } elseif ($lastUserTest->status !== TestStatus::ONGOING->value) {
+            $user->tests()->attach($test->id, ['attempt' => $lastUserTest->attempt + 1, 'status' => TestStatus::ONGOING]);
         }
 
         return $next($request);

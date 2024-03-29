@@ -8,7 +8,7 @@
         <div class="row">
             <div :class="selectedQuestion?.img ? 'col-6' : 'col-12'">
                 <p class="question__desc">
-                    {{ selectedQuestion.type > 0 ? 'Варианты ответов:' : 'Введите ваш ответ:' }}
+                    {{ questionDesc }}
                 </p>
                 <question-options v-if="this.selectedQuestion"
                                   :testId="this.testId"
@@ -40,6 +40,11 @@ export default {
         selectedQuestion: {
             type: Object,
             required: true,
+        }
+    },
+    computed: {
+        questionDesc() {
+            return this.selectedQuestion.type > 0 ? 'Варианты ответов:' : 'Введите ваш ответ:';
         }
     },
     mounted() {

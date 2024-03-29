@@ -7,13 +7,15 @@ use App\Http\Requests\Test\CreatePassRequest;
 use App\Http\Resources\TestPassResource;
 use App\Http\Resources\TestResource;
 use App\Http\Resources\TestShowResource;
+use App\Http\Resources\UserResultResource;
 use App\Models\Test;
 use App\Services\TestService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class TestController extends Controller
 {
-    public function index(Request $request, TestService $service)
+    public function index(Request $request, TestService $service): ResourceCollection
     {
         $search = $request->input('search') ?? '';
         $page = $request->input('page');
@@ -26,7 +28,6 @@ class TestController extends Controller
 
     public function show(Test $test): TestShowResource
     {
-
         return new TestShowResource($test);
     }
 
@@ -51,7 +52,7 @@ class TestController extends Controller
         return new TestPassResource($testUser);
     }
 
-    public function storePass(CreatePassRequest $request, Test $test, TestService $service): void
+    public function storePass(CreatePassRequest $request, Test $test, TestService $service): UserResultResource
     {
         $answers = $request->input('answers');
 
@@ -59,6 +60,8 @@ class TestController extends Controller
 
         $service->createAnswers($userTest, $answers);
 
-        $service->checkTest($userTest);
+        $checkedTest = $service->checkTest($userTest);
+
+        return new UserResultResource($checkedTest);
     }
 }

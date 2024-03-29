@@ -14,6 +14,7 @@
     .ui-button{
         color: #fff;
         background-color: var(--brand-color);
+        border-color: var(--brand-color);
         transition: all 0.2s ease;
         &:active {
             color: #fff;

@@ -59,7 +59,7 @@ export default {
             handler: function (newQuestion) {
                 this.selectedQuestionUpdated = true;
                 const answers = this.getAnswersByQuestionId([this.testId, newQuestion.id]);
-
+                console.log(answers)
                 if (typeof answers === 'object'){
                     this.userAnswer.openAnswer = answers.userAnswer.openAnswer;
                     this.userAnswer.selectedAnswers = answers.userAnswer.selectedAnswers;

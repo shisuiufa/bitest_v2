@@ -46,13 +46,12 @@ class Test extends Model
         return $this->hasMany(TestUser::class);
     }
 
-    public function lastTestUser(): Model
+    public function lastTestUser(): Model|null
     {
         $user = auth()->user();
 
         return $this->testUsers()
             ->where('user_id', $user->id)
-            ->whereHas('answers')
             ->latest()
             ->first();
     }

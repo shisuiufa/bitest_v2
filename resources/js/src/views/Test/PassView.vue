@@ -28,14 +28,14 @@
                 <ui-button @click="this.nextQuestion" class="test__btn next-question">Следующий</ui-button>
             </div>
         </div>
-        <modal-end-test :testId="this.testUser?.id"
-                        :questions="this.testUser.questions"
-                        @post-test="this.postTest(this.$route.params.id)"
-                        @close-modal="this.modalShow = !this.modalShow"
-                        v-if="this.modalShow">
-        </modal-end-test>
     </div>
-    <ui-button @click="this.clearCache" class="mt-5">Очистить кэш</ui-button>
+    <modal-end-test :list="questionsUnanswered"
+                    :testPassed="testPassed"
+                    :loading="testLoading"
+                    @post-test="this.postTest(this.$route.params.id)"
+                    @close-modal="this.modalShow = !this.modalShow"
+                    v-if="this.modalShow">
+    </modal-end-test>
 </template>
 
 <script>
@@ -43,7 +43,7 @@ import QuestionSwitcher from "@/components/QuestionSwitcher.vue";
 import QuestionDisplay from "@/components/QuestionDisplay.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import UiTimer from "@/components/UiTimer.vue";
-import ModalEndTest from "@/components/ModalEndTest.vue";
+import ModalEndTest from "@/components/modals/ModalEndTest.vue";
 import {mapActions, mapGetters} from "vuex";
 import axios from "axios";
 
@@ -54,10 +54,30 @@ export default {
         QuestionDisplay,
         UiButton,
         UiTimer,
-        ModalEndTest
+        ModalEndTest,
     },
     computed: {
         ...mapGetters(['getAnswersByQuestionId', 'getUserAnswersByTestId']),
+        questionsUnanswered() {
+            let unanswered = [];
+            for (let i = 0; i < this.testUser.questions.length; i++) {
+                let present = false;
+                const question = this.testUser.questions[i];
+                const answers = this.getAnswersByQuestionId([this.testUser?.id, question.id])
+
+                if (typeof answers === 'object') {
+                    present = true;
+                }
+                if (!present) {
+                    const newObj = {
+                        idx: i + 1,
+                        question: question,
+                    }
+                    unanswered.push(newObj);
+                }
+            }
+            return unanswered;
+        }
     },
     data() {
         return {
@@ -67,6 +87,8 @@ export default {
             },
             selectedQuestion: null,
             idxSelectedQuestion: 0,
+            testPassed: false,
+            testLoading: false,
             modalShow: false,
         }
     },
@@ -118,21 +140,18 @@ export default {
                     this.testUser.questions = test.questions;
                     this.checkAnswers();
                 })
-                .catch(err => {
-
-                })
         },
         postTest(testId) {
             const userAnswers = this.getUserAnswersByTestId(this.testUser.id);
-
+            this.testLoading = true;
             axios.post(`/api/tests/${testId}/pass`, {answers: userAnswers})
                 .then(res => {
-                    console.log(res)
+                   this.testPassed = true;
                 })
-                .catch(err => {
-
+                .finally(res => {
+                    this.testLoading = false;
                 })
-        }
+        },
     },
 }
 </script>

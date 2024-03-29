@@ -16,9 +16,6 @@ export default {
 
             ctx.commit('updateUserAnswer', test);
         },
-        clearCache(ctx) {
-            ctx.commit('clearCache');
-        }
     },
     mutations: {
         updateUserAnswer(state, test) {
@@ -62,7 +59,7 @@ export default {
         getUserAnswersByTestId: (state) => (testId) => {
             const foundTest = state.tests.find(item => item.id === testId);
 
-            return foundTest.questions
+            return foundTest?.questions
         }
     }
 }

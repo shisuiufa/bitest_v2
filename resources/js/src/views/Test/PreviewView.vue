@@ -6,26 +6,26 @@
                 <p class="preview__desc">{{ this.test.desc }}</p>
                 <div class="preview__meta">
                     <div class="preview__attempts">
-                        <template v-if="this.test.attempts">
-                            Количество попыток: {{ this.userResult.attempt }} / {{ this.test.attempts }}
-                        </template>
-                        <template v-else>
-                            Количество попыток: неограниченно
-                        </template>
-
+                        {{ messageAttempts }}
                     </div>
                     <div class="preview__time">
-                        <template v-if="this.test.time">
-                            Время на тест: {{ this.test.time }} минут
-                        </template>
-                        <template v-else>
-                            Время на тест: неограниченно
-                        </template>
+                        {{ messageTime }}
                     </div>
                 </div>
-                <router-link :to="{ name: 'pass-test', params: { id: $route.params.id } }"
-                             class="preview__btn btn btn-lg">Начать
-                </router-link>
+                <ButtonLink
+                    v-if="!this.test.attempts || !this.userResult || this.userResult?.attempt < this.test.attempts"
+                    :to="{ name: 'pass-test', params: { id: $route.params.id } }"
+                    class="preview__btn btn btn-lg"
+                >
+                    {{ startButtonText }}
+                </ButtonLink>
+                <ButtonLink
+                    v-else
+                    class="preview__btn btn btn-lg"
+                    :to="{ name: 'pass-test', params: { id: $route.params.id } }"
+                >
+                    Результаты
+                </ButtonLink>
             </div>
             <div class="order-1 mb-4 order-lg-2 col-lg-6 mb-lg-0">
                 <div class="preview__wrap">
@@ -38,9 +38,11 @@
 
 <script>
 import axios from "axios";
+import ButtonLink from "@/components/UI/ButtonLink.vue";
 
 export default {
     name: 'TestPreviewView',
+    components: {ButtonLink},
     data() {
         return {
             test: {
@@ -51,6 +53,35 @@ export default {
                 image: '',
             },
             userResult: null,
+        }
+    },
+    computed: {
+        messageAttempts() {
+            if (this.test.attempts) {
+                if (this.userResult === null) {
+                    return `Количество попыток: 0 / ${this.test.attempts}`
+                } else if (this.userResult.attempt < this.test.attempts) {
+                    return `Количество попыток: ${this.userResult.attempt} / ${this.test.attempts}`
+                } else {
+                    return 'Вы изчерпали все попытки на прохождение теста';
+                }
+            }
+        },
+        messageTime() {
+            if (!this.userResult || this.userResult?.attempt < this.test.attempts) {
+                if (this.test.time) {
+                    return `Время на тест: ${this.test.time} минут`;
+                } else {
+                    return 'Время на тест: неограниченно';
+                }
+            }
+        },
+        startButtonText() {
+            if (this.userResult?.status === 'ongoing') {
+                return "Продолжить";
+            } else {
+                return "Начать";
+            }
         }
     },
     mounted() {
@@ -67,9 +98,6 @@ export default {
                     this.test.time = test.time;
                     this.test.image = test.image;
                     this.userResult = test.user_result;
-                })
-                .catch(err => {
-                    console.log(err)
                 })
         }
     }

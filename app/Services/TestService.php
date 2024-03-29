@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\TestStatus;
 use App\Models\Option;
 use App\Models\QuestionType;
 use App\Models\Test;
@@ -183,7 +184,7 @@ class TestService
 
     public function getTestUser(int $testId): TestUser
     {
-        return auth()->user()->test()
+       return auth()->user()->test()
             ->where('test_id', $testId)
             ->whereNull('score')
             ->whereNull('percent')
@@ -191,8 +192,13 @@ class TestService
             ->first();
     }
 
-    public function createAnswers(TestUser $test, array $answers): void
+    public function createAnswers(TestUser $test, array|null $answers): void
     {
+        if(empty($answers))
+        {
+            return;
+        }
+
         try {
             DB::beginTransaction();
 
@@ -228,7 +234,7 @@ class TestService
         }
     }
 
-    public function checkTest(TestUser $test): void
+    public function checkTest(TestUser $test): TestUser
     {
         $questions = $test->questions;
         $userAnswers = $test->answers;
@@ -265,7 +271,15 @@ class TestService
 
             $test->score = $score;
             $test->percent = $percentageCorrect;
+            $test->status = TestStatus::PASSED;
             $test->update();
+            $test->fresh();
+        } else {
+            $test->status = TestStatus::PENDING;
+            $test->update();
+            $test->fresh();
         }
+
+        return $test;
     }
 }

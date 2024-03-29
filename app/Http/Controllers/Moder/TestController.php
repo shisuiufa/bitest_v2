@@ -52,11 +52,9 @@ class TestController extends Controller
         return response()->json(['success' => true, 'message' => "test updated"]);
     }
 
-    public function destroy(Test $test): JsonResponse
+    public function destroy(Test $test): void
     {
         $test->delete();
-
-        return response()->json('', 204);
     }
 
 }

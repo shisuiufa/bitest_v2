@@ -16,6 +16,7 @@ class TestUser extends Model
         'user_id',
         'score',
         'try',
+        'status',
         'created_at',
         'updated_at',
     ];

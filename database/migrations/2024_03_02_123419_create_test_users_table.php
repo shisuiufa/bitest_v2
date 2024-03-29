@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('attempt')->default(1);
             $table->unsignedInteger('score')->nullable();
             $table->unsignedInteger('percent')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }

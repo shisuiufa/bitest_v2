@@ -2,14 +2,26 @@
     <div @click.self="this.closeModal()" class="modal">
         <div class="modal__box">
             <div class="modal__header">
-                <h3 class="modal__title">Завершение теста</h3>
-                <div @click="this.closeModal()" class="modal__close">
+                <h3 class="modal__title">
+                    <template v-if="testPassed">
+                        Тест завершен
+                    </template>
+                    <template v-else>
+                        Завершение теста
+                    </template>
+                </h3>
+                <div v-show="!loading && !testPassed" @click="this.closeModal()" class="modal__close">
                     <i class="bi bi-x-lg"></i>
                 </div>
             </div>
             <div class="modal__content">
-
-                    <div class="modal__info">
+                <div class="modal__info">
+                    <template v-if="testPassed">
+                        <p class="modal__desc">
+                            Нажмите кнопку ниже, чтобы узнать свои результаты и оценку.
+                        </p>
+                    </template>
+                    <template v-else>
                         <p class="modal__desc">
                             Вы уверены, что хотите завершить тест?
                         </p>
@@ -23,11 +35,18 @@
                                 </li>
                             </ul>
                         </template>
-                    </div>
+                    </template>
+                </div>
 
             </div>
             <div class="modal__footer">
-                <ui-button @click="this.$emit('post-test')">Завершить</ui-button>
+                <ui-button v-if="!loading && !testPassed" @click="this.$emit('post-test')">Завершить</ui-button>
+                <button-link v-else-if="!loading && testPassed" :to="{}">
+                    Результаты
+                </button-link>
+                <button-spinner v-else>
+                    Загрузка...
+                </button-spinner>
             </div>
         </div>
     </div>
@@ -35,22 +54,28 @@
 
 <script>
 import UiButton from "@/components/UI/UiButton.vue";
+import ButtonSpinner from "@/components/UI/ButtonSpinner.vue";
+import ButtonLink from "@/components/UI/ButtonLink.vue";
 import {mapGetters} from "vuex";
 
 export default {
     name: "ModalEndTest",
-    components: {UiButton},
-    data() {
-        return {
-            list: [],
-        }
+    components: {
+        UiButton,
+        ButtonSpinner,
+        ButtonLink
     },
     props: {
-        testId: {
+        list: {
+            type: Array,
+            required: false,
+        },
+        loading: {
+            type: Boolean,
             required: true,
         },
-        questions: {
-            type: Array,
+        testPassed: {
+            type: Boolean,
             required: true,
         }
     },
@@ -59,33 +84,13 @@ export default {
     },
     methods: {
         closeModal() {
+            if (this.loading || this.testPassed) {
+                return;
+            }
             this.$emit('close-modal')
         },
-        unanswered() {
-            let unanswered = [];
-            for (let i = 0; i < this.questions.length; i++) {
-                let present = false;
-                const question = this.questions[i];
-                const answers = this.getAnswersByQuestionId([this.testId, question.id])
-
-                if (typeof answers === 'object') {
-                    present = true;
-                }
-                if (!present) {
-                    const newObj = {
-                        idx: i + 1,
-                        question: question,
-                    }
-                    unanswered.push(newObj);
-                }
-            }
-            return unanswered;
-        }
     },
     emits: ['close-modal', 'post-test'],
-    mounted() {
-        this.list = this.unanswered();
-    },
 }
 </script>
 
