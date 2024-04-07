@@ -65,6 +65,7 @@ class TestService
 
             $test = new Test;
             $test->title = $info['title'];
+            $test->desc = $info['desc'];
             $test->author_id = $info['userId'];
             $test->time_complete = $info['time'] ?? null;
             $test->attempts = $info['attempts'] ?? null;
@@ -113,6 +114,7 @@ class TestService
             DB::beginTransaction();
 
             $test->title = $info['title'];
+            $test->desc = $info['desc'];
             $test->time_complete = $info['timeComplete'] ?? null;
             $test->attempts = $info['attempts'] ?? null;
             $test->limit_questions = $info['limitQuestions'] ?? null;

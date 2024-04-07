@@ -11,6 +11,10 @@
                          :id="'exampleInputName'"></CustomInput>
         </div>
         <div class="mb-2">
+            <CustomInput v-model:modelValue="this.form.desc" :label="'Описание'" :type="'text'"
+                         :id="'exampleInputDesc'"></CustomInput>
+        </div>
+        <div class="mb-2">
             <label class="form-label">{{ this.form.timeComplete?.label }}</label>
             <custom-select :item="this.form.timeComplete"
                            @select-item="(item) => this.form.timeComplete.selected = item"></custom-select>
@@ -49,7 +53,8 @@ export default {
             dataLoaded: false,
             form: {
                 id: null,
-                title: ref(''),
+                title: '',
+                desc: '',
                 image: '',
                 published: false,
                 timeComplete: {
@@ -104,6 +109,7 @@ export default {
         if (testInfo !== null) {
             this.form.id = testInfo.id;
             this.form.title = testInfo.title;
+            this.form.desc = testInfo.desc;
             this.form.image = testInfo.image;
             this.form.timeComplete.selected = this.form.timeComplete.options.find(item => item.value === testInfo.time_complete);
             this.form.attempts.selected = this.form.attempts.options.find(item => item.value === testInfo.attempts);
@@ -130,6 +136,7 @@ export default {
             const info = {
                 id: data.id,
                 title: data.title,
+                desc: data.desc,
                 image: data.image,
                 time_complete: data.timeComplete.selected.value,
                 attempts: data.attempts.selected.value,

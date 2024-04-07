@@ -1,6 +1,6 @@
 <template>
     <div class="test" v-if="!testError && !testPassed">
-        <div class="row mb-3 align-items-center">
+        <div class="row mb-3 align-items-center justify-content-between">
             <div class="col-9">
                 <question-switcher
                     v-if="this.test.questions"

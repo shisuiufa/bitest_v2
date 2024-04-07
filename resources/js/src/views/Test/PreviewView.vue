@@ -65,6 +65,7 @@ export default {
         },
         messageTime() {
             if (
+                !this.test.attempts ||
                 this.userResult?.attempt < this.test.attempts ||
                 this.userResult?.attempt === this.test.attempts &&
                 this.userResult.status === TestStatus.Ongoing
@@ -79,7 +80,7 @@ export default {
         startButtonText() {
             if (this.userResult?.status === TestStatus.Ongoing) {
                 return "Продолжить";
-            } else if (this.userResult?.attempt < this.test.attempts) {
+            } else if (!this.test.attempts || this.userResult?.attempt < this.test.attempts) {
                 return "Начать";
             }
         }

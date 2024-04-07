@@ -1,12 +1,10 @@
 <template>
     <div class="test__question question">
         <div class="row">
-            <div class="col-12">
-                <h4 class="question__title mb-3">{{ selectedQuestion.name }}</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div :class="selectedQuestion?.img ? 'col-6' : 'col-12'">
+            <div :class="selectedQuestion?.image ? 'col-6' : 'col-12'">
+                <h4 class="question__title mb-3">
+                    {{ selectedQuestion.name }}
+                </h4>
                 <p class="question__desc">
                     {{ questionDesc }}
                 </p>
@@ -79,15 +77,16 @@ export default {
 
     &__wrap-img {
         width: 100%;
-        height: 100%;
+        height: 550px;
         overflow: hidden;
         border-radius: 15px;
+        background-color: #1a1919;
     }
 
     &__img {
         width: inherit;
         height: inherit;
-        object-fit: cover;
+        object-fit: contain;
         transition: all 0.3s ease;
 
         &:hover {

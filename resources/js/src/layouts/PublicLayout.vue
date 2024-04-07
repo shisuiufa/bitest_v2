@@ -20,13 +20,15 @@
                 </div>
             </template>
         </div>
+        <navbar-menu></navbar-menu>
     </main>
     <modal-search v-if="modalSearch"></modal-search>
 </template>
 
 <script>
-import ModalSearch from "@/components/ModalSearch.vue";
+import ModalSearch from "@/components/modals/ModalSearch.vue";
 import AppHeader from "@/components/AppHeader.vue";
+import NavbarMenu from "@/components/NavbarMenu.vue";
 import {mapGetters} from "vuex";
 import AppBreadcrumbs from "@/components/AppBreadcrumb.vue";
 
@@ -36,6 +38,7 @@ export default {
         AppBreadcrumbs,
         AppHeader,
         ModalSearch,
+        NavbarMenu
     },
     data(){
         return {

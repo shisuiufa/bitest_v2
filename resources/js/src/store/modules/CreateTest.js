@@ -52,6 +52,7 @@ export default {
                     if (result) {
                         const test = {
                             title: info.title,
+                            desc: info.desc,
                             image: info.image,
                             timeComplete: info.time_complete,
                             attempts: info.attempts,
@@ -88,6 +89,7 @@ export default {
                     if (result) {
                         const test = {
                             title: info.title,
+                            desc: info.desc,
                             image: info.image,
                             timeComplete: info.time_complete,
                             attempts: info.attempts,

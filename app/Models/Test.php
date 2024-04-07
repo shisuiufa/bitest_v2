@@ -16,6 +16,7 @@ class Test extends Model
     protected $fillable = [
         'id',
         'title',
+        'desc',
         'image',
         'author_id',
         'time_complete',

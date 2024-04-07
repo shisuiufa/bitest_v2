@@ -13,6 +13,7 @@ class TestShowResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'desc' => $this->desc,
             'image' => $this->image,
             'author_id ' => $this->author_id,
             'time_complete' => $this->time_complete,

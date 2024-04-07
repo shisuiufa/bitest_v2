@@ -25,6 +25,7 @@ $line-height-base: 1.6;
     --border-button-color: #b8b8b8;
     --border-color: #b8b8b8;
     --border-color-two: #949494;
+    --navbar-color: var(--brand-color);
 }
 
 
@@ -38,4 +39,5 @@ $line-height-base: 1.6;
     --main-color: #fff;
     --border-color: #2B2E33;
     --border-button-color: #fff;
+    --navbar-color: var(--main-color);
 }

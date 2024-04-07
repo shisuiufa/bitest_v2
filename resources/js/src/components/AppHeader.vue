@@ -4,14 +4,6 @@
             <nav class="navbar p-0 justify-content-between">
                 <div class="navbar__left d-flex">
                     <router-link class="navbar__brand navbar-brand" to="/">bitest</router-link>
-                    <ul class="navbar__nav navbar-nav">
-                        <li class="nav-item">
-                            <router-link :to="{name: 'home'}" class="nav-link">Главная</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link :to="{name: 'created-tests'}" class="nav-link">Мои тесты</router-link>
-                        </li>
-                    </ul>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <div class="header__theme" @click="$emit('change-theme')">
@@ -81,6 +73,7 @@ export default {
             color: var(--main-color);
             text-transform: uppercase;
             letter-spacing: 1.2px;
+            font-weight: 900;
         }
         &__nav {
             display: flex;

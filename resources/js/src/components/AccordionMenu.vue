@@ -91,6 +91,7 @@ export default {
                 this.testMainInfo = {
                     id: this.test.id,
                     title: this.test.title,
+                    desc: this.test.desc,
                     image: this.test.image,
                     time_complete: this.test.time_complete,
                     attempts: this.test.attempts ,
