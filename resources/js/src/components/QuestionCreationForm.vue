@@ -5,7 +5,7 @@
                 <div class="mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="form-check d-flex gap-2">
-                            <input v-model="this.img" class="form-check-input" value="true" type="checkbox"
+                            <input v-model="this.hasImg" class="form-check-input" value="true" type="checkbox"
                                    id="checkImg">
                             <label class="form-check-label" for="checkImg">
                                 Изображение
@@ -17,8 +17,12 @@
                         </ui-button>
                     </div>
                 </div>
-                <div v-if="this.img" class="mb-3">
-                    <select-image class="m-auto select-img"></select-image>
+                <div v-show="this.hasImg" class="mb-3">
+                    <select-image  class="m-auto select-img"
+                                  @select-image="(image) => this.img = image"
+                                  :image="this.img"
+                    >
+                    </select-image>
                 </div>
                 <div class="mb-3">
                     <custom-input v-model:modelValue="name"
@@ -88,7 +92,8 @@ export default {
     data() {
         return {
             id: ref(null),
-            img: false,
+            hasImg: false,
+            img: '',
             name: ref(null),
             options: [{id: 1, name: '', correct: true}, {id: 2, name: '', correct: false}],
             typesQuestion: {
@@ -100,14 +105,11 @@ export default {
     },
     methods: {
         updateCorrectOption(correctOption) {
-            console.log(correctOption)
             for (let i = 0; i < this.options.length; i++)
             {
                 const option = this.options[i];
-
                 option.correct = option.id === correctOption.id;
             }
-
         },
         getQuestionTypes() {
             axios.get('/api/admin/question-type')
@@ -144,6 +146,8 @@ export default {
                 const newId = this.findFirstAvailableId(this.questionsId);
                 const question = {
                     id: this.questionsId.length === 0 ? 1 : newId,
+                    hasImg: this.hasImg,
+                    img: this.img,
                     name: this.name,
                     type: this.typesQuestion.selected.value,
                     options: this.options,
@@ -155,6 +159,8 @@ export default {
         editQuestion() {
             const question = {
                 id: this.id,
+                hasImg: this.hasImg,
+                img: this.img,
                 name: this.name,
                 type: this.typesQuestion.selected.value,
                 options: this.options,
@@ -169,6 +175,8 @@ export default {
         resetForm() {
             this.id = null;
             this.name = null;
+            this.hasImg = false;
+            this.img = '';
             this.typesQuestion.selected = null;
             this.options = [{id: 1, name: '', correct: true}, {id: 2, name: '', correct: false}];
         },
@@ -186,6 +194,8 @@ export default {
         selectedQuestion(newValue) {
             if (newValue !== null) {
                 this.id = newValue.id;
+                this.hasImg = newValue.hasImg;
+                this.img = newValue.img;
                 this.typesQuestion.selected = this.typesQuestion.options.find(item => item.value === newValue.type);
                 this.name = newValue.name;
                 this.options = JSON.parse(JSON.stringify(newValue.options));

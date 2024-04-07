@@ -4,19 +4,22 @@
             <div class="modal__header">
                 <h3 class="modal__title">
                     <template v-if="testPassed">
-                        Тест завершен
+                        Тест завершен!
+                    </template>
+                    <template v-else-if="testError">
+                        {{ messages }}
                     </template>
                     <template v-else>
                         Завершение теста
                     </template>
                 </h3>
-                <div v-show="!loading && !testPassed" @click="this.closeModal()" class="modal__close">
+                <div v-show="!loading && !testPassed && !testError" @click="this.closeModal()" class="modal__close">
                     <i class="bi bi-x-lg"></i>
                 </div>
             </div>
             <div class="modal__content">
                 <div class="modal__info">
-                    <template v-if="testPassed">
+                    <template v-if="testPassed || testError">
                         <p class="modal__desc">
                             Нажмите кнопку ниже, чтобы узнать свои результаты и оценку.
                         </p>
@@ -40,8 +43,8 @@
 
             </div>
             <div class="modal__footer">
-                <ui-button v-if="!loading && !testPassed" @click="this.$emit('post-test')">Завершить</ui-button>
-                <button-link v-else-if="!loading && testPassed" :to="{}">
+                <ui-button v-if="!testError && !loading && !testPassed" @click="this.$emit('post-test')">Завершить</ui-button>
+                <button-link v-else-if="!loading && testPassed || testError" :to="{}">
                     Результаты
                 </button-link>
                 <button-spinner v-else>
@@ -77,6 +80,14 @@ export default {
         testPassed: {
             type: Boolean,
             required: true,
+        },
+        testError: {
+            type: Boolean,
+            required: true,
+        },
+        messages: {
+            type: String,
+            required: false,
         }
     },
     computed: {
@@ -84,7 +95,7 @@ export default {
     },
     methods: {
         closeModal() {
-            if (this.loading || this.testPassed) {
+            if (this.loading || this.testPassed|| this.testError) {
                 return;
             }
             this.$emit('close-modal')

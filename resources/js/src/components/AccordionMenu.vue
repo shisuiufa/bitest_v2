@@ -81,10 +81,10 @@ export default {
     methods: {
         ...mapActions(['createTest', 'updateTest']),
         handleCreateTest() {
-            const response = this.createTest();
+            this.createTest();
         },
         handleUpdateTest() {
-            const response = this.updateTest(this.test.id);
+            this.updateTest(this.test.id);
         },
         getTest() {
             if (this.test){

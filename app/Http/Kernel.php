@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckTestPublishedMiddleware;
 use App\Http\Middleware\TestAccess;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -41,9 +42,17 @@ class Kernel extends HttpKernel
 
         'api' => [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+        'test.access' => [
+            \App\Http\Middleware\CheckTestPublishedMiddleware::class,
+            \App\Http\Middleware\CheckMaxAttemptsMiddleware::class,
+        ],
+        'test.status' => [
+            \App\Http\Middleware\CheckUserTestStatusMiddleware::class,
+            \App\Http\Middleware\CheckTimeEndTestMiddleware::class,
+        ]
     ];
 
     /**
@@ -65,6 +74,5 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'test.access' => \App\Http\Middleware\TestAccess::class,
     ];
 }

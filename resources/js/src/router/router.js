@@ -16,8 +16,6 @@ axios.interceptors.response.use(
         const status = error.response.status;
         if (status === 404) {
             router.push({ name: 'not-found' });
-        } else if (status === 403){
-            router.push({ name: 'home' });
         }
         return Promise.reject(error);
     }

@@ -32,24 +32,20 @@ class TestController extends Controller
         return new TestDetailResource($test);
     }
 
-    public function store(CreateRequest $request, TestService $testService): JsonResponse
+    public function store(CreateRequest $request, TestService $testService): void
     {
         $mainInfo = $request->input('info');
         $questions = $request->input('questions');
 
         $testService->createTest($mainInfo, $questions);
-
-        return response()->json(['success' => true, 'message' => "test created"], 201);
     }
 
-    public function update(Test $test, EditRequest $request, TestService $testService): JsonResponse
+    public function update(Test $test, EditRequest $request, TestService $testService): void
     {
         $mainInfo = $request->input('info');
         $questions = $request->input('questions') ?? [];
 
         $testService->editTest($test, $mainInfo, $questions);
-
-        return response()->json(['success' => true, 'message' => "test updated"]);
     }
 
     public function destroy(Test $test): void

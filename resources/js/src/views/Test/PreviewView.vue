@@ -12,20 +12,9 @@
                         {{ messageTime }}
                     </div>
                 </div>
-                <ButtonLink
-                    v-if="!this.test.attempts || !this.userResult || this.userResult?.attempt < this.test.attempts"
-                    :to="{ name: 'pass-test', params: { id: $route.params.id } }"
-                    class="preview__btn btn btn-lg"
-                >
+                <UiButton @click="startTest" v-show="startButtonText">
                     {{ startButtonText }}
-                </ButtonLink>
-                <ButtonLink
-                    v-else
-                    class="preview__btn btn btn-lg"
-                    :to="{ name: 'pass-test', params: { id: $route.params.id } }"
-                >
-                    Результаты
-                </ButtonLink>
+                </UiButton>
             </div>
             <div class="order-1 mb-4 order-lg-2 col-lg-6 mb-lg-0">
                 <div class="preview__wrap">
@@ -38,48 +27,59 @@
 
 <script>
 import axios from "axios";
-import ButtonLink from "@/components/UI/ButtonLink.vue";
+import {TestStatus} from "@/models/test.ts";
+import UiButton from "@/components/UI/UiButton.vue";
+import StartTestModal from "@/components/modals/StartTestModal.vue";
 
 export default {
     name: 'TestPreviewView',
-    components: {ButtonLink},
+    components: {StartTestModal, UiButton},
     data() {
         return {
             test: {
+                id: '',
                 title: '',
                 desc: '',
-                attempts: 0,
+                attempts: null,
                 time: 0,
                 image: '',
             },
             userResult: null,
+            modalShow: false,
         }
     },
     computed: {
         messageAttempts() {
-            if (this.test.attempts) {
-                if (this.userResult === null) {
-                    return `Количество попыток: 0 / ${this.test.attempts}`
-                } else if (this.userResult.attempt < this.test.attempts) {
-                    return `Количество попыток: ${this.userResult.attempt} / ${this.test.attempts}`
-                } else {
-                    return 'Вы изчерпали все попытки на прохождение теста';
-                }
+            if (this.test.attempts === null) {
+                return 'Количество попыток неограничено';
+            } else if (
+                this.userResult?.attempt < this.test.attempts ||
+                this.userResult?.attempt === this.test.attempts &&
+                this.userResult.status === TestStatus.Ongoing
+            ) {
+                const result = this.test.attempts - this.userResult.attempt;
+                return `Количество доступных попыток: ${result === 0 ? 1 : result}`
+            } else {
+                return 'Вы изчерпали все попытки на прохождение теста';
             }
         },
         messageTime() {
-            if (!this.userResult || this.userResult?.attempt < this.test.attempts) {
+            if (
+                this.userResult?.attempt < this.test.attempts ||
+                this.userResult?.attempt === this.test.attempts &&
+                this.userResult.status === TestStatus.Ongoing
+            ) {
                 if (this.test.time) {
-                    return `Время на тест: ${this.test.time} минут`;
+                    return `Время на тест: ${this.test.time / 60} мин`;
                 } else {
                     return 'Время на тест: неограниченно';
                 }
             }
         },
         startButtonText() {
-            if (this.userResult?.status === 'ongoing') {
+            if (this.userResult?.status === TestStatus.Ongoing) {
                 return "Продолжить";
-            } else {
+            } else if (this.userResult?.attempt < this.test.attempts) {
                 return "Начать";
             }
         }
@@ -92,14 +92,25 @@ export default {
             axios.get(`/api/tests/${testId}`)
                 .then(res => {
                     const test = res.data.data;
+                    this.test.id = test.id;
                     this.test.title = test.title;
                     this.test.desc = test.desc;
                     this.test.attempts = test.attempts;
-                    this.test.time = test.time;
+                    this.test.time = test.time_complete;
                     this.test.image = test.image;
                     this.userResult = test.user_result;
                 })
-        }
+        },
+        startTest() {
+            axios.post(`/api/tests/${this.test.id}/test_user`)
+                .then(res => {
+                    const userTestId = res.data.data.test_user_id;
+                    this.$router.push({name: 'pass-test', params: {'id': this.test.id, 'testUserId': userTestId}});
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
     }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <div class="row my-3">
         <div class="col-12">
-            <filter-nav></filter-nav>
+            <filter-nav @selectedFilter="item => {this.filter = item; getTests();}"></filter-nav>
         </div>
     </div>
     <div class="row">
@@ -9,9 +9,11 @@
             <card-list :tests=this.tests></card-list>
         </div>
         <div class="col-12 text-center">
-            <ui-button class="load-more">
+            <ui-button v-if="this.pagination && this.pagination.current_page < this.pagination.last_page"
+                       class="load-more"
+                       @click="getTests(this.pagination.current_page + 1)">
                 <i class="bi bi-arrow-clockwise"></i>
-                Еще 10 тестов из 100
+                Загрузить ещё
             </ui-button>
         </div>
     </div>
@@ -34,19 +36,33 @@ export default {
         return {
             tests: [],
             search: '',
+            filter: null,
+            pagination: null,
         }
     },
-    mounted(page = 1) {
-        axios.get('/api/tests', {
-            params: {
-                'page': page,
-                'per_page': 10,
-                'search': this.search,
-            }
-        }).then((res) => {
-            this.tests = res.data.data;
-        })
-    }
+    mounted() {
+        this.getTests();
+    },
+    methods: {
+      getTests(page = 1){
+          axios.get('/api/tests', {
+              params: {
+                  'page': page,
+                  'per_page': 6,
+                  'search': this.search,
+                  'filter': this.filter,
+              }
+          }).then((res) => {
+              this.pagination = res.data.meta;
+
+              if (page === 1) {
+                  this.tests = res.data.data;
+              } else {
+                  this.tests = this.tests.concat(res.data.data);
+              }
+          })
+      }
+    },
 }
 </script>
 

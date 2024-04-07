@@ -9,11 +9,16 @@
         name: "ui-timer",
         data(){
             return {
-                timeLimitInMinutes: 1, // Установите лимит времени в минутах
                 totalTimeInSeconds: 0,
                 timerInterval: null,
-                timeLeft: "01:00",
+                timeLeft: "00:00",
             }
+        },
+        props: {
+           seconds: {
+               type: Number,
+               required: true,
+           }
         },
         methods: {
             updateTimer(){
@@ -26,12 +31,12 @@
                     this.totalTimeInSeconds--;
                 } else {
                     clearInterval(this.timerInterval);
-                    this.timeLeft = "End";
+                    this.$emit('end-time');
                 }
             }
         },
         mounted() {
-            this.totalTimeInSeconds = this.timeLimitInMinutes * 60;
+            this.totalTimeInSeconds = this.seconds;
             this.timerInterval = setInterval(this.updateTimer, 1000);
         },
     }

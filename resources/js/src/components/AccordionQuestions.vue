@@ -34,7 +34,7 @@ export default {
             questions: [],
         }
     },
-    computed:{
+    computed: {
         ...mapGetters(['cachedTest'])
     },
     props: {
@@ -52,10 +52,10 @@ export default {
     mounted() {
         let questions = this.testQuestions;
         const cachedTest = this.cachedTest.find(item => {
-            if(item[this.event] && !this.testId && item[this.event].questions){
+            if (item[this.event] && !this.testId && item[this.event].questions) {
                 return item[this.event];
             }
-            if(item[this.event] && item[this.event].id === this.testId && item[this.event].questions){
+            if (item[this.event] && item[this.event].id === this.testId && item[this.event].questions) {
                 return item[this.event];
             }
         })

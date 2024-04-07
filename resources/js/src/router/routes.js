@@ -47,7 +47,7 @@ const routes = [
                         meta: {breadcrumb: 'Просмотр'},
                     },
                     {
-                        path: 'pass',
+                        path: 'pass/:testUserId',
                         component: TestPassView,
                         name: 'pass-test',
                         meta: {breadcrumb: 'Выполнение'},

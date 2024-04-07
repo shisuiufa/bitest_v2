@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TestAccess
+class CheckMaxAttemptsMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
@@ -19,18 +19,12 @@ class TestAccess
             $test = Test::findOrFail($test);
         }
 
-        $service = new TestService();
-
-        $testPublished = boolval($test->published);
         $testAttempts = $test->attempts;
-
-        if (!$testPublished) {
-            return new Response(__('Test not found'), 404);
-        }
-
         $user = $request->user();
+
         $lastUserTest = $user->test()
             ->where('test_id', $test->id)
+            ->whereNot('status', TestStatus::ONGOING)
             ->latest()
             ->first();
 
@@ -38,19 +32,8 @@ class TestAccess
             !empty($lastUserTest)
             && !empty($testAttempts)
             && $testAttempts <= $lastUserTest->attempt
-            && $lastUserTest->status !== TestStatus::ONGOING->value
         ) {
-            return new Response(__('User has reached maximum attempts for this test'), 403);
-        }
-
-
-        if (!empty($lastUserTest) && $lastUserTest->status === TestStatus::ONGOING->value) {
-
-            $lastUserTest = $service->checkTimeTest($lastUserTest);
-
-            if($lastUserTest->status === TestStatus::PASSED->value) {
-                return new Response(__('The test was closed'), 403);
-            }
+            return new Response(__('messages.max_attempts'), 403);
         }
 
         return $next($request);

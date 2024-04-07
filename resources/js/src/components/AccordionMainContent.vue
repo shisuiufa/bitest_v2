@@ -57,10 +57,10 @@ export default {
                     selected: ref(null),
                     options: [
                         {id: 1, name: 'Неограниченно', value: null},
-                        {id: 2, name: '15 минут', value: 15},
-                        {id: 3, name: '30 минут', value: 30},
-                        {id: 4, name: '1 час', value: 60},
-                        {id: 5, name: '2 час', value: 120},
+                        {id: 2, name: '15 минут', value: 900},
+                        {id: 3, name: '30 минут', value: 1800},
+                        {id: 4, name: '1 час', value: 3600},
+                        {id: 5, name: '2 час', value: 7200},
                     ]
                 },
                 attempts: {

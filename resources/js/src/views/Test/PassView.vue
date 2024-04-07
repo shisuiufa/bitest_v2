@@ -1,18 +1,18 @@
 <template>
-    <div class="test">
+    <div class="test" v-if="!testError && !testPassed">
         <div class="row mb-3 align-items-center">
             <div class="col-9">
                 <question-switcher
-                    v-if="this.testUser.questions"
+                    v-if="this.test.questions"
                     :selectedQuestion="this.selectedQuestion"
-                    :questions="this.testUser.questions"
-                    :testId="this.testUser.id"
+                    :questions="this.test.questions"
+                    :testId="this.test.id"
                     @select-question="(item) => this.selectedQuestion = item"
                     class="test__questions">
                 </question-switcher>
             </div>
-            <div class="col-1 text-end">
-                <ui-timer></ui-timer>
+            <div class="col-1 text-end" v-if="this.test.time > 0">
+                <ui-timer @endTime="this.postTest" :seconds="this.test.time"></ui-timer>
             </div>
             <div class="col-2 text-end">
                 <ui-button @click="this.modalShow = !this.modalShow">Завершить</ui-button>
@@ -20,7 +20,14 @@
         </div>
         <div class="row" v-if="selectedQuestion">
             <div class="col-12 mb-3">
-                <question-display :testId="this.testUser?.id" :selectedQuestion="this.selectedQuestion"></question-display>
+                <question-display
+                    :testId="this.test?.id"
+                    :testUserId="this.testUser.id"
+                    :selectedQuestion="this.selectedQuestion"
+                    @testError="item => this.endTest(item)"
+                >
+
+                </question-display>
             </div>
         </div>
         <div class="row">
@@ -29,9 +36,12 @@
             </div>
         </div>
     </div>
+    <div class="background" v-else></div>
     <modal-end-test :list="questionsUnanswered"
                     :testPassed="testPassed"
                     :loading="testLoading"
+                    :testError="testError"
+                    :messages="messages"
                     @post-test="this.postTest(this.$route.params.id)"
                     @close-modal="this.modalShow = !this.modalShow"
                     v-if="this.modalShow">
@@ -60,10 +70,10 @@ export default {
         ...mapGetters(['getAnswersByQuestionId', 'getUserAnswersByTestId']),
         questionsUnanswered() {
             let unanswered = [];
-            for (let i = 0; i < this.testUser.questions.length; i++) {
+            for (let i = 0; i < this.test.questions.length; i++) {
                 let present = false;
-                const question = this.testUser.questions[i];
-                const answers = this.getAnswersByQuestionId([this.testUser?.id, question.id])
+                const question = this.test.questions[i];
+                const answers = this.getAnswersByQuestionId([this.test?.id, question.id])
 
                 if (typeof answers === 'object') {
                     present = true;
@@ -77,34 +87,39 @@ export default {
                 }
             }
             return unanswered;
-        }
+        },
     },
     data() {
         return {
-            testUser: {
+            test: {
                 id: null,
                 questions: [],
+                time: null,
+            },
+            testUser: {
+                id: null
             },
             selectedQuestion: null,
             idxSelectedQuestion: 0,
             testPassed: false,
             testLoading: false,
+            testError: false,
             modalShow: false,
+            messages: '',
         }
     },
     mounted() {
-        this.getTest(this.$route.params.id);
+        this.getTestUser(this.$route.params.id, this.$route.params.testUserId);
     },
     methods: {
-        ...mapActions(['clearCache']),
+        ...mapActions(['clearAnswersTest']),
         checkAnswers() {
             let testValidated = false;
-            for (let i = 0; i < this.testUser.questions.length; i++) {
-                const questionId = this.testUser.questions[i].id;
+            for (let i = 0; i < this.test.questions.length; i++) {
+                const questionId = this.test.questions[i].id;
                 let questionResolved = false;
 
-                const answers = this.getAnswersByQuestionId([this.testUser.id, questionId])
-
+                const answers = this.getAnswersByQuestionId([this.test.id, questionId])
                 if (typeof answers === 'object') {
                     testValidated = true;
                     questionResolved = true;
@@ -112,46 +127,63 @@ export default {
 
                 if (!questionResolved) {
                     testValidated = false;
-                    this.selectedQuestion = this.testUser.questions[i];
+                    this.selectedQuestion = this.test.questions[i];
                     break;
                 }
             }
             if (testValidated) {
-                this.selectedQuestion = this.testUser.questions[0];
+                this.selectedQuestion = this.test.questions[0];
             }
         },
         nextQuestion() {
             if (!this.selectedQuestion) {
-                this.selectedQuestion = this.testUser.questions[0];
+                this.selectedQuestion = this.test.questions[0];
             } else {
-                const indexQuestion = this.testUser.questions.findIndex(question => question.id === this.selectedQuestion.id);
-                if (this.testUser.questions[indexQuestion + 1]) {
-                    this.selectedQuestion = this.testUser.questions[indexQuestion + 1];
+                const indexQuestion = this.test.questions.findIndex(question => question.id === this.selectedQuestion.id);
+                if (this.test.questions[indexQuestion + 1]) {
+                    this.selectedQuestion = this.test.questions[indexQuestion + 1];
                 } else {
-                    this.selectedQuestion = this.testUser.questions[0];
+                    this.selectedQuestion = this.test.questions[0];
                 }
             }
         },
-        getTest(testId) {
-            axios.get(`/api/tests/${testId}/pass`)
+        getTestUser(testId, testUserId) {
+            axios.get(`/api/tests/${testId}/test_user/${testUserId}`)
                 .then(res => {
                     const test = res.data.data;
-                    this.testUser.id = test.id;
-                    this.testUser.questions = test.questions;
+                    this.test.id = test.id;
+                    this.testUser.id = test.test_user_id;
+                    this.test.questions = test.questions;
+                    this.test.time = test.time;
                     this.checkAnswers();
                 })
+                .catch(err => {
+                    if (err.response.status === 403) {
+                        this.endTest(err.response.data);
+                    }
+                })
         },
-        postTest(testId) {
-            const userAnswers = this.getUserAnswersByTestId(this.testUser.id);
+        postTest() {
             this.testLoading = true;
-            axios.post(`/api/tests/${testId}/pass`, {answers: userAnswers})
+            axios.put(`/api/tests/${this.test.id}/test_user/${this.testUser.id}`)
                 .then(res => {
-                   this.testPassed = true;
+                    this.testPassed = true;
+                    this.clearAnswersTest(this.test.id);
+                })
+                .catch(err => {
+                    if (err.response.status === 403) {
+                        this.endTest(err.response.data);
+                    }
                 })
                 .finally(res => {
                     this.testLoading = false;
                 })
         },
+        endTest(messages) {
+            this.modalShow = true;
+            this.testError = true;
+            this.messages = messages;
+        }
     },
 }
 </script>
@@ -164,5 +196,15 @@ export default {
         font-weight: 700;
         margin-bottom: 20px;
     }
+}
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--body-bg);
+    overflow: hidden;
+    z-index: 1000;
 }
 </style>

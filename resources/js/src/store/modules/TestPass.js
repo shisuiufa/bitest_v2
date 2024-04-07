@@ -16,14 +16,15 @@ export default {
 
             ctx.commit('updateUserAnswer', test);
         },
+        clearAnswersTest(ctx, testId) {
+            ctx.commit('clearAnswersTest', testId);
+        }
     },
     mutations: {
         updateUserAnswer(state, test) {
             const indexToUpdate = state.tests.findIndex(item => item.id === test.id);
-
             if (indexToUpdate >= 0) {
-                const indexQuestion = state.tests[indexToUpdate].questions.findIndex(question => question.id === test.questions[0].id)
-
+                const indexQuestion = state.tests[indexToUpdate].questions.findIndex(question =>  question.id === test.questions[0].id)
                 if (indexQuestion >= 0) {
                     if (test.questions[0].userAnswer.openAnswer.length === 0 &&
                         test.questions[0].userAnswer.selectedAnswers.length === 0) {
@@ -32,14 +33,19 @@ export default {
                         state.tests[indexToUpdate].questions[indexQuestion] = test.questions[0];
                     }
                 } else {
-                    state.tests[indexToUpdate].questions.push(test.questions[0])
+                   if (test.questions[0].userAnswer.openAnswer.length > 0 || test.questions[0].userAnswer.selectedAnswers.length > 0){
+                       state.tests[indexToUpdate].questions.push(test.questions[0])
+                   }
                 }
             } else {
                 state.tests.push(test);
             }
         },
-        clearCache(state) {
-            state.tests = [];
+        clearAnswersTest(state, testId) {
+            const indexToUpdate = state.tests.findIndex(item => item.id === Number(testId));
+            if (indexToUpdate !== -1) {
+                state.tests.splice(indexToUpdate, 1);
+            }
         }
     },
     state: {

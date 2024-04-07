@@ -12,7 +12,9 @@
                 </p>
                 <question-options v-if="this.selectedQuestion"
                                   :testId="this.testId"
+                                  :testUserId="this.testUserId"
                                   :selectedQuestion="this.selectedQuestion"
+                                  @testError = "item => $emit('testError', item)"
                                   class="question__options">
                 </question-options>
             </div>
@@ -37,6 +39,9 @@ export default {
         testId: {
             required: true,
         },
+        testUserId: {
+            required: true,
+        },
         selectedQuestion: {
             type: Object,
             required: true,
@@ -47,9 +52,7 @@ export default {
             return this.selectedQuestion.type > 0 ? 'Варианты ответов:' : 'Введите ваш ответ:';
         }
     },
-    mounted() {
-        console.log(this.selectedQuestion)
-    }
+    emits: ['testError'],
 }
 </script>
 
