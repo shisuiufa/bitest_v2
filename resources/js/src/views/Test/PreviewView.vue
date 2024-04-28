@@ -51,7 +51,7 @@ export default {
     computed: {
         messageAttempts() {
             if (this.test.attempts === null) {
-                return 'Количество попыток неограничено';
+                return 'Количество попыток: неограничено';
             } else if (
                 this.userResult?.attempt < this.test.attempts ||
                 this.userResult?.attempt === this.test.attempts &&

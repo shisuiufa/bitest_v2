@@ -10,19 +10,10 @@
             </tr>
             </thead>
             <tbody>
-                <TableTestsItem @delete-test="testId => this.$emit('delete-test', testId)"
-                                :test="test"
-                                v-for="(test, index) in tests" :key="index">
-                </TableTestsItem>
-<!--                <ui-button @click="this.clearAllTest()">Очистить кэш</ui-button>-->
-
-
-                <!--                    <div class="d-flex gap-2 align-items-center">-->
-                <!--                        <span>100%</span>-->
-                <!--                        <div class="progress">-->
-                <!--                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
+            <TableTestsItem @delete-test="testId => this.$emit('delete-test', testId)"
+                            :test="test"
+                            v-for="(test, index) in tests" :key="index">
+            </TableTestsItem>
             </tbody>
         </table>
     </div>
@@ -31,6 +22,7 @@
 <script>
 import TableTestsItem from "@/components/TableTestsItem.vue";
 import UiButton from "./UI/UiButton.vue";
+
 export default {
     name: "TableTests",
     props: {
@@ -167,7 +159,8 @@ export default {
         padding: 10px 12px;
         border-radius: 8px;
         margin-bottom: 5px;
-        &:hover{
+
+        &:hover {
             background-color: var(--button-bg);
         }
     }

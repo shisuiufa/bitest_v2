@@ -11,36 +11,35 @@
             <table-tests @delete-test="testId => deleteTest(testId)" v-if="this.tests.length > 0"
                          :tests="this.tests"></table-tests>
         </div>
-        <div class="row mb-3">
-            <div class="col-12">
-                <div class="col-12" v-if="pagination.last_page !== 1">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li @click.prevent="getData(pagination.current_page - 1)" class="page-item"
-                                v-if="pagination.current_page !== 1"><a class="page-link" href="#">Назад</a></li>
-                            <li :class="link.active ? 'active' : ''" class="page-item" v-for="link in pagination.links">
-                                <template v-if="Number(link.label)
+        <div class="col-12 mb-3">
+            <div class="col-12" v-if="pagination.last_page !== 1">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li @click.prevent="getData(pagination.current_page - 1)" class="page-item"
+                            v-if="pagination.current_page !== 1"><a class="page-link" href="#">Назад</a></li>
+                        <li :class="link.active ? 'active' : ''" class="page-item" v-for="link in pagination.links">
+                            <template v-if="Number(link.label)
                         && (pagination.current_page - link.label < 2
                         && pagination.current_page - link.label > -2) || Number(link.label) === 1 || Number(link.label) === pagination.last_page ">
-                                    <a @click.prevent="getData(link.label)" class="page-link" href="#">{{
-                                            link.label
-                                        }}</a>
-                                </template>
-                                <template v-if="Number(link.label) &&
+                                <a @click.prevent="getData(link.label)" class="page-link" href="#">{{
+                                        link.label
+                                    }}</a>
+                            </template>
+                            <template v-if="Number(link.label) &&
                         pagination.current_page !== 3 &&
                         pagination.current_page - link.label === 2 ||
                         Number(link.label) &&
                         pagination.current_page !== pagination.last_page -2 &&
                         pagination.current_page - link.label === -2">
-                                    <a class="page-link">...</a>
-                                </template>
-                            </li>
-                            <li @click.prevent="getData(pagination.current_page + 1)" class="page-item"
-                                v-if="pagination.current_page !== pagination.last_page"><a class="page-link" href="#">Вперед</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                                <a class="page-link">...</a>
+                            </template>
+                        </li>
+                        <li @click.prevent="getData(pagination.current_page + 1)" class="page-item"
+                            v-if="pagination.current_page !== pagination.last_page"><a class="page-link"
+                                                                                       href="#">Вперед</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
         <div class="col-12">

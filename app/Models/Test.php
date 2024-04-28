@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TestStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -53,6 +54,17 @@ class Test extends Model
 
         return $this->testUsers()
             ->where('user_id', $user->id)
+            ->latest()
+            ->first();
+    }
+
+    public function lastResultUser(): Model|null
+    {
+        $user = auth()->user();
+
+        return $this->testUsers()
+            ->where('user_id', $user->id)
+            ->whereNot('status', TestStatus::ONGOING)
             ->latest()
             ->first();
     }

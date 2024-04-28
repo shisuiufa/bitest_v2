@@ -22,7 +22,7 @@
         </div>
         <navbar-menu></navbar-menu>
     </main>
-    <modal-search v-if="modalSearch"></modal-search>
+    <modal-search v-if="this.modalSearch"></modal-search>
 </template>
 
 <script>

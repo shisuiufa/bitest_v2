@@ -44,7 +44,7 @@
             </div>
             <div class="modal__footer">
                 <ui-button v-if="!testError && !loading && !testPassed" @click="this.$emit('post-test')">Завершить</ui-button>
-                <button-link v-else-if="!loading && testPassed || testError" :to="{}">
+                <button-link v-else-if="!loading && testPassed || testError" :to="{name: 'show-result', params: {id: testId}}">
                     Результаты
                 </button-link>
                 <button-spinner v-else>
@@ -69,6 +69,10 @@ export default {
         ButtonLink
     },
     props: {
+        testId: {
+          type: Number,
+          required: true,
+        },
         list: {
             type: Array,
             required: false,

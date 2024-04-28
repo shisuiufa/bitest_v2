@@ -15,6 +15,9 @@ import EditTestView from "@/views/Test/EditView.vue";
 import TestPreviewView from "@/views/Test/PreviewView.vue";
 import TestPassView from "@/views/Test/PassView.vue";
 
+import ResultIndexView from "@/views/Result/IndexView.vue";
+import ResultShowView from "@/views/Result/ShowView.vue";
+
 const routes = [
     {
         path: '/login',
@@ -89,7 +92,25 @@ const routes = [
                 component: ProfileView,
                 name: 'authors',
                 meta: {breadcrumb: 'Личный кабинет'},
-            }
+            },
+            {
+                path: '/result',
+                redirect: {name: 'all-result'},
+                meta: { breadcrumb: 'Результаты' },
+                children: [
+                    {
+                        path: '',
+                        component: ResultIndexView,
+                        name: 'all-result',
+                    },
+                    {
+                        path: ':id',
+                        component: ResultShowView,
+                        name: 'show-result',
+                        meta: { breadcrumb: 'Результат' },
+                    },
+                ]
+            },
         ],
     },
     {

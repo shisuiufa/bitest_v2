@@ -14,7 +14,7 @@
                 </router-link>
             </li>
             <li class="navbar__item">
-                <router-link class="navbar__link" :to="{name: 'home'}">
+                <router-link class="navbar__link" :to="{name: 'all-result'}">
                     <i class="bi bi-card-checklist"></i>
                     <span>Результаты</span>
                 </router-link>
@@ -57,7 +57,7 @@ $transition: $timing ease all;
 }
 .navbar {
     position: fixed;
-    bottom: 20px;
+    bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 10px;

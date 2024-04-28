@@ -42,6 +42,7 @@
                     :loading="testLoading"
                     :testError="testError"
                     :messages="messages"
+                    :testId="this.test.id"
                     @post-test="this.postTest(this.$route.params.id)"
                     @close-modal="this.modalShow = !this.modalShow"
                     v-if="this.modalShow">
