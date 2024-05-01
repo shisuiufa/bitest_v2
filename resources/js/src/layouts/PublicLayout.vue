@@ -3,26 +3,24 @@
     <main class="main">
         <div class="container">
             <template v-if="$route.name === 'home'">
-                <router-view></router-view>
+                <router-view/>
             </template>
             <template v-else>
                 <div class="row">
                     <div class="col-12">
-                        <app-breadcrumbs></app-breadcrumbs>
+                        <app-breadcrumbs/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <div class="content">
-                            <router-view></router-view>
-                        </div>
+                        <router-view/>
                     </div>
                 </div>
             </template>
         </div>
-        <navbar-menu></navbar-menu>
+        <navbar-menu/>
     </main>
-    <modal-search v-if="this.modalSearch"></modal-search>
+    <modal-search v-if="this.modalSearch"/>
 </template>
 
 <script>
@@ -40,13 +38,13 @@ export default {
         ModalSearch,
         NavbarMenu
     },
-    data(){
+    data() {
         return {
             dark: false,
             loader: false,
         }
     },
-    computed:{
+    computed: {
         ...mapGetters(['modalSearch', 'user']),
     },
     mounted() {
@@ -90,17 +88,20 @@ export default {
 </script>
 
 <style lang="scss">
-    .main {
-        height: 100%;
-        min-height: 100vh;
-        padding-top: 55px;
-        padding-bottom: 1rem;
-        background-color: var(--body-bg);
-    }
-    .content {
-        padding: 40px;
-        border-radius: 15px;
-        background-color: var(--body-bg-secondary);
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    }
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+.main {
+    height: 100%;
+    min-height: 100vh;
+    padding-top: 55px;
+    padding-bottom: 1rem;
+    background-color: var(--body-bg);
+}
 </style>
