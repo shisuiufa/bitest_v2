@@ -14,18 +14,18 @@ export default {
         titleChart: {
             required: true,
             type: String
+        },
+        data: {
+            required: true,
+            type: Array,
         }
     },
     setup(props) {
         const testData = {
-            labels: [
-                'Red',
-                'Blue',
-                'Yellow'
-            ],
+            labels: props.data?.labels,
             datasets: [
                 {
-                    data: [30, 40, 60],
+                    data: props.data?.datasets,
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',

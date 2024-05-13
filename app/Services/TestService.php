@@ -307,10 +307,12 @@ class TestService
             $test->score = $score;
             $test->percent = $percentageCorrect;
             $test->status = TestStatus::PASSED->value;
-            $test->update();
-            $test->fresh();
         } else {
             $test->status = TestStatus::PENDING->value;
+        }
+
+        if(empty($test->test_end_at)) {
+            $test->test_end_at = now();
             $test->update();
             $test->fresh();
         }

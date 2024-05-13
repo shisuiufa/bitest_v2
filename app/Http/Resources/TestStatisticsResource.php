@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,9 +18,9 @@ class TestStatisticsResource extends JsonResource
     {
         return [
             'users' => UserResultResource::collection($this->uniqueUsersByAttemptDesc()),
-            'monthly_stats' => [],
+            'monthly_stats' => $this->getTestResultsByMonthChartData(),
             'passing_percentage' => $this->getTestResultsChartData(),
-            'passing_duration' => [],
+            'passing_duration' => $this->getTestDurationStatistics(),
         ];
     }
 }

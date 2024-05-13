@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\TestStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+
 
 class Test extends Model
 {
@@ -102,8 +105,8 @@ class Test extends Model
     {
         $testUsers = $this->uniqueUsersByAttemptDesc();
         $maxScoreCount = $testUsers->where('percent', '>=', 80)->count();
-        $avgScoreCount = $testUsers->whereBetween('percent',  [68, 80])->count();
-        $minScoreCount = $testUsers->whereBetween('percent', [0, 68])->count();
+        $avgScoreCount = $testUsers->whereBetween('percent', [68, 80])->count();
+        $minScoreCount = $testUsers->whereNotNull('percent')->whereBetween('percent', [0, 68])->count();
 
         return [
             'labels' => ['Выше 80', 'Выше 68', 'Ниже 68'],
@@ -115,10 +118,58 @@ class Test extends Model
         ];
     }
 
-    public function getTestResultsByMonthChartData()
+    public function getTestResultsByMonthChartData(): array
+    {
+        $monthLabels = [];
+
+        $uniqueUsersByMonth = $this->testUsers()
+            ->orderBy('updated_at')
+            ->get()
+            ->unique(function ($user) {
+                return Carbon::parse($user->updated_at)->format('Y-m') . '-' . $user->user_id;
+            });
+
+        $uniqueMonths = $uniqueUsersByMonth
+            ->groupBy(function ($user) {
+                return Carbon::parse($user->updated_at)->format('Y-m');
+            })
+            ->map(function ($users) {
+                return $users->count();
+            });
+
+        $uniqueMonths->each(function ($count, $month) use (&$monthLabels) {
+            $monthLabels[] = Carbon::createFromFormat('Y-m', $month)->translatedFormat('F');
+        });
+
+        return [
+            'labels' => $monthLabels,
+            'datasets' => $uniqueMonths->values()->all()
+        ];
+    }
+
+    public function getTestDurationStatistics(): array
     {
         $testUsers = $this->uniqueUsersByAttemptDesc();
-        $passedByMonth = [];
-        $monthLabels = [];
+
+        $durations = [];
+
+        foreach ($testUsers as $user) {
+            $durationInMinutes = $user->created_at->diffInMinutes($user->test_end_at);
+
+            $durations[] = $durationInMinutes;
+        }
+
+        $minDuration = min($durations);
+        $averageDuration = count($durations) > 0 ? array_sum($durations) / count($durations) : 0;
+        $maxDuration = max($durations);
+
+        return [
+            'labels' => ['Минимальное', 'Среднее', 'Максимальное'],
+            'datasets' => [
+                $minDuration,
+                $averageDuration,
+                $maxDuration,
+            ]
+        ];
     }
 }

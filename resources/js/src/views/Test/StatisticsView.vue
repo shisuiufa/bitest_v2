@@ -1,8 +1,8 @@
 <template>
     <div class="row mb-2">
         <div class="col-12 col-md-4 mb-2 mb-md-0">
-            <Panel header="Прохождение теста" toggleable :collapsed="true">
-                <CustomLineChart/>
+            <Panel header="Время на прохождение теста" toggleable :collapsed="true">
+                <CustomLineChart v-if="statistics?.passing_duration" :data="statistics?.passing_duration"/>
             </Panel>
         </div>
         <div class="col-12 col-md-4 mb-2 mb-md-0">
@@ -11,8 +11,8 @@
             </Panel>
         </div>
         <div class="col-12 col-md-4">
-            <Panel header="Время на прохождение теста" toggleable :collapsed="true">
-                <CustomBarChart/>
+            <Panel header="Прохождение теста" toggleable :collapsed="true">
+                <CustomBarChart v-if="statistics?.monthly_stats" :data="statistics?.monthly_stats"/>
             </Panel>
         </div>
     </div>
