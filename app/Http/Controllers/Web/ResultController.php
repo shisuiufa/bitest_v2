@@ -17,12 +17,12 @@ class ResultController extends Controller
         $page = $request->input('page');
         $perPage = $request->input('per_page');
 
-        $results = $service->getResults(true, $page, $perPage);
+        $results = $service->getResults(false, $page, $perPage);
 
         return ResultResource::collection($results);
     }
 
-    public function show(Test $result)
+    public function show(Test $result): ShowResultResource
     {
         $lastResult = $result->lastResultUser();
 

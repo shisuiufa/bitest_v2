@@ -169,7 +169,6 @@ class TestService
                                             $existingOption = $optionsDb->firstWhere('id', $option['id']);
 
                                             if (!$existingOption) {
-                                                dd($existingOption);
                                                 $newOption = new Option();
                                                 $newOption->name = $option['name'];
                                                 $newOption->correct = $option['correct'];

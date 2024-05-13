@@ -11,11 +11,7 @@
                         <app-breadcrumbs/>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <router-view/>
-                    </div>
-                </div>
+                <router-view/>
             </template>
         </div>
         <navbar-menu/>

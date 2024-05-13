@@ -1,14 +1,19 @@
 <template>
-    <table-app :items="this.results"></table-app>
+    <panel header="Список результатов">
+        <TableResult :items="this.results"/>
+    </panel>
 </template>
 
 <script>
-import TableApp from "../../components/tables/TableApp.vue";
+import TableResult from "@/components/tables/TableResult.vue";
+import {useLaravel} from "@/composables/useLaravel.ts";
+import * as toast from "@/composables/useNotifications.ts";
+const {result} = useLaravel();
 
 export default {
     name: 'ResultIndexView',
-    components: {TableApp},
-    data(){
+    components: {TableResult},
+    data() {
         return {
             results: [],
         }
@@ -17,19 +22,16 @@ export default {
         this.getResult();
     },
     methods: {
-        getResult(){
-            axios.get('/api/results')
-                .then(res => {
-                   this.results = res.data.data;
+        async getResult() {
+            await result.index()
+                .then((res) => {
+                    this.results = res.data;
                 })
-                .catch(err => {
-                    console.log(err)
+                .catch((err) => {
+                    toast.error('Ошибка загрузки результатов тестов',
+                        err.response.data.message)
                 })
         }
     }
 }
 </script>
-
-<style scoped lang="scss">
-
-</style>

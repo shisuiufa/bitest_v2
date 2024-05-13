@@ -6,8 +6,13 @@ $font-family-sans-serif:  'Montserrat', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
+$primary: #3d3bff;
+$success: #14b8a6;
+
 :root {
     --header-height : 55px;
+    --font-family: $font-family-sans-serif;
+    --primary-color: #3d3bff;
 
     /*index*/
     --index-header: 900;
@@ -27,7 +32,6 @@ $line-height-base: 1.6;
     --border-color-two: #949494;
     --navbar-color: var(--brand-color);
 }
-
 
 :root .dark {
     /*bg*/

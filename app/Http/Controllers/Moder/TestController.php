@@ -19,10 +19,10 @@ class TestController extends Controller
     public function index(Request $request, $id, TestService $testService): ResourceCollection
     {
         $search = $request->input('search') ?? '';
-        $page = $request->input('page');
+        $page = $request->input('page') ?? 1;
         $perPage = $request->input('per_page');
 
-        $tests = $testService->getTestsAuthor($id, $search, true, $page, $perPage);
+        $tests = $testService->getTestsAuthor($id, $search, false, $page, $perPage);
 
         return TestResource::collection($tests);
     }

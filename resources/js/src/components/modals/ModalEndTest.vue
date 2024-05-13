@@ -43,8 +43,10 @@
 
             </div>
             <div class="modal__footer">
-                <ui-button v-if="!testError && !loading && !testPassed" @click="this.$emit('post-test')">Завершить</ui-button>
-                <button-link v-else-if="!loading && testPassed || testError" :to="{name: 'show-result', params: {id: testId}}">
+                <ui-button v-if="!testError && !loading && !testPassed" @click="this.$emit('post-test')">Завершить
+                </ui-button>
+                <button-link v-else-if="!loading && testPassed || testError"
+                             :to="{name: 'show-result', params: {id: testId}}">
                     Результаты
                 </button-link>
                 <button-spinner v-else>
@@ -70,8 +72,8 @@ export default {
     },
     props: {
         testId: {
-          type: Number,
-          required: true,
+            type: Number,
+            required: true,
         },
         list: {
             type: Array,
@@ -99,7 +101,7 @@ export default {
     },
     methods: {
         closeModal() {
-            if (this.loading || this.testPassed|| this.testError) {
+            if (this.loading || this.testPassed || this.testError) {
                 return;
             }
             this.$emit('close-modal')

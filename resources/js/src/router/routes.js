@@ -14,6 +14,7 @@ import CreateTestView from "@/views/Test/CreateView.vue";
 import EditTestView from "@/views/Test/EditView.vue";
 import TestPreviewView from "@/views/Test/PreviewView.vue";
 import TestPassView from "@/views/Test/PassView.vue";
+import StatisticsView from "@/views/Test/StatisticsView.vue";
 
 import ResultIndexView from "@/views/Result/IndexView.vue";
 import ResultShowView from "@/views/Result/ShowView.vue";
@@ -28,13 +29,13 @@ const routes = [
     {
         path: '/',
         component: PublicLayout,
-        meta: {middleware: 'auth'},
+        redirect: {name: 'home'},
+        meta: {breadcrumb: 'Главная', middleware: 'auth'},
         children: [
             {
                 path: '',
                 component: HomeView,
                 name: 'home',
-                meta: {breadcrumb: 'Главная'},
             },
             {
                 path: '/tests/:id',
@@ -67,6 +68,7 @@ const routes = [
                         path: '',
                         component: CreatedTestView,
                         name: 'created-tests',
+
                     },
                     {
                         path: 'create',
@@ -78,6 +80,12 @@ const routes = [
                         path: ':id/edit',
                         component: EditTestView,
                         name: 'edit-test',
+                    },
+                    {
+                        path: ':id/statistics',
+                        component: StatisticsView,
+                        name: 'statistics',
+                        meta: {breadcrumb: 'Статистика'}
                     }
                 ]
             },

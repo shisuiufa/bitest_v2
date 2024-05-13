@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Moder\TestController;
+use App\Http\Controllers\Moder\TestStatisticsController;
 
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -15,6 +16,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('tests', [TestController::class, 'store']);
 
     Route::delete('tests/{test}', [TestController::class, 'destroy']);
+
+    Route::apiResource('tests/{test}/statistics', TestStatisticsController::class)->only(['index', 'show', 'update']);
 
 });
 

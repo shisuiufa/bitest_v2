@@ -32,7 +32,9 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import axios from "axios";
+import {useLaravel} from "@/composables/useLaravel.ts";
+import * as toast from "@/composables/useNotifications.ts";
+const {test} = useLaravel();
 
 export default {
     name: "QuestionOptions",
@@ -79,7 +81,7 @@ export default {
         userAnswer: {
             handler: function (newQuestion) {
                 if (!this.selectedQuestionUpdated) {
-                    if(!this.userAnswer.openAnswer){
+                    if (!this.userAnswer.openAnswer) {
                         this.updateAnswerDb()
                     }
                 } else {
@@ -95,18 +97,20 @@ export default {
         addToSelectedAnswers(optionId) {
             this.userAnswer.selectedAnswers = [optionId];
         },
-        updateAnswerDb() {
-            axios.post(`/api/tests/${this.testId}/test_user/${this.testUserId}/answers`,
-                {
-                    questionId: this.selectedQuestion?.id,
-                    answer: this.userAnswer,
-                })
+        async updateAnswerDb() {
+            await test.updateAnswers(this.testId, this.testUserId, {
+                questionId: this.selectedQuestion?.id,
+                answer: this.userAnswer,
+            })
                 .then(res => {
                     this.updateUserAnswer([this.testId, this.selectedQuestion?.id, this.userAnswer.openAnswer, this.userAnswer.selectedAnswers])
                 })
                 .catch(err => {
                     if (err.response.status === 403) {
                         this.$emit('testError', err.response.data)
+                    } else {
+                        toast.error('Ошибка!',
+                            err.response.data.message)
                     }
                 })
         }

@@ -23,7 +23,9 @@
 import UiButton from "@/components/UI/UiButton.vue";
 import filterNav from "@/components/FilterNav.vue";
 import CardList from "@/components/CardList.vue";
-import axios from "axios";
+import {useLaravel} from "@/composables/useLaravel.ts";
+import * as toast from "@/composables/useNotifications.ts";
+const {test} = useLaravel();
 
 export default {
     name: "HomeView",
@@ -44,29 +46,33 @@ export default {
         this.getTests();
     },
     methods: {
-      getTests(page = 1){
-          axios.get('/api/tests', {
-              params: {
-                  'page': page,
-                  'per_page': 6,
-                  'search': this.search,
-                  'filter': this.filter,
-              }
-          }).then((res) => {
-              this.pagination = res.data.meta;
-
-              if (page === 1) {
-                  this.tests = res.data.data;
-              } else {
-                  this.tests = this.tests.concat(res.data.data);
-              }
-          })
-      }
+        async getTests(page = 1) {
+            await test.index(
+                {
+                    'page': page,
+                    'per_page': 6,
+                    'search': this.search,
+                    'filter': this.filter,
+                }
+            )
+                .then((res) => {
+                    this.pagination = res.data.meta;
+                    if (page === 1) {
+                        this.tests = res.data;
+                    } else {
+                        this.tests = this.tests.concat(res.data);
+                    }
+                })
+                .catch((err) => {
+                    toast.error('Возникла ошибка при загрузки тестов',
+                        err.response.data.message)
+                })
+        }
     },
 }
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 .load-more {
     color: var(--main-color);
     font-weight: 600;

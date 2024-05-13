@@ -4,7 +4,6 @@ export enum TestFilter {
     Name = 'name',
     Author = 'author',
 }
-
 export enum TestStatus {
     Passed = 'passed',
     Pending = 'pending',

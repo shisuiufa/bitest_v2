@@ -4,9 +4,26 @@
 // Variables
 @import 'variables';
 
+//primeVue
+@import 'primevue/resources/themes/aura-light-blue/theme.css';
+@import 'primeicons/primeicons.css';
+
 // Bootstrap
-@import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+@import "bootstrap/scss/bootstrap-utilities";
+@import "bootstrap/scss/bootstrap-reboot";
+
+$utilities: map-merge(
+        $utilities,
+        (
+            "cursor": (
+                property: cursor,
+                values: auto default pointer wait text move help not-allowed
+            ),
+        )
+);
+
+@import 'bootstrap/scss/bootstrap';
 
 // Style
 @import 'style';

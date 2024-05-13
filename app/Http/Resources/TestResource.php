@@ -25,6 +25,7 @@ class TestResource extends JsonResource
             'attempts' => $this->attempts,
             'limit_questions' => $this->limit_questions,
             'published' => $this->published,
+            'checked_progress' => $this->getCheckedTestProgress(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

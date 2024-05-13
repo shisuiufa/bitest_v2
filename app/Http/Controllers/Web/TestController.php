@@ -18,7 +18,6 @@ class TestController extends Controller
         $page = $request->input('page');
         $perPage = $request->input('per_page');
         $filter = $request->input('filter');
-
         $tests = $service->getListTests($search, true, $page, $perPage, $filter);
 
         return TestResource::collection($tests);

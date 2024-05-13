@@ -1,7 +1,9 @@
 <template>
-    <div class="test" v-if="this.test">
-        <accordion-menu :test="this.test" :event="'edit'"></accordion-menu>
-    </div>
+    <Panel class="p-2">
+        <div class="test" v-if="this.test">
+            <accordion-menu :test="this.test" :event="'edit'"></accordion-menu>
+        </div>
+    </Panel>
 </template>
 
 <script>

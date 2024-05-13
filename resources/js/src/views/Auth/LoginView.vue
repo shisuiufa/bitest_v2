@@ -3,7 +3,7 @@
         <div class="container">
             <div class="auth mx-auto">
                 <div class="auth__img">
-                    <img src="/images/auth.png" alt="Вход в систему"/>
+                    <img src="/public/images/auth.png" alt="Вход в систему"/>
                 </div>
                 <div class="auth__form">
                     <h3 class="auth__title">Вход в систему</h3>

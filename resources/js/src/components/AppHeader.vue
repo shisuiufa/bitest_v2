@@ -3,7 +3,9 @@
         <div class="container">
             <nav class="navbar p-0 justify-content-between">
                 <div class="navbar__left d-flex">
-                    <router-link class="navbar__brand navbar-brand" to="/">bitest</router-link>
+<router-link class="navbar__brand navbar-brand" to="/">
+            Bitest
+</router-link>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <div class="header__theme" @click="$emit('change-theme')">

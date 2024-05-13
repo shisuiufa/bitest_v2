@@ -2,7 +2,7 @@
     <div class="answer rounded p-3 bg-light bg-gradient d-flex flex-column gap-2">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="answer__title fw-medium">{{ number }}) {{ item?.question.name }}</h5>
-            <div class="bg-gradient px-2 py-1 rounded text-white" :class="computedClass">
+            <div class="bg-gradient w-auto px-2 py-1 rounded text-white" :class="computedClass">
                 {{ computedText }}
             </div>
         </div>

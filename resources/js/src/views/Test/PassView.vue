@@ -1,41 +1,43 @@
 <template>
-    <div class="test" v-if="!testError && !testPassed">
-        <div class="row mb-3 align-items-center justify-content-between">
-            <div class="col-9">
-                <question-switcher
-                    v-if="this.test.questions"
-                    :selectedQuestion="this.selectedQuestion"
-                    :questions="this.test.questions"
-                    :testId="this.test.id"
-                    @select-question="(item) => this.selectedQuestion = item"
-                    class="test__questions">
-                </question-switcher>
+    <panel v-if="!testError && !testPassed" class="p-3">
+        <div class="test" >
+            <div class="row mb-3 align-items-center justify-content-between">
+                <div class="col-9">
+                    <question-switcher
+                        v-if="this.test.questions"
+                        :selectedQuestion="this.selectedQuestion"
+                        :questions="this.test.questions"
+                        :testId="this.test.id"
+                        @select-question="(item) => this.selectedQuestion = item"
+                        class="test__questions">
+                    </question-switcher>
+                </div>
+                <div class="col-1 text-end" v-if="this.test.time > 0">
+                    <ui-timer @endTime="this.postTest" :seconds="this.test.time"></ui-timer>
+                </div>
+                <div class="col-2 text-end">
+                    <ui-button @click="this.modalShow = !this.modalShow">Завершить</ui-button>
+                </div>
             </div>
-            <div class="col-1 text-end" v-if="this.test.time > 0">
-                <ui-timer @endTime="this.postTest" :seconds="this.test.time"></ui-timer>
-            </div>
-            <div class="col-2 text-end">
-                <ui-button @click="this.modalShow = !this.modalShow">Завершить</ui-button>
-            </div>
-        </div>
-        <div class="row" v-if="selectedQuestion">
-            <div class="col-12 mb-3">
-                <question-display
-                    :testId="this.test?.id"
-                    :testUserId="this.testUser.id"
-                    :selectedQuestion="this.selectedQuestion"
-                    @testError="item => this.endTest(item)"
-                >
+            <div class="row" v-if="selectedQuestion">
+                <div class="col-12 mb-3">
+                    <question-display
+                        :testId="this.test?.id"
+                        :testUserId="this.testUser.id"
+                        :selectedQuestion="this.selectedQuestion"
+                        @testError="item => this.endTest(item)"
+                    >
 
-                </question-display>
+                    </question-display>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <ui-button @click="this.nextQuestion" class="test__btn next-question">Следующий</ui-button>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <ui-button @click="this.nextQuestion" class="test__btn next-question">Следующий</ui-button>
-            </div>
-        </div>
-    </div>
+    </panel>
     <div class="background" v-else></div>
     <modal-end-test :list="questionsUnanswered"
                     :testPassed="testPassed"
@@ -43,7 +45,7 @@
                     :testError="testError"
                     :messages="messages"
                     :testId="this.test.id"
-                    @post-test="this.postTest(this.$route.params.id)"
+                    @post-test="this.postTest()"
                     @close-modal="this.modalShow = !this.modalShow"
                     v-if="this.modalShow">
     </modal-end-test>
@@ -56,7 +58,8 @@ import UiButton from "@/components/UI/UiButton.vue";
 import UiTimer from "@/components/UiTimer.vue";
 import ModalEndTest from "@/components/modals/ModalEndTest.vue";
 import {mapActions, mapGetters} from "vuex";
-import axios from "axios";
+import {useLaravel} from "@/composables/useLaravel.ts";
+const {test} = useLaravel();
 
 export default {
     name: 'PassView',
@@ -148,10 +151,10 @@ export default {
                 }
             }
         },
-        getTestUser(testId, testUserId) {
-            axios.get(`/api/tests/${testId}/test_user/${testUserId}`)
+        async getTestUser(testId, testUserId) {
+           await test.getTestUser(testId, testUserId)
                 .then(res => {
-                    const test = res.data.data;
+                    const test = res.data;
                     this.test.id = test.id;
                     this.testUser.id = test.test_user_id;
                     this.test.questions = test.questions;
@@ -164,9 +167,9 @@ export default {
                     }
                 })
         },
-        postTest() {
+        async postTest() {
             this.testLoading = true;
-            axios.put(`/api/tests/${this.test.id}/test_user/${this.testUser.id}`)
+            await test.updateTestUser(this.test.id, this.testUser.id)
                 .then(res => {
                     this.testPassed = true;
                     this.clearAnswersTest(this.test.id);
@@ -198,6 +201,7 @@ export default {
         margin-bottom: 20px;
     }
 }
+
 .background {
     position: absolute;
     top: 0;

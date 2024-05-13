@@ -1,39 +1,39 @@
 <template>
-    <div class="preview">
-        <div class="row align-items-center">
-            <div class="order-2 order-lg-1 col-lg-6">
-                <h2 class="preview__title">{{ this.test.title }}</h2>
-                <p class="preview__desc">{{ this.test.desc }}</p>
-                <div class="preview__meta">
-                    <div class="preview__attempts">
-                        {{ messageAttempts }}
+    <panel>
+        <div class="preview p-2 p-md-4">
+            <div class="row align-items-center">
+                <div class="order-2 order-lg-1 col-lg-6">
+                    <h2 class="preview__title">{{ this.test.title }}</h2>
+                    <p class="preview__desc text-secondary fw-normal fs-6">{{ this.test.desc }}</p>
+                    <div class="preview__meta">
+                        <p class="preview__attempts mb-1 text-secondary fw-normal fs-6">
+                            {{ messageAttempts }}
+                        </p>
+                        <p class="preview__time mb-0 text-secondary fw-normal fs-6">
+                            {{ messageTime }}
+                        </p>
                     </div>
-                    <div class="preview__time">
-                        {{ messageTime }}
-                    </div>
+                    <Button v-show="startButtonText" @click="startTest" :label="startButtonText" />
                 </div>
-                <UiButton @click="startTest" v-show="startButtonText">
-                    {{ startButtonText }}
-                </UiButton>
-            </div>
-            <div class="order-1 mb-4 order-lg-2 col-lg-6 mb-lg-0">
-                <div class="preview__wrap">
-                    <img draggable="false" class="preview__img" :src="this.test.image" :alt="this.test.title">
+                <div class="order-1 mb-4 order-lg-2 col-lg-6 mb-lg-0">
+                    <div class="preview__wrap">
+                        <img class="preview__img" :src="this.test.image" :alt="this.test.title"/>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </panel>
 </template>
 
 <script>
-import axios from "axios";
+
 import {TestStatus} from "@/models/test.ts";
-import UiButton from "@/components/UI/UiButton.vue";
-import StartTestModal from "@/components/modals/StartTestModal.vue";
+import {useLaravel} from "@/composables/useLaravel.ts";
+import * as toast from "@/composables/useNotifications.ts";
+const {test} = useLaravel();
 
 export default {
     name: 'TestPreviewView',
-    components: {StartTestModal, UiButton},
     data() {
         return {
             test: {
@@ -52,19 +52,23 @@ export default {
         messageAttempts() {
             if (this.test.attempts === null) {
                 return 'Количество попыток: неограничено';
-            } else if (
+            }
+            if (
+                !this.userResult ||
                 this.userResult?.attempt < this.test.attempts ||
                 this.userResult?.attempt === this.test.attempts &&
                 this.userResult.status === TestStatus.Ongoing
             ) {
-                const result = this.test.attempts - this.userResult.attempt;
+                const result = this.userResult?.attempt ? (this.test.attempts - this.userResult?.attempt ?? 0) : this.test.attempts;
                 return `Количество доступных попыток: ${result === 0 ? 1 : result}`
             } else {
                 return 'Вы изчерпали все попытки на прохождение теста';
             }
+
         },
         messageTime() {
             if (
+                !this.userResult ||
                 !this.test.attempts ||
                 this.userResult?.attempt < this.test.attempts ||
                 this.userResult?.attempt === this.test.attempts &&
@@ -80,7 +84,7 @@ export default {
         startButtonText() {
             if (this.userResult?.status === TestStatus.Ongoing) {
                 return "Продолжить";
-            } else if (!this.test.attempts || this.userResult?.attempt < this.test.attempts) {
+            } else if (!this.test.attempts || !this.userResult || this.userResult?.attempt < this.test.attempts) {
                 return "Начать";
             }
         }
@@ -89,10 +93,10 @@ export default {
         this.getTest(this.$route.params.id);
     },
     methods: {
-        getTest(testId) {
-            axios.get(`/api/tests/${testId}`)
+        async getTest(testId) {
+            await test.show(testId)
                 .then(res => {
-                    const test = res.data.data;
+                    const test = res.data;
                     this.test.id = test.id;
                     this.test.title = test.title;
                     this.test.desc = test.desc;
@@ -101,15 +105,20 @@ export default {
                     this.test.image = test.image;
                     this.userResult = test.user_result;
                 })
+                .catch((err) => {
+                    toast.error('Ошибка загрузки теста',
+                        err.response.data.message)
+                })
         },
-        startTest() {
-            axios.post(`/api/tests/${this.test.id}/test_user`)
+        async startTest() {
+            await test.start(this.test.id)
                 .then(res => {
-                    const userTestId = res.data.data.test_user_id;
+                    const userTestId = res.data.test_user_id;
                     this.$router.push({name: 'pass-test', params: {'id': this.test.id, 'testUserId': userTestId}});
                 })
                 .catch(err => {
-                    console.log(err)
+                    toast.error('Ошибка',
+                        err.response.data.message)
                 })
         },
     }
@@ -141,7 +150,7 @@ export default {
         width: 100%;
         height: 600px;
         overflow: hidden;
-        border-radius: 15px;
+        border-radius: 10px;
         position: relative;
         background-color: #2B2E33;
     }

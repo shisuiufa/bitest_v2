@@ -1,12 +1,11 @@
 <template>
     <router-view></router-view>
     <app-loader v-if="this.loader"></app-loader>
+    <Toast position="bottom-right" />
 </template>
 
 <script>
 import AppLoader from "@/components/AppLoader.vue";
-
-import {mapGetters} from "vuex";
 
 export default {
     components: {

@@ -25,6 +25,10 @@ class TestUser extends Model
         'updated_at',
     ];
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
     public function test(): BelongsTo
     {
         return $this->belongsTo(Test::class);
