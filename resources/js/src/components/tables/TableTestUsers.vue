@@ -69,9 +69,8 @@
         <Column header="">
             <template #body="">
                 <Button
-                    class="p-button-sm py-1 px-2 rounded"
-                    iconPos="right"
-                    label="Проверить"
+                    class="p-button-sm rounded-circle"
+                    icon="pi pi-search"
                     @click=""
                 />
             </template>

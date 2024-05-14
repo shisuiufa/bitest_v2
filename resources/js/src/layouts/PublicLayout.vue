@@ -20,10 +20,10 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import ModalSearch from "@/components/modals/ModalSearch.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import NavbarMenu from "@/components/NavbarMenu.vue";
-import { mapGetters } from "vuex";
 import AppBreadcrumbs from "@/components/AppBreadcrumb.vue";
 
 export default {
@@ -52,7 +52,8 @@ export default {
         setTheme(theme) {
             if (theme === "dark") {
                 this.dark = true;
-                document.body.classList.add("dark");
+
+                // document.body.classList.add("dark");
             } else {
                 this.dark = false;
                 document.body.classList.remove("dark");
