@@ -3,9 +3,9 @@
         <div class="container">
             <nav class="navbar p-0 justify-content-between">
                 <div class="navbar__left d-flex">
-<router-link class="navbar__brand navbar-brand" to="/">
-            Bitest
-</router-link>
+                    <router-link class="navbar__brand navbar-brand" to="/">
+                        Bitest
+                    </router-link>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <div class="header__theme" @click="$emit('change-theme')">
@@ -24,7 +24,7 @@
 
 <script>
 import ProfileNav from "@/components/ProfileNav.vue";
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
 export default {
     name: "AppHeader",
     components: {
@@ -37,62 +37,63 @@ export default {
         },
     },
     methods: {
-        ...mapActions(['toggleModal']),
+        ...mapActions(["toggleModal"]),
     },
-    emits: ['change-theme'],
-}
+    emits: ["change-theme"],
+};
 </script>
 
 <style scoped lang="scss">
-    .header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: var(--header-height);
-        border-bottom: 1px solid var(--border-color);
-        background-color: var(--body-bg);
-        z-index: var(--index-header);
-        &__search, &__theme {
-            color: var(--main-color);
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 35px;
-            height: 35px;
-            border-radius: 10px;
-            background-color: var(--button-bg);
-            transition: all .3s ease;
-        }
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--body-bg);
+    z-index: var(--index-header);
+    &__search,
+    &__theme {
+        color: var(--main-color);
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 10px;
+        background-color: var(--button-bg);
+        transition: all 0.3s ease;
     }
-    .navbar {
-        &__left {
-            gap: 30px;
+}
+.navbar {
+    &__left {
+        gap: 30px;
+    }
+    &__brand {
+        color: var(--main-color);
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        font-weight: 900;
+    }
+    &__nav {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        font-size: 15px;
+        .nav-link.active {
+            opacity: 1;
         }
-        &__brand{
+        .nav-link {
+            opacity: 0.7;
             color: var(--main-color);
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            font-weight: 900;
-        }
-        &__nav {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-            font-size: 15px;
-            .nav-link.active{
+            font-weight: 500;
+            &:hover {
                 opacity: 1;
             }
-            .nav-link{
-                opacity: 0.7;
-                color: var(--main-color);
-                font-weight: 500;
-                &:hover{
-                    opacity: 1;
-                }
-            }
         }
     }
+}
 </style>

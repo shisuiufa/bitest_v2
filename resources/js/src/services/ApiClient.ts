@@ -1,9 +1,9 @@
-import axios, {AxiosInstance} from 'axios';
+import axios, { AxiosInstance } from "axios";
 
 export abstract class ApiClient {
-    private readonly client: AxiosInstance
+    private readonly client: AxiosInstance;
 
     protected constructor() {
-        this.client = axios.create()
+        this.client = axios.create();
     }
 }

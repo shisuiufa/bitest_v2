@@ -2,25 +2,18 @@
     <div @click.self="this.closeModal()" class="modal">
         <div class="modal__box">
             <div class="modal__header">
-                <h3 class="modal__title">
-                    Начать тест
-                </h3>
+                <h3 class="modal__title">Начать тест</h3>
                 <div @click="this.closeModal()" class="modal__close">
                     <i class="bi bi-x-lg"></i>
                 </div>
             </div>
             <div class="modal__content">
                 <div class="modal__info">
-                    <p class="modal__desc">
-                        Бла-Бла
-                    </p>
+                    <p class="modal__desc">Бла-Бла</p>
                 </div>
-
             </div>
             <div class="modal__footer">
-                <ui-button @click="">
-                    Начать
-                </ui-button>
+                <ui-button @click=""> Начать </ui-button>
             </div>
         </div>
     </div>
@@ -36,16 +29,14 @@ export default {
         UiButton,
         ButtonSpinner,
     },
-    props: {
-
-    },
+    props: {},
     methods: {
         closeModal() {
-            this.$emit('close-modal')
+            this.$emit("close-modal");
         },
     },
-    emits: ['close-modal'],
-}
+    emits: ["close-modal"],
+};
 </script>
 
 <style scoped lang="scss">
@@ -79,7 +70,7 @@ export default {
         cursor: pointer;
         color: var(--main-color);
         opacity: 0.5;
-        transition: opacity .2s ease;
+        transition: opacity 0.2s ease;
 
         &:hover {
             opacity: 1;

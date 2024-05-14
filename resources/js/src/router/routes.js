@@ -21,112 +21,111 @@ import ResultShowView from "@/views/Result/ShowView.vue";
 
 const routes = [
     {
-        path: '/login',
+        path: "/login",
         component: LoginView,
-        name: 'login',
-        meta: {breadcrumb: 'Авторизация', middleware: 'guest'},
+        name: "login",
+        meta: { breadcrumb: "Авторизация", middleware: "guest" },
     },
     {
-        path: '/',
+        path: "/",
         component: PublicLayout,
-        redirect: {name: 'home'},
-        meta: {breadcrumb: 'Главная', middleware: 'auth'},
+        redirect: { name: "home" },
+        meta: { breadcrumb: "Главная", middleware: "auth" },
         children: [
             {
-                path: '',
+                path: "",
                 component: HomeView,
-                name: 'home',
+                name: "home",
             },
             {
-                path: '/tests/:id',
-                redirect: {name: 'preview-test'},
+                path: "/tests/:id",
+                redirect: { name: "preview-test" },
                 component: TestView,
-                name: 'tests',
-                meta: {breadcrumb: 'Тест'},
+                name: "tests",
+                meta: { breadcrumb: "Тест" },
                 children: [
                     {
-                        path: '',
+                        path: "",
                         component: TestPreviewView,
-                        name: 'preview-test',
-                        meta: {breadcrumb: 'Просмотр'},
+                        name: "preview-test",
+                        meta: { breadcrumb: "Просмотр" },
                     },
                     {
-                        path: 'pass/:testUserId',
+                        path: "pass/:testUserId",
                         component: TestPassView,
-                        name: 'pass-test',
-                        meta: {breadcrumb: 'Выполнение'},
-                    }
-                ]
+                        name: "pass-test",
+                        meta: { breadcrumb: "Выполнение" },
+                    },
+                ],
             },
             {
-                path: '/created-tests',
+                path: "/created-tests",
                 component: CreatedTestLayout,
-                redirect: {name: 'created-tests'},
-                meta: {breadcrumb: 'Мои тесты'},
+                redirect: { name: "created-tests" },
+                meta: { breadcrumb: "Мои тесты" },
                 children: [
                     {
-                        path: '',
+                        path: "",
                         component: CreatedTestView,
-                        name: 'created-tests',
-
+                        name: "created-tests",
                     },
                     {
-                        path: 'create',
+                        path: "create",
                         component: CreateTestView,
-                        name: 'create-test',
-                        meta: {breadcrumb: 'Создать'},
+                        name: "create-test",
+                        meta: { breadcrumb: "Создать" },
                     },
                     {
-                        path: ':id/edit',
+                        path: ":id/edit",
                         component: EditTestView,
-                        name: 'edit-test',
+                        name: "edit-test",
                     },
                     {
-                        path: ':id/statistics',
+                        path: ":id/statistics",
                         component: StatisticsView,
-                        name: 'statistics',
-                        meta: {breadcrumb: 'Статистика'}
-                    }
-                ]
+                        name: "statistics",
+                        meta: { breadcrumb: "Статистика" },
+                    },
+                ],
             },
             {
-                path: '/profile',
+                path: "/profile",
                 component: ProfileView,
-                name: 'profile',
-                meta: {breadcrumb: 'Личный кабинет'},
+                name: "profile",
+                meta: { breadcrumb: "Личный кабинет" },
             },
             {
-                path: '/authors/:id',
+                path: "/authors/:id",
                 component: ProfileView,
-                name: 'authors',
-                meta: {breadcrumb: 'Личный кабинет'},
+                name: "authors",
+                meta: { breadcrumb: "Личный кабинет" },
             },
             {
-                path: '/result',
-                redirect: {name: 'all-result'},
-                meta: { breadcrumb: 'Результаты' },
+                path: "/result",
+                redirect: { name: "all-result" },
+                meta: { breadcrumb: "Результаты" },
                 children: [
                     {
-                        path: '',
+                        path: "",
                         component: ResultIndexView,
-                        name: 'all-result',
+                        name: "all-result",
                     },
                     {
-                        path: ':id',
+                        path: ":id",
                         component: ResultShowView,
-                        name: 'show-result',
-                        meta: { breadcrumb: 'Результат' },
+                        name: "show-result",
+                        meta: { breadcrumb: "Результат" },
                     },
-                ]
+                ],
             },
         ],
     },
     {
-        path: '/:pathMatch(.*)*',
+        path: "/:pathMatch(.*)*",
         component: NotFoundView,
-        name: 'not-found',
-        meta: {breadcrumb: 'Страница не найдена'},
-    }
-]
+        name: "not-found",
+        meta: { breadcrumb: "Страница не найдена" },
+    },
+];
 
 export default routes;

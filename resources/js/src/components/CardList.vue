@@ -9,7 +9,7 @@
 <script>
 import CardItem from "@/components/CardItem.vue";
 export default {
-    name: 'CardList',
+    name: "CardList",
     components: {
         CardItem,
     },
@@ -17,11 +17,9 @@ export default {
         tests: {
             type: Array,
             required: true,
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

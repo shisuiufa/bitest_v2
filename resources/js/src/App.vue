@@ -9,24 +9,23 @@ import AppLoader from "@/components/AppLoader.vue";
 
 export default {
     components: {
-        AppLoader
+        AppLoader,
     },
     data() {
         return {
             loader: false,
-        }
+        };
     },
     created() {
         this.$router.beforeResolve((to, from, next) => {
             this.loader = true;
             next();
-        })
+        });
         this.$router.afterEach((to, from) => {
-            setTimeout(() => this.loader = false, 500);
-        })
-    }
-}
+            setTimeout(() => (this.loader = false), 500);
+        });
+    },
+};
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

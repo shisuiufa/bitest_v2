@@ -1,7 +1,11 @@
 <template>
     <article class="card">
         <div class="card__wrap-picture">
-            <img class="card__picture" :src="this.test.image" :alt="this.test.title">
+            <img
+                class="card__picture"
+                :src="this.test.image"
+                :alt="this.test.title"
+            />
         </div>
         <div class="card__content">
             <router-link :to="''" class="card__category">
@@ -10,35 +14,52 @@
             <h3 class="card__title">{{ this.test.title }}</h3>
             <div class="card__meta">
                 <span class="card__author">
-                    <router-link :to="{name: 'authors', params: {id: this.test.author.id}}" class="card__author_link">
-                        {{ this.test.author.last_name + " " + this.test.author.first_name }}
+                    <router-link
+                        :to="{
+                            name: 'authors',
+                            params: { id: this.test.author.id },
+                        }"
+                        class="card__author_link"
+                    >
+                        {{
+                            this.test.author.last_name +
+                            " " +
+                            this.test.author.first_name
+                        }}
                     </router-link>
-                </span> -
-                <span class="card__date"> {{ formatDate(test.created_at) }}</span>
+                </span>
+                -
+                <span class="card__date">
+                    {{ formatDate(test.created_at) }}</span
+                >
             </div>
-            <router-link class="btn card__btn" :to="{name: 'tests', params: {id: this.test.id}}">Перейти</router-link>
+            <router-link
+                class="btn card__btn"
+                :to="{ name: 'tests', params: { id: this.test.id } }"
+                >Перейти</router-link
+            >
         </div>
     </article>
 </template>
 
 <script>
 import moment from "moment/moment.js";
-import 'moment/locale/ru';
+import "moment/locale/ru";
 
 export default {
-    name: 'CardItem',
+    name: "CardItem",
     props: {
         test: {
             type: Object,
             required: true,
-        }
+        },
     },
     methods: {
         formatDate(date) {
-            return moment(date).format('M MMMM YYYY');
-        }
-    }
-}
+            return moment(date).format("M MMMM YYYY");
+        },
+    },
+};
 </script>
 
 <style scoped lang="scss">
@@ -69,7 +90,7 @@ export default {
         width: inherit;
         height: inherit;
         object-fit: cover;
-        transition: all .3s ease;
+        transition: all 0.3s ease;
     }
 
     &__content {

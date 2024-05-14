@@ -1,18 +1,17 @@
 <script>
 export default {
-    name: 'ButtonLink',
+    name: "ButtonLink",
     props: {
         to: {
             type: Object,
             required: true,
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <template>
-    <router-link :to="to"
-                 class="btn">
+    <router-link :to="to" class="btn">
         <slot></slot>
     </router-link>
 </template>

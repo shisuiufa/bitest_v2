@@ -2,70 +2,71 @@
     <div class="select" @blur="open = false" :tabindex="tabindex">
         <div class="select__header" @click="open = !open">
             <span>
-                {{this.selected?.name}}
+                {{ this.selected?.name }}
             </span>
             <i class="bi bi-chevron-down"></i>
         </div>
         <div v-if="this.open" class="select__menu">
-            <div class="select__item"
-                 v-for="(option, index) of this.item.options"
-                 :key="index"
-                 :class="{'select__item_active': option === this.selected}"
-                 @click="
-                 this.selected = option;
-                 open = false;
-                 $emit('select-item', option)
-                 "
+            <div
+                class="select__item"
+                v-for="(option, index) of this.item.options"
+                :key="index"
+                :class="{ select__item_active: option === this.selected }"
+                @click="
+                    this.selected = option;
+                    open = false;
+                    $emit('select-item', option);
+                "
             >
-                {{option.name}}
+                {{ option.name }}
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import {ref} from "vue";
+import { ref } from "vue";
 
-    export default {
-        name: "CustomSelect",
-        props: {
-            item: {
-                options: {
-                    type: Array,
-                    required: true,
+export default {
+    name: "CustomSelect",
+    props: {
+        item: {
+            options: {
+                type: Array,
+                required: true,
+            },
+        },
+        tabindex: {
+            type: Number,
+            required: false,
+            default: 0,
+        },
+    },
+    data() {
+        return {
+            selected: ref(null),
+            open: false,
+        };
+    },
+    watch: {
+        "item.selected": {
+            immediate: true,
+            handler(newVal) {
+                if (newVal === null) {
+                    this.selected = this.item.options[0];
+                    this.$emit("select-item", this.item.options[0]);
+                } else {
+                    this.selected = newVal;
                 }
             },
-            tabindex: {
-                type: Number,
-                required: false,
-                default: 0,
-            },
         },
-        data(){
-            return {
-                selected: ref(null),
-                open: false,
-            }
-        },
-        watch: {
-          'item.selected': {
-              immediate: true,
-              handler(newVal) {
-                  if (newVal === null){
-                      this.selected = this.item.options[0];
-                      this.$emit("select-item", this.item.options[0])
-                  } else {
-                      this.selected = newVal;
-                  }
-              }
-          }
-        },
-        emits: ["select-item"],
-    }
+    },
+    emits: ["select-item"],
+};
 </script>
 
 <style scoped lang="scss">
-    .select{
+.select {
     position: relative;
     cursor: pointer;
     color: var(--main-color);
@@ -79,14 +80,15 @@
         font-weight: 600;
         background-color: var(--body-bg);
         border-radius: 8px;
-        span, i {
+        span,
+        i {
             transition: inherit;
         }
-        &:hover{
-            border: 1px solid var( --border-color-two);
+        &:hover {
+            border: 1px solid var(--border-color-two);
         }
         &_active {
-            border: 1px solid var( --border-color-two);
+            border: 1px solid var(--border-color-two);
             i {
                 transform: rotate(180deg);
             }
@@ -110,7 +112,8 @@
         border-radius: 8px;
         font-weight: 600;
         margin-bottom: 5px;
-        &:hover, &_active{
+        &:hover,
+        &_active {
             background-color: var(--button-bg);
         }
     }

@@ -1,24 +1,25 @@
-import {createRouter, createWebHistory} from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import routes from "@/router/routes.js";
 import store from "@/store/index.js";
+import axios from "axios";
 
 const router = createRouter({
     history: createWebHistory(),
-    linkActiveClass: 'active',
+    linkActiveClass: "active",
     routes: routes,
-})
+});
 
 axios.interceptors.response.use(
-    response => {
+    (response) => {
         return response;
     },
-    error => {
+    (error) => {
         const status = error.response.status;
         if (status === 404) {
-            router.push({ name: 'not-found' });
+            router.push({ name: "not-found" });
         }
         return Promise.reject(error);
-    }
+    },
 );
 
 router.beforeEach((to, from, next) => {
@@ -26,16 +27,16 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.middleware === "guest") {
         if (store.state.auth.authenticated) {
-            next({name: "home"})
+            next({ name: "home" });
         }
         next();
     } else {
-        store.dispatch('checkAuth');
+        store.dispatch("checkAuth");
 
         if (store.state.auth.authenticated) {
-            next()
+            next();
         } else {
-            next({name: "login"})
+            next({ name: "login" });
         }
     }
 });

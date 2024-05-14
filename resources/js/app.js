@@ -1,12 +1,11 @@
-import './bootstrap';
-import {createApp} from "vue";
-import App from '@/App.vue';
+import "./bootstrap";
+import { createApp } from "vue";
+import App from "@/App.vue";
 import Router from "@/router/router.js";
 import Store from "@/store/index.js";
-import ToastService from 'primevue/toastservice';
-import PrimeVue from 'primevue/config';
-import Toast from 'primevue/toast';
-
+import ToastService from "primevue/toastservice";
+import PrimeVue from "primevue/config";
+import Toast from "primevue/toast";
 
 const locales = {
     startsWith: "Начинается с",
@@ -37,12 +36,46 @@ const locales = {
     cancel: "Отмена",
     completed: "Завершено",
     pending: "В ожидании",
-    fileSizeTypes: ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ', 'ПБ', 'ЭБ', 'ЗБ', 'ИБ'],
-    dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-    dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-    dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-    monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-    monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+    fileSizeTypes: ["Б", "КБ", "МБ", "ГБ", "ТБ", "ПБ", "ЭБ", "ЗБ", "ИБ"],
+    dayNames: [
+        "Воскресенье",
+        "Понедельник",
+        "Вторник",
+        "Среда",
+        "Четверг",
+        "Пятница",
+        "Суббота",
+    ],
+    dayNamesShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+    dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+    monthNames: [
+        "Январь",
+        "Февраль",
+        "Март",
+        "Апрель",
+        "Май",
+        "Июнь",
+        "Июль",
+        "Август",
+        "Сентябрь",
+        "Октябрь",
+        "Ноябрь",
+        "Декабрь",
+    ],
+    monthNamesShort: [
+        "Янв",
+        "Фев",
+        "Мар",
+        "Апр",
+        "Май",
+        "Июн",
+        "Июл",
+        "Авг",
+        "Сен",
+        "Окт",
+        "Ноя",
+        "Дек",
+    ],
     chooseYear: "Выберите год",
 };
 
@@ -50,9 +83,9 @@ createApp(App)
     .use(Router)
     .use(Store)
     .use(ToastService)
-    .component('Toast', Toast)
+    .component("Toast", Toast)
     .use(PrimeVue, {
         locale: locales,
         ripple: true,
     })
-    .mount('#app');
+    .mount("#app");

@@ -3,17 +3,17 @@
         <div class="modal__box">
             <div class="modal__header">
                 <h3 class="modal__title">
-                    <template v-if="testPassed">
-                        Тест завершен!
-                    </template>
+                    <template v-if="testPassed"> Тест завершен! </template>
                     <template v-else-if="testError">
                         {{ messages }}
                     </template>
-                    <template v-else>
-                        Завершение теста
-                    </template>
+                    <template v-else> Завершение теста </template>
                 </h3>
-                <div v-show="!loading && !testPassed && !testError" @click="this.closeModal()" class="modal__close">
+                <div
+                    v-show="!loading && !testPassed && !testError"
+                    @click="this.closeModal()"
+                    class="modal__close"
+                >
                     <i class="bi bi-x-lg"></i>
                 </div>
             </div>
@@ -21,7 +21,8 @@
                 <div class="modal__info">
                     <template v-if="testPassed || testError">
                         <p class="modal__desc">
-                            Нажмите кнопку ниже, чтобы узнать свои результаты и оценку.
+                            Нажмите кнопку ниже, чтобы узнать свои результаты и
+                            оценку.
                         </p>
                     </template>
                     <template v-else>
@@ -40,18 +41,20 @@
                         </template>
                     </template>
                 </div>
-
             </div>
             <div class="modal__footer">
-                <ui-button v-if="!testError && !loading && !testPassed" @click="this.$emit('post-test')">Завершить
+                <ui-button
+                    v-if="!testError && !loading && !testPassed"
+                    @click="this.$emit('post-test')"
+                    >Завершить
                 </ui-button>
-                <button-link v-else-if="!loading && testPassed || testError"
-                             :to="{name: 'show-result', params: {id: testId}}">
+                <button-link
+                    v-else-if="(!loading && testPassed) || testError"
+                    :to="{ name: 'show-result', params: { id: testId } }"
+                >
                     Результаты
                 </button-link>
-                <button-spinner v-else>
-                    Загрузка...
-                </button-spinner>
+                <button-spinner v-else> Загрузка... </button-spinner>
             </div>
         </div>
     </div>
@@ -61,14 +64,14 @@
 import UiButton from "@/components/UI/UiButton.vue";
 import ButtonSpinner from "@/components/UI/ButtonSpinner.vue";
 import ButtonLink from "@/components/UI/ButtonLink.vue";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
     name: "ModalEndTest",
     components: {
         UiButton,
         ButtonSpinner,
-        ButtonLink
+        ButtonLink,
     },
     props: {
         testId: {
@@ -94,7 +97,7 @@ export default {
         messages: {
             type: String,
             required: false,
-        }
+        },
     },
     computed: {
         ...mapGetters(["getAnswersByQuestionId"]),
@@ -104,11 +107,11 @@ export default {
             if (this.loading || this.testPassed || this.testError) {
                 return;
             }
-            this.$emit('close-modal')
+            this.$emit("close-modal");
         },
     },
-    emits: ['close-modal', 'post-test'],
-}
+    emits: ["close-modal", "post-test"],
+};
 </script>
 
 <style scoped lang="scss">
@@ -142,7 +145,7 @@ export default {
         cursor: pointer;
         color: var(--main-color);
         opacity: 0.5;
-        transition: opacity .2s ease;
+        transition: opacity 0.2s ease;
 
         &:hover {
             opacity: 1;

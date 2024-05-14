@@ -12,11 +12,9 @@ import AccordionMenu from "@/components/AccordionMenu.vue";
 export default {
     name: "CreateView",
     components: {
-        AccordionMenu
+        AccordionMenu,
     },
-}
+};
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

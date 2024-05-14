@@ -1,50 +1,55 @@
 import router from "@/router/router.js";
+import axios from "axios";
 
 export default {
     actions: {
         checkAuth(ctx) {
-            return axios.get('/api/user')
-                .then(res => {
-                    ctx.commit('setUser', res.data)
-                    ctx.commit('setAuthenticated', true)
+            return axios
+                .get("/api/user")
+                .then((res) => {
+                    ctx.commit("setUser", res.data);
+                    ctx.commit("setAuthenticated", true);
                 })
-                .catch(err => {
-                    ctx.dispatch('logout');
+                .catch(() => {
+                    ctx.dispatch("logout");
                 });
         },
         login(ctx) {
-            return axios.get('/api/user').then(res => {
-                ctx.commit('setUser', res.data)
-                ctx.commit('setAuthenticated', true)
-                router.push({name: 'home'})
-            }).catch(err => {
-                ctx.dispatch('logout');
-            })
+            return axios
+                .get("/api/user")
+                .then((res) => {
+                    ctx.commit("setUser", res.data);
+                    ctx.commit("setAuthenticated", true);
+                    router.push({ name: "home" });
+                })
+                .catch(() => {
+                    ctx.dispatch("logout");
+                });
         },
         logout(ctx) {
-            ctx.commit('setUser', {})
-            ctx.commit('setAuthenticated', false)
-            axios.post('/logout')
-        }
+            ctx.commit("setUser", {});
+            ctx.commit("setAuthenticated", false);
+            axios.post("/logout");
+        },
     },
     mutations: {
         setAuthenticated(state, value) {
-            state.authenticated = value
+            state.authenticated = value;
         },
         setUser(state, value) {
-            state.user = value
-        }
+            state.user = value;
+        },
     },
     state: {
         authenticated: false,
-        user: {}
+        user: {},
     },
     getters: {
         authenticated(state) {
-            return state.authenticated
+            return state.authenticated;
         },
         user(state) {
-            return state.user
-        }
+            return state.user;
+        },
     },
-}
+};

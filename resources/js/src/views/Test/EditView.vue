@@ -18,7 +18,7 @@ export default {
     data() {
         return {
             test: null,
-        }
+        };
     },
     mounted() {
         const testId = this.$route.params.id;
@@ -26,19 +26,18 @@ export default {
     },
     methods: {
         getTest(testId) {
-            axios.get(`/api/moder/tests/${testId}`)
-                .then(res => {
+            axios
+                .get(`/api/moder/tests/${testId}`)
+                .then((res) => {
                     this.test = res.data.data;
-                    console.log(this.test)
+                    console.log(this.test);
                 })
-                .catch(err => {
-                    console.log(err)
-                })
-        }
-    }
-}
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+    },
+};
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

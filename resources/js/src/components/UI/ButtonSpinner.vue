@@ -1,12 +1,16 @@
 <script>
-    export default {
-        name: 'ButtonSpinner'
-    }
+export default {
+    name: "ButtonSpinner",
+};
 </script>
 
 <template>
     <button class="btn btn-primary" type="button" disabled>
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+        ></span>
         <slot></slot>
     </button>
 </template>

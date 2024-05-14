@@ -1,47 +1,47 @@
-import {TestStatus} from "@/models/test";
+import { TestStatus } from "@/models/test";
 
 export const testStatusLabel = (status: TestStatus | null): string => {
     switch (status) {
         case undefined:
         case null:
         case TestStatus.Passed:
-            return 'Проверен'
+            return "Проверен";
         case TestStatus.Pending:
-            return 'В ожидании'
+            return "В ожидании";
         case TestStatus.Ongoing:
-            return 'В процессе'
+            return "В процессе";
     }
-}
+};
 
-export const testPublishedLabel = (status: Boolean | null): string => {
-    switch (Boolean(status)){
+export const testPublishedLabel = (status: boolean | null): string => {
+    switch (Boolean(status)) {
         case undefined:
         case null:
         case true:
-            return 'Опубликован'
+            return "Опубликован";
         case false:
-            return 'Не опубликован'
+            return "Не опубликован";
     }
-}
+};
 
 export const testStatusClass = (status: TestStatus | null): string => {
-    switch (status){
+    switch (status) {
         case undefined:
         case null:
         case TestStatus.Pending:
-            return  'warning';
+            return "warning";
         case TestStatus.Passed:
-            return  'success';
+            return "success";
     }
-}
+};
 
-export const testPublishedClass = (status: Boolean | null): string => {
-    switch (Boolean(status)){
+export const testPublishedClass = (status: boolean | null): string => {
+    switch (Boolean(status)) {
         case undefined:
         case null:
         case true:
-            return 'success'
+            return "success";
         case false:
-            return 'danger'
+            return "danger";
     }
-}
+};

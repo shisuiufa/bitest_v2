@@ -1,51 +1,51 @@
 <template>
     <div class="timer">
-        {{timeLeft}}
+        {{ timeLeft }}
     </div>
 </template>
 
 <script>
-    export default {
-        name: "ui-timer",
-        data(){
-            return {
-                totalTimeInSeconds: 0,
-                timerInterval: null,
-                timeLeft: "00:00",
+export default {
+    name: "ui-timer",
+    data() {
+        return {
+            totalTimeInSeconds: 0,
+            timerInterval: null,
+            timeLeft: "00:00",
+        };
+    },
+    props: {
+        seconds: {
+            type: Number,
+            required: true,
+        },
+    },
+    methods: {
+        updateTimer() {
+            const minutes = Math.floor(this.totalTimeInSeconds / 60);
+            const seconds = this.totalTimeInSeconds % 60;
+            const displayMinutes = String(minutes).padStart(2, "0");
+            const displaySeconds = String(seconds).padStart(2, "0");
+            this.timeLeft = `${displayMinutes}:${displaySeconds}`;
+            if (this.totalTimeInSeconds > 0) {
+                this.totalTimeInSeconds--;
+            } else {
+                clearInterval(this.timerInterval);
+                this.$emit("end-time");
             }
         },
-        props: {
-           seconds: {
-               type: Number,
-               required: true,
-           }
-        },
-        methods: {
-            updateTimer(){
-                const minutes = Math.floor(this.totalTimeInSeconds / 60);
-                const seconds = this.totalTimeInSeconds % 60;
-                const displayMinutes = String(minutes).padStart(2, "0");
-                const displaySeconds = String(seconds).padStart(2, "0");
-                this.timeLeft = `${displayMinutes}:${displaySeconds}`;
-                if (this.totalTimeInSeconds > 0) {
-                    this.totalTimeInSeconds--;
-                } else {
-                    clearInterval(this.timerInterval);
-                    this.$emit('end-time');
-                }
-            }
-        },
-        mounted() {
-            this.totalTimeInSeconds = this.seconds;
-            this.timerInterval = setInterval(this.updateTimer, 1000);
-        },
-    }
+    },
+    mounted() {
+        this.totalTimeInSeconds = this.seconds;
+        this.timerInterval = setInterval(this.updateTimer, 1000);
+    },
+};
 </script>
 
 <style scoped lang="scss">
-    .timer {
-        font-size: 20px;
-        font-weight: 600;
-        color: var(--main-color);
-    }
+.timer {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--main-color);
+}
 </style>

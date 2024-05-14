@@ -2,7 +2,7 @@
 $body-bg: #fff;
 
 // Typography
-$font-family-sans-serif:  'Montserrat', sans-serif;
+$font-family-sans-serif: "Montserrat", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
@@ -10,7 +10,7 @@ $primary: #3d3bff;
 $success: #14b8a6;
 
 :root {
-    --header-height : 55px;
+    --header-height: 55px;
     --font-family: $font-family-sans-serif;
     --primary-color: #3d3bff;
 
@@ -25,7 +25,7 @@ $success: #14b8a6;
     --body-bg-secondary: #fff;
 
     /*colors*/
-    --brand-color:#3d3bff;
+    --brand-color: #3d3bff;
     --main-color: #000;
     --border-button-color: #b8b8b8;
     --border-color: #b8b8b8;
@@ -35,13 +35,13 @@ $success: #14b8a6;
 
 :root .dark {
     /*bg*/
-    --button-bg: #2B2E33;
+    --button-bg: #2b2e33;
     --button-bg-second: #4f5864;
     --body-bg: #171d23;
-    --body-bg-secondary: #2B2E33;
+    --body-bg-secondary: #2b2e33;
     /*colors*/
     --main-color: #fff;
-    --border-color: #2B2E33;
+    --border-color: #2b2e33;
     --border-button-color: #fff;
     --navbar-color: var(--main-color);
 }

@@ -8,17 +8,23 @@
                 <p class="question__desc">
                     {{ questionDesc }}
                 </p>
-                <question-options v-if="this.selectedQuestion"
-                                  :testId="this.testId"
-                                  :testUserId="this.testUserId"
-                                  :selectedQuestion="this.selectedQuestion"
-                                  @testError = "item => $emit('testError', item)"
-                                  class="question__options">
+                <question-options
+                    v-if="this.selectedQuestion"
+                    :testId="this.testId"
+                    :testUserId="this.testUserId"
+                    :selectedQuestion="this.selectedQuestion"
+                    @testError="(item) => $emit('testError', item)"
+                    class="question__options"
+                >
                 </question-options>
             </div>
             <div class="col-6" v-if="selectedQuestion?.image">
                 <div class="question__wrap-img">
-                    <img class="question__img" :src="selectedQuestion.image" :alt="selectedQuestion.name">
+                    <img
+                        class="question__img"
+                        :src="selectedQuestion.image"
+                        :alt="selectedQuestion.name"
+                    />
                 </div>
             </div>
         </div>
@@ -29,7 +35,7 @@
 import QuestionOptions from "@/components/QuestionOptions.vue";
 
 export default {
-    name: 'QuestionDisplay',
+    name: "QuestionDisplay",
     components: {
         QuestionOptions,
     },
@@ -43,20 +49,24 @@ export default {
         selectedQuestion: {
             type: Object,
             required: true,
-        }
+        },
     },
     computed: {
         questionDesc() {
-            return this.selectedQuestion.type > 0 ? 'Варианты ответов:' : 'Введите ваш ответ:';
-        }
+            return this.selectedQuestion.type > 0
+                ? "Варианты ответов:"
+                : "Введите ваш ответ:";
+        },
     },
-    emits: ['testError'],
-}
+    emits: ["testError"],
+};
 </script>
 
 <style scoped lang="scss">
 .question {
-    &__title, &__options, &__desc {
+    &__title,
+    &__options,
+    &__desc {
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         -khtml-user-select: none;
@@ -67,7 +77,6 @@ export default {
 
     &__title {
         line-height: 1.2;
-
     }
 
     &__desc {

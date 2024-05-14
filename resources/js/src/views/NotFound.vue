@@ -1,13 +1,9 @@
-<template>
-   404
-</template>
+<template>404</template>
 
 <script>
 export default {
     name: "NotFound",
-}
+};
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -1,18 +1,22 @@
 <template>
     <div v-if="dataLoad && questions.length > 0" class="col-12 mb-3">
         <div class="d-flex gap-2 align-items-center">
-            <QuestionSwitcher @select-question="(item) => selectedQuestion = item"
-                              :selectedQuestion="selectedQuestion"
-                              :questions="questions">
+            <QuestionSwitcher
+                @select-question="(item) => (selectedQuestion = item)"
+                :selectedQuestion="selectedQuestion"
+                :questions="questions"
+            >
             </QuestionSwitcher>
         </div>
     </div>
     <div class="col-12" v-if="dataLoad">
-        <QuestionCreationForm :questionsId="this.questions.map(question => question.id)"
-                              :selectedQuestion="selectedQuestion"
-                              @add-question="addQuestion"
-                              @edit-question="editQuestion"
-                              @delete-question="deleteQuestion">
+        <QuestionCreationForm
+            :questionsId="this.questions.map((question) => question.id)"
+            :selectedQuestion="selectedQuestion"
+            @add-question="addQuestion"
+            @edit-question="editQuestion"
+            @delete-question="deleteQuestion"
+        >
         </QuestionCreationForm>
     </div>
 </template>
@@ -21,21 +25,21 @@
 import CustomSelect from "@/components/UI/CustomSelect.vue";
 import QuestionSwitcher from "@/components/QuestionSwitcher.vue";
 import QuestionCreationForm from "@/components/QuestionCreationForm.vue";
-import {ref} from "vue";
-import {mapActions, mapGetters} from "vuex";
+import { ref } from "vue";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
     name: "AccordionQuestions",
-    components: {QuestionCreationForm, QuestionSwitcher, CustomSelect},
+    components: { QuestionCreationForm, QuestionSwitcher, CustomSelect },
     data() {
         return {
             dataLoad: false,
             selectedQuestion: ref(null),
             questions: [],
-        }
+        };
     },
     computed: {
-        ...mapGetters(['cachedTest'])
+        ...mapGetters(["cachedTest"]),
     },
     props: {
         testId: {
@@ -51,50 +55,62 @@ export default {
     },
     mounted() {
         let questions = this.testQuestions;
-        const cachedTest = this.cachedTest.find(item => {
-            if (item[this.event] && !this.testId && item[this.event].questions) {
+        const cachedTest = this.cachedTest.find((item) => {
+            if (
+                item[this.event] &&
+                !this.testId &&
+                item[this.event].questions
+            ) {
                 return item[this.event];
             }
-            if (item[this.event] && item[this.event].id === this.testId && item[this.event].questions) {
+            if (
+                item[this.event] &&
+                item[this.event].id === this.testId &&
+                item[this.event].questions
+            ) {
                 return item[this.event];
             }
-        })
+        });
 
-        questions = cachedTest ? cachedTest[this.event].questions : questions
+        questions = cachedTest ? cachedTest[this.event].questions : questions;
 
         this.questions = questions ?? [];
         this.dataLoad = true;
     },
 
     methods: {
-        ...mapActions(['updateQuestions']),
+        ...mapActions(["updateQuestions"]),
         addQuestion(item) {
             this.questions.push(item);
         },
         editQuestion(newQuestion) {
-            const targetIndex = this.questions.findIndex((question) => question.id === newQuestion.id);
+            const targetIndex = this.questions.findIndex(
+                (question) => question.id === newQuestion.id,
+            );
             if (targetIndex !== -1) {
                 this.questions[targetIndex] = newQuestion;
                 this.selectedQuestion = null;
             }
         },
         deleteQuestion(questionId) {
-            const targetIndex = this.questions.findIndex((question) => question.id === questionId);
+            const targetIndex = this.questions.findIndex(
+                (question) => question.id === questionId,
+            );
             if (targetIndex !== -1) {
                 this.questions.splice(targetIndex, 1);
                 this.selectedQuestion = null;
             }
-        }
+        },
     },
     watch: {
         questions: {
             deep: true,
             handler(newQuestions, oldValue) {
-                this.updateQuestions([this.event, newQuestions, this.testId])
+                this.updateQuestions([this.event, newQuestions, this.testId]);
             },
-        }
+        },
     },
-}
+};
 </script>
 
 <style scoped lang="scss">

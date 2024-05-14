@@ -3,11 +3,9 @@
 </template>
 
 <script>
- export default {
-     name: 'CreatedTestLayout',
- }
+export default {
+    name: "CreatedTestLayout",
+};
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -1,4 +1,4 @@
-import type {ApiClientContainer} from "@/services/ApiClientContainer";
+import type { ApiClientContainer } from "@/services/ApiClientContainer";
 
 import TestClient from "@/services/TestClient";
 import ResultClient from "@/services/ResultClient";
@@ -10,6 +10,6 @@ export function useLaravel(): ApiClientContainer {
         test: new TestClient(),
         result: new ResultClient(),
         user: new UserClient(),
-        testStatistics: new TestStatisticsClient()
+        testStatistics: new TestStatisticsClient(),
     };
 }

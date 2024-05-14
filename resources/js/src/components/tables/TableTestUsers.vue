@@ -5,63 +5,93 @@
         :rows="5"
         :rowsPerPageOptions="[5, 10, 20, 50]"
         :value="items"
-        filterDisplay="menu">
+        filterDisplay="menu"
+    >
         <Column field="user_full_name" header="Пользователь" sortable>
             <template #body="{ data }">
                 <div class="d-flex gap-2 align-items-center">
-                    <img v-show="data?.user_avatar" :alt="data?.title" :src="data?.user_avatar" class="rounded-circle"
-                         style="width: 45px; height: 45px;"/>
+                    <img
+                        v-show="data?.user_avatar"
+                        :alt="data?.title"
+                        :src="data?.user_avatar"
+                        class="rounded-circle"
+                        style="width: 45px; height: 45px"
+                    />
                     <span>{{ data.user_full_name }}</span>
                 </div>
             </template>
             <template #filter="{ filterModel }">
-                <InputText v-model="filterModel.value" type="text" class="p-column-filter" placeholder="Введите пользователя" />
+                <InputText
+                    v-model="filterModel.value"
+                    type="text"
+                    class="p-column-filter"
+                    placeholder="Введите пользователя"
+                />
             </template>
         </Column>
         <Column header="Статус" field="status" sortable>
             <template #body="{ data }">
-                <Tag :value="testStatusLabel(data?.status)" :severity="testStatusClass(data?.status)" />
+                <Tag
+                    :value="testStatusLabel(data?.status)"
+                    :severity="testStatusClass(data?.status)"
+                />
             </template>
             <template #filter="{ filterModel }">
-                <Dropdown v-model="filterModel.value" :options="testStatusOptions" placeholder="Select One" class="p-column-filter" showClear>
+                <Dropdown
+                    v-model="filterModel.value"
+                    :options="testStatusOptions"
+                    placeholder="Select One"
+                    class="p-column-filter"
+                    showClear
+                >
                     <template #value="slotProps">
                         {{ testStatusLabel(slotProps.value) }}
                     </template>
                     <template #option="slotProps">
-                        <Tag :value="testStatusLabel(slotProps.option)" :severity="testStatusClass(slotProps.option)" />
+                        <Tag
+                            :value="testStatusLabel(slotProps.option)"
+                            :severity="testStatusClass(slotProps.option)"
+                        />
                     </template>
                 </Dropdown>
             </template>
         </Column>
-        <Column field="test_end_at" header="Дата завершения" dataType="date" sortable>
+        <Column
+            field="test_end_at"
+            header="Дата завершения"
+            dataType="date"
+            sortable
+        >
             <template #body="{ data }">
                 {{ formatDate(data?.test_end_at) }}
             </template>
         </Column>
         <Column header="">
             <template #body="">
-                <Button class="p-button-sm py-1 px-2 rounded"
-                        iconPos="right" label="Проверить"
-                        @click="" />
+                <Button
+                    class="p-button-sm py-1 px-2 rounded"
+                    iconPos="right"
+                    label="Проверить"
+                    @click=""
+                />
             </template>
         </Column>
     </DataTable>
 </template>
 
 <script lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 import { testStatusLabel, testStatusClass } from "@/utils/enum.ts";
 import { formatDate } from "@/utils/date.ts";
 import { TestStatus } from "@/models/test.ts";
-import {FilterMatchMode, FilterOperator} from "primevue/api";
-
+import { FilterMatchMode, FilterOperator } from "primevue/api";
 
 export default {
     name: "TableTestUsers",
     computed: {
         TestStatus() {
-            return TestStatus
-        }
+            return TestStatus;
+        },
     },
     props: {
         items: {
@@ -71,32 +101,46 @@ export default {
         filters: {
             type: Object,
             required: true,
-        }
+        },
     },
-    data(){
+    data() {
         return {
             testStatusOptions: [],
             filters: ref({
-                global: {value: null},
-                user_full_name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-                test_end_at: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-                status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+                global: { value: null },
+                user_full_name: {
+                    operator: FilterOperator.AND,
+                    constraints: [
+                        { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+                    ],
+                },
+                test_end_at: {
+                    operator: FilterOperator.AND,
+                    constraints: [
+                        { value: null, matchMode: FilterMatchMode.DATE_IS },
+                    ],
+                },
+                status: {
+                    operator: FilterOperator.OR,
+                    constraints: [
+                        { value: null, matchMode: FilterMatchMode.EQUALS },
+                    ],
+                },
             }),
-        }
+        };
     },
     created() {
-        this.initListStatuses()
+        this.initListStatuses();
     },
     methods: {
         formatDate,
         testStatusClass,
         testStatusLabel,
-        initListStatuses(){
-           this.testStatusOptions = Object.keys(TestStatus).map((key: keyof typeof TestStatus) => (
-                TestStatus[key]
-            ));
-        }
-    }
-}
+        initListStatuses() {
+            this.testStatusOptions = Object.keys(TestStatus).map(
+                (key: keyof typeof TestStatus) => TestStatus[key],
+            );
+        },
+    },
+};
 </script>
-

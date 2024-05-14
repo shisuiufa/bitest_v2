@@ -1,27 +1,43 @@
 <template>
     <div class="options">
         <div v-if="this.selectedQuestion.type === 0" class="options__item">
-            <input type="text" class="form-control options__input"
-                   v-model="this.userAnswer.openAnswer"
-                   @blur="updateAnswerDb">
+            <input
+                type="text"
+                class="form-control options__input"
+                v-model="this.userAnswer.openAnswer"
+                @blur="updateAnswerDb"
+            />
         </div>
-        <div v-else
-             v-for="option in this.selectedQuestion.options"
-             :key="option.id" class="options__item">
+        <div
+            v-else
+            v-for="option in this.selectedQuestion.options"
+            :key="option.id"
+            class="options__item"
+        >
             <div class="form-check">
-                <input v-if="this.selectedQuestion.type === 1"
-                       name="option" type="radio"
-                       :value="option.id" class="form-check-input options__check-input"
-                       :id="'option-' + option.id"
-                       @change="addToSelectedAnswers(option.id)"
-                       :checked="this.userAnswer.selectedAnswers.find(answer => answer === option.id)"
-                >
-                <input v-if="this.selectedQuestion.type === 2"
-                       name="option" type="checkbox"
-                       :value="option.id" class="form-check-input options__check-input"
-                       :id="'option-' + option.id"
-                       v-model="this.userAnswer.selectedAnswers"
-                >
+                <input
+                    v-if="this.selectedQuestion.type === 1"
+                    name="option"
+                    type="radio"
+                    :value="option.id"
+                    class="form-check-input options__check-input"
+                    :id="'option-' + option.id"
+                    @change="addToSelectedAnswers(option.id)"
+                    :checked="
+                        this.userAnswer.selectedAnswers.find(
+                            (answer) => answer === option.id,
+                        )
+                    "
+                />
+                <input
+                    v-if="this.selectedQuestion.type === 2"
+                    name="option"
+                    type="checkbox"
+                    :value="option.id"
+                    class="form-check-input options__check-input"
+                    :id="'option-' + option.id"
+                    v-model="this.userAnswer.selectedAnswers"
+                />
                 <label class="form-check-label" :for="'option-' + option.id">
                     {{ option.name }}
                 </label>
@@ -31,48 +47,52 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-import {useLaravel} from "@/composables/useLaravel.ts";
+import { mapActions, mapGetters } from "vuex";
+import { useLaravel } from "@/composables/useLaravel.ts";
 import * as toast from "@/composables/useNotifications.ts";
-const {test} = useLaravel();
+const { test } = useLaravel();
 
 export default {
     name: "QuestionOptions",
     data() {
         return {
             userAnswer: {
-                openAnswer: '',
+                openAnswer: "",
                 selectedAnswers: [],
             },
             selectedQuestionUpdated: false,
-        }
+        };
     },
     props: {
         testId: {
-            required: true
+            required: true,
         },
         testUserId: {
-            required: true
+            required: true,
         },
         selectedQuestion: {
             type: Object,
             required: true,
-        }
+        },
     },
     computed: {
-        ...mapGetters(['getAnswersByQuestionId']),
+        ...mapGetters(["getAnswersByQuestionId"]),
     },
     watch: {
         selectedQuestion: {
             handler: function (newQuestion) {
                 this.selectedQuestionUpdated = true;
-                const answers = this.getAnswersByQuestionId([this.testId, newQuestion.id]);
+                const answers = this.getAnswersByQuestionId([
+                    this.testId,
+                    newQuestion.id,
+                ]);
 
-                if (typeof answers === 'object') {
+                if (typeof answers === "object") {
                     this.userAnswer.openAnswer = answers.userAnswer.openAnswer;
-                    this.userAnswer.selectedAnswers = answers.userAnswer.selectedAnswers;
+                    this.userAnswer.selectedAnswers =
+                        answers.userAnswer.selectedAnswers;
                 } else {
-                    this.userAnswer.openAnswer = '';
+                    this.userAnswer.openAnswer = "";
                     this.userAnswer.selectedAnswers = [];
                 }
             },
@@ -82,7 +102,7 @@ export default {
             handler: function (newQuestion) {
                 if (!this.selectedQuestionUpdated) {
                     if (!this.userAnswer.openAnswer) {
-                        this.updateAnswerDb()
+                        this.updateAnswerDb();
                     }
                 } else {
                     this.selectedQuestionUpdated = false;
@@ -93,30 +113,35 @@ export default {
         },
     },
     methods: {
-        ...mapActions(['updateUserAnswer']),
+        ...mapActions(["updateUserAnswer"]),
         addToSelectedAnswers(optionId) {
             this.userAnswer.selectedAnswers = [optionId];
         },
         async updateAnswerDb() {
-            await test.updateAnswers(this.testId, this.testUserId, {
-                questionId: this.selectedQuestion?.id,
-                answer: this.userAnswer,
-            })
-                .then(res => {
-                    this.updateUserAnswer([this.testId, this.selectedQuestion?.id, this.userAnswer.openAnswer, this.userAnswer.selectedAnswers])
+            await test
+                .updateAnswers(this.testId, this.testUserId, {
+                    questionId: this.selectedQuestion?.id,
+                    answer: this.userAnswer,
                 })
-                .catch(err => {
+                .then((res) => {
+                    this.updateUserAnswer([
+                        this.testId,
+                        this.selectedQuestion?.id,
+                        this.userAnswer.openAnswer,
+                        this.userAnswer.selectedAnswers,
+                    ]);
+                })
+                .catch((err) => {
                     if (err.response.status === 403) {
-                        this.$emit('testError', err.response.data)
+                        this.$emit("testError", err.response.data);
                     } else {
-                        toast.error('Ошибка!',
-                            err.response.data.message)
+                        toast.error("Ошибка!", err.response.data.message);
                     }
-                })
-        }
+                });
+        },
     },
-    emits: ['testError'],
-}
+    emits: ["testError"],
+};
 </script>
 
 <style scoped lang="scss">

@@ -1,11 +1,18 @@
-h1,h2,h3,h4,h5,h6,p,label {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+label {
     color: var(--main-color);
 }
 .bg-success {
     background-color: #2dce89 !important;
 }
 
-.form-check-input{
+.form-check-input {
     &:focus {
         border-color: var(--brand-color) !important;
         outline: 0;
@@ -23,7 +30,8 @@ h1,h2,h3,h4,h5,h6,p,label {
     box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;
 }
 
-ul, ol {
+ul,
+ol {
     padding: 0;
     margin: 0;
 }
@@ -32,15 +40,16 @@ ul, ol {
     color: #fff;
 }
 
-.p-button, .p-checkbox.p-highlight .p-checkbox-box, .p-progressbar .p-progressbar-value {
-    background-color: var(--primary-color) ;
+.p-button,
+.p-checkbox.p-highlight .p-checkbox-box,
+.p-progressbar .p-progressbar-value {
+    background-color: var(--primary-color);
 }
 
 .p-datatable .p-sortable-column.p-highlight {
-    color: var(--primary-color)
+    color: var(--primary-color);
 }
 
 .router-link-exact-active span {
-    color: var(--primary-color)
+    color: var(--primary-color);
 }
-

@@ -1,29 +1,29 @@
 <template>
-    <app-header :dark="this.dark" @change-theme="changeTheme"/>
+    <app-header :dark="this.dark" @change-theme="changeTheme" />
     <main class="main">
         <div class="container">
             <template v-if="$route.name === 'home'">
-                <router-view/>
+                <router-view />
             </template>
             <template v-else>
                 <div class="row">
                     <div class="col-12">
-                        <app-breadcrumbs/>
+                        <app-breadcrumbs />
                     </div>
                 </div>
-                <router-view/>
+                <router-view />
             </template>
         </div>
-        <navbar-menu/>
+        <navbar-menu />
     </main>
-    <modal-search v-if="this.modalSearch"/>
+    <modal-search v-if="this.modalSearch" />
 </template>
 
 <script>
 import ModalSearch from "@/components/modals/ModalSearch.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import NavbarMenu from "@/components/NavbarMenu.vue";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 import AppBreadcrumbs from "@/components/AppBreadcrumb.vue";
 
 export default {
@@ -32,16 +32,16 @@ export default {
         AppBreadcrumbs,
         AppHeader,
         ModalSearch,
-        NavbarMenu
+        NavbarMenu,
     },
     data() {
         return {
             dark: false,
             loader: false,
-        }
+        };
     },
     computed: {
-        ...mapGetters(['modalSearch', 'user']),
+        ...mapGetters(["modalSearch", "user"]),
     },
     mounted() {
         const initUserTheme = this.getTheme() || this.getMediaPreference();
@@ -68,7 +68,7 @@ export default {
         },
         getMediaPreference() {
             const hasDarkPreference = window.matchMedia(
-                "(prefers-color-scheme: dark)"
+                "(prefers-color-scheme: dark)",
             ).matches;
             if (hasDarkPreference) {
                 return "dark";
@@ -80,7 +80,7 @@ export default {
             return localStorage.getItem("theme-mode");
         },
     },
-}
+};
 </script>
 
 <style lang="scss">

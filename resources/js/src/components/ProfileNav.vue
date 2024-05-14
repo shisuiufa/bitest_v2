@@ -1,8 +1,20 @@
 <template>
-    <div tabindex="0" @blur="show = false;" class="profile-nav">
-        <div @click="show = !show" :class="show ? 'profile-nav__header_active': null" class="profile-nav__header">
+    <div tabindex="0" @blur="show = false" class="profile-nav">
+        <div
+            @click="show = !show"
+            :class="show ? 'profile-nav__header_active' : null"
+            class="profile-nav__header"
+        >
             <div class="profile-nav__wrap-img">
-                <img :src="this.user?.avatar ? this.user.avatar : '/images/avatar.png'"  alt="" class="profile-nav__img">
+                <img
+                    :src="
+                        this.user?.avatar
+                            ? this.user.avatar
+                            : '/images/avatar.png'
+                    "
+                    alt=""
+                    class="profile-nav__img"
+                />
             </div>
             <i class="bi bi-chevron-down profile-nav__icon"></i>
         </div>
@@ -26,30 +38,29 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-    export default {
-        name: "ProfileNav",
-        computed: {
-          ...mapGetters(['user'])
+import { mapActions, mapGetters } from "vuex";
+export default {
+    name: "ProfileNav",
+    computed: {
+        ...mapGetters(["user"]),
+    },
+    data() {
+        return {
+            show: false,
+        };
+    },
+    methods: {
+        ...mapActions(["logout"]),
+        navigateToProfile() {
+            this.$router.push("/profile");
+            this.show = false;
         },
-        data(){
-          return {
-              show: false,
-          }
+        logoutUser() {
+            this.logout();
+            this.$router.push({ name: "login" });
         },
-        methods: {
-            ...mapActions(['logout']),
-            navigateToProfile() {
-                this.$router.push('/profile');
-                this.show = false;
-            },
-            logoutUser(){
-                this.logout();
-                this.$router.push({ name :"login"})
-            }
-        }
-
-    }
+    },
+};
 </script>
 
 <style scoped lang="scss">
@@ -61,18 +72,19 @@ import {mapActions, mapGetters} from "vuex";
         justify-content: center;
         align-items: center;
         gap: 10px;
-        transition: all .3s ease;
+        transition: all 0.3s ease;
         cursor: pointer;
-        &:hover, &_active{
+        &:hover,
+        &_active {
             background-color: var(--button-bg);
         }
-        &_active{
+        &_active {
             .profile-nav__icon {
-                transform: rotate(180deg)
+                transform: rotate(180deg);
             }
         }
     }
-    &__wrap-img{
+    &__wrap-img {
         width: 35px;
         height: 35px;
         overflow: hidden;
@@ -106,18 +118,18 @@ import {mapActions, mapGetters} from "vuex";
         list-style: none;
         padding: 10px 12px;
     }
-    &__link{
+    &__link {
         color: var(--main-color);
         text-decoration: none;
         display: flex;
         gap: 5px;
-        transition: all .3s ease;
+        transition: all 0.3s ease;
         font-size: 15px;
         cursor: pointer;
         padding: 10px 12px;
         border-radius: 8px;
         margin-bottom: 5px;
-        &:hover{
+        &:hover {
             background-color: var(--button-bg);
         }
     }
