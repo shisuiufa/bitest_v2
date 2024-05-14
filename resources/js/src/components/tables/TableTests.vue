@@ -48,12 +48,9 @@
                 </div>
             </template>
         </Column>
-        <Column filterField="date" header="Дата создания" dataType="date">
+        <Column header="Дата создания" field="created_at" dataType="date" sortable>
             <template #body="{ data }">
-                {{ localDate(data?.created_at) }}
-            </template>
-            <template #filter="{ filterModel }">
-                <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />
+                {{ formatDate(data?.created_at) }}
             </template>
         </Column>
         <Column>
@@ -76,7 +73,7 @@
 import {ref} from "vue";
 import {FilterMatchMode, FilterOperator} from "primevue/api";
 import {testPublishedLabel, testPublishedClass} from "@/utils/enum.ts";
-import {localDate} from "@/utils/date.ts";
+import {formatDate} from "@/utils/date.ts";
 export default {
     name: "TableTests",
     props: {
@@ -91,7 +88,7 @@ export default {
     },
     methods: {
         testPublishedClass,
-        localDate,
+        formatDate,
         testPublishedLabel,
         clearFilter() {
             this.$emit('clear-filters');

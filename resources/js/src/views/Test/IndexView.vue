@@ -36,6 +36,7 @@ export default {
         return {
             tests: [],
             pagination: [],
+            filters: {}
         }
     },
     created() {

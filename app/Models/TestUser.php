@@ -23,6 +23,7 @@ class TestUser extends Model
         'status',
         'created_at',
         'updated_at',
+        'test_end_at'
     ];
 
     public function user(): BelongsTo

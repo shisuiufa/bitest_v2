@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-12">
             <Panel header="Список пользователей">
-                <TableTestUsers :items="statistics?.users"/>
+                <TableTestUsers v-model:filters="filters" :items="statistics?.users"/>
             </Panel>
         </div>
     </div>
@@ -40,10 +40,14 @@ export default {
     data(){
         return {
             statistics: [],
+            filters: {}
         }
     },
     mounted() {
         this.getData(this.$route?.params.id);
+    },
+    created() {
+        this.initFilters()
     },
     methods: {
         async getData(testId) {
@@ -54,7 +58,13 @@ export default {
                 .catch((err) => {
                     toast.error('Ошибка при загрузки статистики', err.response.data.message)
                 })
-        }
+        },
+        initFilters() {
+            this.filters = {
+                global: {value: null},
+                date: {value: null}
+            };
+        },
     }
 }
 </script>
