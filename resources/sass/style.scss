@@ -1,28 +1,17 @@
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-label {
-    color: var(--main-color);
-}
 .bg-success {
     background-color: #2dce89 !important;
 }
-
-.form-check-input {
-    &:focus {
-        border-color: var(--brand-color) !important;
-        outline: 0;
-        box-shadow: none;
-    }
-    &:checked {
-        background-color: var(--brand-color) !important;
-        border-color: var(--brand-color) !important;
-    }
-}
+//.form-check-input {
+//    &:focus {
+//        border-color: var(--brand-color) !important;
+//        outline: 0;
+//        box-shadow: none;
+//    }
+//    &:checked {
+//        background-color: var(--brand-color) !important;
+//        border-color: var(--brand-color) !important;
+//    }
+//}
 .content {
     padding: 40px;
     border-radius: 15px;
@@ -36,20 +25,131 @@ ol {
     margin: 0;
 }
 
-.p-button {
-    color: #fff;
+.p-panel {
+    border: 1px solid var(--surface-border);
 }
 
-.p-button,
-.p-checkbox.p-highlight .p-checkbox-box,
-.p-progressbar .p-progressbar-value {
-    background-color: var(--primary-color);
+.p-confirm-popup .p-confirm-popup-footer button {
+    margin: 0 0.5rem 0 0;
+    width: auto;
 }
 
-.p-datatable .p-sortable-column.p-highlight {
-    color: var(--primary-color);
+.p-primary, .p-confirm-popup-accept,
+.p-checkbox.p-highlight .p-checkbox-box {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--bs-gray-100)
 }
 
-.router-link-exact-active span {
-    color: var(--primary-color);
+.p-button.p-button-success, .p-button-group.p-button-success > .p-button, .p-splitbutton.p-button-success > .p-button {
+    color: #ffffff;
+    background: #22c55e;
+    border: 1px solid #22c55e;
 }
+
+.p-button.p-button-danger, .p-button-group.p-button-danger > .p-button, .p-splitbutton.p-button-danger > .p-button {
+    color: rgb(255, 255, 255);
+    background: rgb(239, 68, 68);
+    border: 1px solid rgb(239, 68, 68);
+}
+
+.p-paginator-page, .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon, .p-column-filter-menu-button-active {
+    color: var(--primary-color)
+}
+
+.p-button.p-button-sm {
+    font-size: 0.875rem;
+    padding: 0.4375rem 0.875rem;
+}
+
+.p-focus, .p-highlight {
+    color: var(--text-color) !important;
+    background-color: var(--surface-hover) !important;
+}
+
+.p-inputwrapper-focus .p-overlay-open > .p-inputtext  {
+    color: var(--text-color) !important;
+    background-color: var(--surface-hover) !important;
+}
+
+.p-inputtext {
+    color: var(--text-color-secondary);
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+    outline: none;
+}
+
+.p-dropdown, .p-panel, .p-breadcrumb, .p-toolbar,.p-menu.p-menu-overlay {
+    border: 1px solid var(--surface-border);
+    background-color: var(--surface-card);
+    .p-menuitem-text, .p-panel-title {
+        color: var(--surface-900);
+    }
+    .p-menuitem-separator {
+        color: var(--text-color-secondary);
+    }
+
+    .p-menuitem-content {
+        color: var(--text-color-secondary);
+        &:hover, &:focus {
+            color: var(--surface-900);
+            background-color: var(--surface-hover)
+        }
+    }
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: var(--surface-900) !important;
+    background-color: var(--surface-hover) !important;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder,
+.p-dropdown-items, .p-dropdown-panel,
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item,
+{
+    color: var(--text-color-secondary);
+    background-color: var(--surface-card);
+    border: none;
+}
+
+.p-dropdown-items {
+    border: 1px solid var(--surface-border);
+}
+
+.p-datatable {
+    border-radius: 6px;
+}
+
+.p-datatable .p-datatable-thead > tr > th, .p-datatable .p-datatable-tbody > tr > td {
+    border-bottom: 1px solid var(--surface-border);
+    background-color: var(--surface-card);
+    color: var(--surface-700);
+    .p-sortable-column-icon, .p-column-filter-menu-button {
+        color: var(--text-color-secondary);
+        &:hover {
+            background-color: var(--surface-hover)
+        }
+    }
+    .p-column-filter-menu-button-open {
+        color: var(--primary-color);
+    }
+}
+
+.p-paginator {
+    background-color: var(--surface-card);
+}
+
+.p-tag-success {
+    background:
+        color-mix(in srgb, var(--green-500), transparent 80%);
+    color: var(--green-600);
+}
+
+.p-progressbar {
+    background: #3f3f46;
+}
+.p-progressbar-value {
+    background: #34d399;
+}
+

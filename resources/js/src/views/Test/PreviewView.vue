@@ -4,17 +4,17 @@
             <div class="row align-items-center">
                 <div class="order-2 order-lg-1 col-lg-6">
                     <h2 class="preview__title">{{ this.test.title }}</h2>
-                    <p class="preview__desc text-secondary fw-normal fs-6">
+                    <p class="preview__desc fw-normal fs-6">
                         {{ this.test.desc }}
                     </p>
                     <div class="preview__meta">
                         <p
-                            class="preview__attempts mb-1 text-secondary fw-normal fs-6"
+                            class="preview__attempts mb-1 fw-normal fs-6"
                         >
                             {{ messageAttempts }}
                         </p>
                         <p
-                            class="preview__time mb-0 text-secondary fw-normal fs-6"
+                            class="preview__time mb-0 fw-normal fs-6"
                         >
                             {{ messageTime }}
                         </p>
@@ -152,21 +152,21 @@ export default {
 <style scoped lang="scss">
 .preview {
     &__title {
-        color: var(--main-color);
+        color: var(--surface-900);
         font-size: 30px;
         font-weight: 700;
         margin-bottom: 20px;
     }
 
     &__desc {
-        color: var(--main-color);
+        color: var(--surface-700);
         font-size: 15px;
         font-weight: 400;
         margin-bottom: 20px;
     }
 
     &__meta {
-        color: var(--main-color);
+        color: var(--surface-700);
         margin-bottom: 20px;
     }
 

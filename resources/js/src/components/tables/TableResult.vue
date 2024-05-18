@@ -6,6 +6,7 @@
         :rowsPerPageOptions="[5, 10, 20, 50]"
         :value="items"
         filterDisplay="menu"
+        showGridlines
     >
         <Column filterField="title" field="title" header="Тест" sortable>
             <template #body="{ data }">
@@ -106,7 +107,7 @@
         <Column>
             <template #body="slotProps">
                 <Button
-                    class="p-button-sm rounded-circle"
+                    class="p-button-sm p-primary rounded-circle"
                     icon="pi pi-search"
                     @click="
                         $router.push({

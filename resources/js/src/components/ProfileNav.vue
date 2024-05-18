@@ -6,13 +6,10 @@
             class="profile-nav__header"
         >
             <div class="profile-nav__wrap-img">
-                <img
-                    :src="
-                        this.user?.avatar
-                            ? this.user.avatar
-                            : '/images/avatar.png'
-                    "
-                    alt=""
+                <i v-if="!this.user?.avatar" class="pi pi-user profile-nav__img"></i>
+                <img v-else
+                    :src="this.user?.avatar"
+                    :alt="this.user?.last_name + ' ' + this.user?.first_name"
                     class="profile-nav__img"
                 />
             </div>
@@ -76,7 +73,7 @@ export default {
         cursor: pointer;
         &:hover,
         &_active {
-            background-color: var(--button-bg);
+            background-color: var(--surface-hover);
         }
         &_active {
             .profile-nav__icon {
@@ -96,6 +93,8 @@ export default {
     &__img {
         width: 20px;
         height: 20px;
+        font-size: 17px;
+        color: var(--text-color-secondary);
         object-fit: cover;
     }
     &__icon {
@@ -109,9 +108,9 @@ export default {
         right: 0;
         width: 200px;
         border-radius: 16px;
-        background-color: var(--body-bg);
+        background-color: var(--surface-card);
         overflow: hidden;
-        border: 1px solid var(--border-color);
+        border: 1px solid var(--surface-border);
     }
     &__list {
         margin: 0;
@@ -119,7 +118,7 @@ export default {
         padding: 10px 12px;
     }
     &__link {
-        color: var(--main-color);
+        color: var(--text-color-secondary);
         text-decoration: none;
         display: flex;
         gap: 5px;
@@ -130,7 +129,8 @@ export default {
         border-radius: 8px;
         margin-bottom: 5px;
         &:hover {
-            background-color: var(--button-bg);
+            color: var(--text-color);
+            background-color: var(--surface-hover);
         }
     }
 }

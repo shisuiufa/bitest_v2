@@ -3,8 +3,7 @@ export default class TestClient extends ApiClient {
     async index(params: object) {
         const endpoint: string = `/api/tests`;
 
-        return await this.client
-            .get(endpoint, { params: params })
+        return await this.client.get(endpoint, {params: params})
             .then((res) => res.data);
     }
     async show(testId: string | number) {

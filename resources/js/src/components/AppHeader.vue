@@ -50,22 +50,26 @@ export default {
     left: 0;
     width: 100%;
     height: var(--header-height);
-    border-bottom: 1px solid var(--border-color);
-    background-color: var(--body-bg);
+    box-shadow: 0 3px 5px #00000005, 0 0 2px #0000000d, 0 1px 4px #00000014;
+    backdrop-filter: blur(8px);
+    background-color: var(--topbar-sticky-bg);
     z-index: var(--index-header);
     &__search,
     &__theme {
-        color: var(--main-color);
-        font-size: 14px;
+        color: var(--text-color-secondary);
+        font-size: 16px;
         cursor: pointer;
         display: flex;
         justify-content: center;
         align-items: center;
         width: 35px;
         height: 35px;
+        padding: 10px;
         border-radius: 10px;
-        background-color: var(--button-bg);
         transition: all 0.3s ease;
+        &:hover {
+            background-color: var(--surface-hover);
+        }
     }
 }
 .navbar {
@@ -73,7 +77,7 @@ export default {
         gap: 30px;
     }
     &__brand {
-        color: var(--main-color);
+        color: var(--surface-900);
         text-transform: uppercase;
         letter-spacing: 1.2px;
         font-weight: 900;

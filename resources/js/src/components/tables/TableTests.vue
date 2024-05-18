@@ -29,6 +29,7 @@
         :rows="5"
         :rowsPerPageOptions="[5, 10, 20, 50]"
         :value="tests"
+        showGridlines tableStyle="min-width: 50rem"
         filterDisplay="menu"
     >
         <Column selectionMode="multiple" :exportable="false"></Column>
@@ -72,6 +73,7 @@
         >
             <template #body="{ data }">
                 <ProgressBar
+                    :showValue=false style="height: 6px"
                     :value="data?.checked_progress.progress_percentage"
                 />
             </template>
@@ -102,7 +104,7 @@
         <Column>
             <template #body="{ data }">
                 <Button
-                    class="rounded"
+                    class="rounded p-primary"
                     type="button"
                     icon="pi pi-ellipsis-h"
                     @click="toggle($event, data.id)"

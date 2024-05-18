@@ -1,14 +1,9 @@
 <template>
     <div class="row my-3">
         <div class="col-12">
-            <filter-nav
-                @selectedFilter="
-                    (item) => {
-                        this.filter = item;
-                        getTests();
-                    }
-                "
-            ></filter-nav>
+            <Dropdown @change="getTests()" v-model="this.filter" :options="filters" optionLabel="name"
+                      optionValue="value" placeholder="Выбрать фильтр"
+                      style="width: 250px"/>
         </div>
     </div>
     <div class="row">
@@ -33,17 +28,17 @@
 
 <script>
 import UiButton from "@/components/UI/UiButton.vue";
-import filterNav from "@/components/FilterNav.vue";
 import CardList from "@/components/CardList.vue";
-import { useLaravel } from "@/composables/useLaravel.ts";
+import {useLaravel} from "@/composables/useLaravel.ts";
 import * as toast from "@/composables/useNotifications.ts";
-const { test } = useLaravel();
+import {TestFilter} from "@/models/test.ts";
+
+const {test} = useLaravel();
 
 export default {
     name: "HomeView",
     components: {
         CardList,
-        filterNav,
         UiButton,
     },
     data() {
@@ -52,10 +47,17 @@ export default {
             search: "",
             filter: null,
             pagination: null,
+            filters: [
+                {id: 1, name: "Новые", value: TestFilter.New},
+                {id: 2, name: "Категория", value: TestFilter.Category},
+                {id: 3, name: "Тест", value: TestFilter.Name},
+                {id: 4, name: "Автор", value: TestFilter.Author},
+            ],
         };
     },
     mounted() {
         this.getTests();
+        this.filter = this.filters[0];
     },
     methods: {
         async getTests(page = 1) {

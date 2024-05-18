@@ -6,6 +6,8 @@ import Store from "@/store/index.js";
 import ToastService from "primevue/toastservice";
 import PrimeVue from "primevue/config";
 import Toast from "primevue/toast";
+import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmPopup from 'primevue/confirmpopup';
 
 const locales = {
     startsWith: "Начинается с",
@@ -83,7 +85,9 @@ createApp(App)
     .use(Router)
     .use(Store)
     .use(ToastService)
+    .use(ConfirmationService)
     .component("Toast", Toast)
+    .component('ConfirmPopup', ConfirmPopup)
     .use(PrimeVue, {
         locale: locales,
         ripple: true,

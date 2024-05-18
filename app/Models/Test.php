@@ -11,8 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
-
 
 class Test extends Model
 {
@@ -73,7 +71,7 @@ class Test extends Model
             ->first();
     }
 
-    public function getCheckedTestProgress(): array
+    public function getCheckedTestProgress(): array|null
     {
         $totalTests = $this->testUsers()->whereNot('status', TestStatus::ONGOING)->count();
         $pendingTests = $this->testUsers()->where('status', TestStatus::PENDING)->count();
@@ -92,7 +90,7 @@ class Test extends Model
         return $progress;
     }
 
-    public function uniqueUsersByAttemptDesc(): Collection
+    public function uniqueUsersByAttemptDesc(): Collection|null
     {
         return $this->testUsers()
             ->whereNot('status', TestStatus::ONGOING)
@@ -159,9 +157,9 @@ class Test extends Model
             $durations[] = $durationInMinutes;
         }
 
-        $minDuration = min($durations);
+        $minDuration = !empty($durations) ? min($durations) : null;
         $averageDuration = count($durations) > 0 ? array_sum($durations) / count($durations) : 0;
-        $maxDuration = max($durations);
+        $maxDuration = !empty($durations) ? max($durations) : null;
 
         return [
             'labels' => ['Минимальное', 'Среднее', 'Максимальное'],

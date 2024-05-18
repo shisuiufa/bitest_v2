@@ -7,4 +7,20 @@ export default class TestStatisticsClient extends ApiClient {
             .get(endpoint, { params: params })
             .then((res) => res.data);
     }
+
+    async show(testId: number | string, userId: number | string, params: object | null){
+        const endpoint: string = `/api/moder/tests/${testId}/statistics/${userId}`;
+
+        return await this.client
+            .get(endpoint, {params: params})
+            .then((res) => res.data)
+    }
+
+    async totalAttempts(testId: number | string, userId: number | string) {
+        const endpoint: string = `/api/moder/tests/${testId}/statistics/${userId}/attempts`;
+
+        return await this.client
+            .get(endpoint)
+            .then((res) => res.data)
+    }
 }

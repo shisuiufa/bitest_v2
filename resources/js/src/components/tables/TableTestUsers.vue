@@ -67,31 +67,50 @@
             </template>
         </Column>
         <Column header="">
-            <template #body="">
+            <template #body="{ data }">
                 <Button
-                    class="p-button-sm rounded-circle"
+                    class="p-button-sm rounded-circle p-primary"
                     icon="pi pi-search"
-                    @click=""
+                    @click="
+                    this.selected.user = data.user_id;
+                    this.selected.try = null;
+                    this.openStatUser();
+                    this.getTotalAttempts()"
                 />
             </template>
         </Column>
     </DataTable>
+    <Dialog v-model:visible="visible" modal header="Результат пользователя" :style="{ width: '80vw' }">
+        <DataView :value="this.result.answers">
+            <template #header>
+                <Dropdown @change="openStatUser()"
+                          v-model="this.selected.try"
+                          :options="this.attempts"
+                          placeholder="Попытка пользователя"
+                          optionValue="value"
+                          optionLabel="label"/>
+            </template>
+            <template #list="slotProps">
+                <UserResultList @updateValue="openStatUser()" :items="slotProps.items"/>
+            </template>
+        </DataView>
+    </Dialog>
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
-import { testStatusLabel, testStatusClass } from "@/utils/enum.ts";
-import { formatDate } from "@/utils/date.ts";
-import { TestStatus } from "@/models/test.ts";
-import { FilterMatchMode, FilterOperator } from "primevue/api";
+import {ref} from "vue";
+import UserResultList from "@/components/lists/UserResultList.vue";
+import {testStatusLabel, testStatusClass} from "@/utils/enum.ts";
+import {FilterMatchMode, FilterOperator} from "primevue/api";
+import {formatDate} from "@/utils/date.ts";
+import {TestStatus} from "@/models/test.ts";
+import {useLaravel} from "@/composables/useLaravel.ts";
+
+const {testStatistics: statistics} = useLaravel();
 
 export default {
     name: "TableTestUsers",
-    computed: {
-        TestStatus() {
-            return TestStatus;
-        },
-    },
+    components: {UserResultList},
     props: {
         items: {
             type: Array,
@@ -106,26 +125,34 @@ export default {
         return {
             testStatusOptions: [],
             filters: ref({
-                global: { value: null },
+                global: {value: null},
                 user_full_name: {
                     operator: FilterOperator.AND,
                     constraints: [
-                        { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+                        {value: null, matchMode: FilterMatchMode.STARTS_WITH},
                     ],
                 },
                 test_end_at: {
                     operator: FilterOperator.AND,
                     constraints: [
-                        { value: null, matchMode: FilterMatchMode.DATE_IS },
+                        {value: null, matchMode: FilterMatchMode.DATE_IS},
                     ],
                 },
                 status: {
                     operator: FilterOperator.OR,
                     constraints: [
-                        { value: null, matchMode: FilterMatchMode.EQUALS },
+                        {value: null, matchMode: FilterMatchMode.EQUALS},
                     ],
                 },
             }),
+            visible: false,
+            result: null,
+            attempts: [],
+            selected: {
+                user: null,
+                test: this.$route?.params.id,
+                try: null,
+            }
         };
     },
     created() {
@@ -135,11 +162,33 @@ export default {
         formatDate,
         testStatusClass,
         testStatusLabel,
+        TestStatus,
         initListStatuses() {
             this.testStatusOptions = Object.keys(TestStatus).map(
                 (key: keyof typeof TestStatus) => TestStatus[key],
             );
         },
+        async openStatUser() {
+            await statistics
+                .show(this.selected.test, this.selected.user, {try: this.selected.try })
+                .then(res => {
+                    this.visible = true
+                    this.result = res.data;
+                })
+        },
+        async getTotalAttempts(){
+            await statistics
+                .totalAttempts(this.selected.test, this.selected.user)
+                .then(res => {
+                    const items = [];
+                    for (let i = 1; i <= res.data; i++) {
+                        items.push({value: i, label: 'Попытка: ' + i})
+                    }
+                    this.selected.try = res.data;
+                    this.attempts = items;
+                })
+        }
     },
+
 };
 </script>

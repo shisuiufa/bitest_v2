@@ -33,18 +33,15 @@
                     {{ formatDate(test.created_at) }}</span
                 >
             </div>
-            <router-link
-                class="btn card__btn"
-                :to="{ name: 'tests', params: { id: this.test.id } }"
-                >Перейти</router-link
-            >
+            <router-link :to="{ name: 'tests', params: { id: this.test.id } }">
+                <Button class="p-primary p-button-sm" label="Перейти" />
+            </router-link>
         </div>
     </article>
 </template>
 
 <script>
-import moment from "moment/moment.js";
-import "moment/locale/ru";
+import {formatDate} from "@/utils/date.ts";
 
 export default {
     name: "CardItem",
@@ -55,9 +52,7 @@ export default {
         },
     },
     methods: {
-        formatDate(date) {
-            return moment(date).format("M MMMM YYYY");
-        },
+        formatDate,
     },
 };
 </script>
@@ -133,16 +128,6 @@ export default {
             text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
             color: #fff;
             text-decoration: none;
-        }
-    }
-
-    &__btn {
-        color: #fff;
-        background-color: var(--brand-color);
-        transition: all 0.2s ease;
-
-        &:hover {
-            background-color: #000;
         }
     }
 }

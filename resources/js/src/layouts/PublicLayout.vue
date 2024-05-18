@@ -1,26 +1,32 @@
 <template>
-    <app-header :dark="this.dark" @change-theme="changeTheme" />
-    <main class="main">
-        <div class="container">
-            <template v-if="$route.name === 'home'">
-                <router-view />
-            </template>
-            <template v-else>
-                <div class="row">
-                    <div class="col-12">
-                        <app-breadcrumbs />
+    <div class="layout-wrapper">
+        <app-header :dark="this.dark" @change-theme="changeTheme"/>
+        <main class="main">
+            <div class="container">
+                <template v-if="$route.name === 'home'">
+                    <router-view/>
+                </template>
+                <template v-else>
+                    <div class="row">
+                        <div class="col-12">
+                            <app-breadcrumbs/>
+                        </div>
                     </div>
-                </div>
-                <router-view />
-            </template>
-        </div>
-        <navbar-menu />
-    </main>
-    <modal-search v-if="this.modalSearch" />
+                    <router-view/>
+                </template>
+            </div>
+            <navbar-menu/>
+            <ScrollTop target="parent"
+                       :threshold="100"
+                       icon="pi pi-arrow-up"
+            />
+        </main>
+        <modal-search v-if="this.modalSearch"/>
+    </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 import ModalSearch from "@/components/modals/ModalSearch.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import NavbarMenu from "@/components/NavbarMenu.vue";
@@ -52,8 +58,7 @@ export default {
         setTheme(theme) {
             if (theme === "dark") {
                 this.dark = true;
-
-                // document.body.classList.add("dark");
+                document.body.classList.add("dark");
             } else {
                 this.dark = false;
                 document.body.classList.remove("dark");
@@ -62,9 +67,9 @@ export default {
         },
         changeTheme() {
             if (this.dark === true) {
-                this.setTheme("light");
+                this.setTheme('light');
             } else {
-                this.setTheme("dark");
+                this.setTheme('dark');
             }
         },
         getMediaPreference() {
@@ -85,6 +90,10 @@ export default {
 </script>
 
 <style lang="scss">
+.layout-wrapper {
+    background-color: var(--surface-ground);
+}
+
 .v-enter-active,
 .v-leave-active {
     transition: opacity 0.5s ease;
@@ -94,11 +103,12 @@ export default {
 .v-leave-to {
     opacity: 0;
 }
+
 .main {
     height: 100%;
     min-height: 100vh;
     padding-top: 55px;
     padding-bottom: 1rem;
-    background-color: var(--body-bg);
+    //background-color: var(--body-bg);
 }
 </style>

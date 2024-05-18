@@ -17,7 +17,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: var(--body-bg);
+    background-color: var(--surface-ground);
     z-index: 1000;
     display: flex;
     justify-content: center;
@@ -28,7 +28,7 @@ export default {
         border-radius: 50%;
         width: 48px;
         height: 48px;
-        color: var(--main-color);
+        color: var(--primary-color);
         &:after,
         &:before {
             content: "";

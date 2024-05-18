@@ -24,6 +24,18 @@ export const testPublishedLabel = (status: boolean | null): string => {
     }
 };
 
+export const answerStatusLabel = (status: boolean | null): string => {
+    switch (status) {
+        case undefined:
+        case null:
+            return "На рассмотрении";
+        case true:
+            return "Верный";
+        case false:
+            return "Не верный";
+    }
+};
+
 export const testStatusClass = (status: TestStatus | null): string => {
     switch (status) {
         case undefined:
@@ -39,6 +51,18 @@ export const testPublishedClass = (status: boolean | null): string => {
     switch (Boolean(status)) {
         case undefined:
         case null:
+        case true:
+            return "success";
+        case false:
+            return "danger";
+    }
+};
+
+export const answerStatusClass = (status: boolean | null): string => {
+    switch (status) {
+        case undefined:
+        case null:
+            return "warning"
         case true:
             return "success";
         case false:

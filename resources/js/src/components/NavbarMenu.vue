@@ -64,10 +64,8 @@ $transition: $timing ease all;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 10px;
-    box-shadow:
-        rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-        rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    background: var(--button-bg);
+    border: 1px solid var(--surface-border);
+    background-color: var(--surface-card);
     padding: 0.5rem 1rem;
     z-index: 200;
     &__menu {
@@ -77,7 +75,6 @@ $transition: $timing ease all;
         margin: 0;
         padding: 0;
     }
-
     &__link {
         position: relative;
         display: flex;
@@ -85,11 +82,11 @@ $transition: $timing ease all;
         justify-content: center;
         height: 2.5rem;
         width: 5.5rem;
-        color: #6a778e;
+        color: var(--text-color-secondary);
         transition: 250ms ease all;
 
         &:hover {
-            color: #fff;
+            color: var(--bs-gray-100);
             span {
                 opacity: 1;
                 bottom: calc(100% + 0.5rem);
@@ -111,8 +108,8 @@ $transition: $timing ease all;
             transform: translateX(-50%);
             opacity: 0;
             pointer-events: none;
-            color: var(--navbar-color);
-            background: var(--button-bg);
+            color: var(--text-color);
+            background-color: var(--surface-card);
             padding: 10px 20px;
             transition: $transition;
             border-radius: 10px;
@@ -133,7 +130,7 @@ $transition: $timing ease all;
                 left: 0;
                 height: 2.5rem;
                 width: 5.5rem;
-                background: var(--brand-color);
+                background: var(--primary-color);
                 border-radius: $borderRadius * 1.75;
                 transition: $timing cubic-bezier(1, 0.2, 0.1, 1.2) all;
             }

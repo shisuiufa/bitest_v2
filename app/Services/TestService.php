@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 
 class TestService
 {
-    public function getListTests(string $search, bool $pagination, int $page, int $perPage = 10, string $filter): LengthAwarePaginator|Collection
+    public function getListTests(string $search, bool $pagination, int $page, int $perPage = 10, string | null $filter): LengthAwarePaginator|Collection
     {
         $tests = Test::where('published', 1);
 

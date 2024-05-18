@@ -1,5 +1,5 @@
 <template>
-    <Breadcrumb :model="breadcrumbs" class="my-3 fw-semibold">
+    <Breadcrumb :model="breadcrumbs" class="my-3 fw-semibold ">
         <template #item="{ item }">
             <router-link
                 v-if="item.route"
@@ -46,4 +46,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.p-breadcrumb {
+    border: 1px solid var(--surface-border);
+}
+</style>
