@@ -7,7 +7,7 @@ export default {
             return await axios
                 .get("/api/user")
                 .then((res) => {
-                    ctx.commit("setUser", res.data);
+                    ctx.commit("setUser", res.data.data);
                     ctx.commit("setAuthenticated", true);
                 })
                 .catch(() => {
@@ -18,7 +18,7 @@ export default {
             return await axios
                 .get("/api/user")
                 .then((res) => {
-                    ctx.commit("setUser", res.data);
+                    ctx.commit("setUser", res.data.data);
                     ctx.commit("setAuthenticated", true);
                     router.push({ name: "home" });
                 })

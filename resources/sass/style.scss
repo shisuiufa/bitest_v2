@@ -30,6 +30,10 @@ ol {
     user-select: none;
 }
 
+.label {
+    color: var(--surface-900)
+}
+
 .p-panel {
     border: 1px solid var(--surface-border);
 }
@@ -172,10 +176,24 @@ ol {
     border: none;
 }
 
-.p-dropdown-trigger {
+.p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover{
+    background: var(--surface-hover)
+}
+
+.p-dropdown-trigger,.p-dialog-header-icon {
     color: var(--text-color-secondary);
 }
 
 .p-button-rounded {
     border-radius: 2rem;
 }
+
+.p-dialog {
+    border: 1px solid var(--surface-border);
+    background: var(--surface-card);
+}
+.p-dialog .p-dialog-content, .p-dialog-header {
+    color: var(--surface-700);
+    background: var(--surface-card);
+}
+

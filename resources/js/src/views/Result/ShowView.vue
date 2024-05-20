@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <Dialog v-model:visible="visibilityAnswers" modal header="Ваши ответы" :style="{ width: '80vw' }">
+        <Dialog v-model:visible="visibilityAnswers" modal header="Ваши ответы" :style="{ width: '60vw' }">
             <ListAnswers
                 :answerCounter="this.result?.answerCounter"
                 :questionCounter="this.result?.questionCounter"

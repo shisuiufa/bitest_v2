@@ -23,7 +23,7 @@ export default class AuthClient extends ApiClient {
 
         await this.getCsrfCookie();
 
-        return await this.client.post(endpoint, data ).then((response: { data: User }) => response.data)
+        return await this.client.post(endpoint, data).then((response: { data: User }) => response.data)
     }
 
 }

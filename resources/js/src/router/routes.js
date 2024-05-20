@@ -18,19 +18,20 @@ import StatisticsView from "@/views/Test/StatisticsView.vue";
 
 import ResultIndexView from "@/views/Result/IndexView.vue";
 import ResultShowView from "@/views/Result/ShowView.vue";
+import {Role} from "@/models/user.ts";
 
 const routes = [
     {
         path: "/login",
         component: LoginView,
         name: "login",
-        meta: { breadcrumb: "Авторизация", middleware: "guest" },
+        meta: { breadcrumb: "Авторизация", middleware: ["guest"] },
     },
     {
         path: "/",
         component: PublicLayout,
         redirect: { name: "home" },
-        meta: { breadcrumb: "Главная", middleware: "auth" },
+        meta: { breadcrumb: "Главная", middleware: [Role.User]},
         children: [
             {
                 path: "",
@@ -62,7 +63,7 @@ const routes = [
                 path: "/created-tests",
                 component: CreatedTestLayout,
                 redirect: { name: "created-tests" },
-                meta: { breadcrumb: "Мои тесты" },
+                meta: { breadcrumb: "Мои тесты", middleware: [Role.Moderator, Role.Admin]},
                 children: [
                     {
                         path: "",
@@ -124,7 +125,7 @@ const routes = [
         path: "/:pathMatch(.*)*",
         component: NotFoundView,
         name: "not-found",
-        meta: { breadcrumb: "Страница не найдена" },
+        meta: { breadcrumb: "Страница не найдена", middleware: [Role.User] },
     },
 ];
 

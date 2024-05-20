@@ -1,13 +1,13 @@
 <template>
     <nav class="navbar">
         <ul class="navbar__menu">
-            <li class="navbar__item">
+            <li class="navbar__item" v-if="this.hasRole([Role.User])">
                 <router-link class="navbar__link" :to="{ name: 'home' }">
                     <i class="bi bi-house-door"></i>
                     <span>Главная</span>
                 </router-link>
             </li>
-            <li class="navbar__item">
+            <li class="navbar__item" v-if="this.hasRole([Role.Admin, Role.Moderator])">
                 <router-link
                     class="navbar__link"
                     :to="{ name: 'created-tests' }"
@@ -16,13 +16,13 @@
                     <span>Мои тесты</span>
                 </router-link>
             </li>
-            <li class="navbar__item">
+            <li class="navbar__item" v-if="this.hasRole([Role.User])">
                 <router-link class="navbar__link" :to="{ name: 'all-result' }">
                     <i class="bi bi-card-checklist"></i>
                     <span>Результаты</span>
                 </router-link>
             </li>
-            <li class="navbar__item">
+            <li class="navbar__item" v-if="this.hasRole([Role.Admin])">
                 <router-link class="navbar__link" :to="{ name: 'home' }">
                     <i class="bi bi-sliders"></i>
                     <span>Настройки</span>
@@ -33,8 +33,24 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import {Role} from "@/models/user.ts";
+
 export default {
     name: "NavbarMenu",
+    computed: {
+        Role() {
+            return Role
+        },
+        ...mapGetters(["user"]),
+
+    },
+    methods: {
+        hasRole(roles){
+            const userRoles = this.user.roles.map(role => role.slug);
+            return userRoles.some(role => roles.includes(role))
+        }
+    }
 };
 </script>
 

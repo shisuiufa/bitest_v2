@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands;
 
+
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
+use App\Enums\RoleType;
 
 class CreateAdminCommand extends Command
 {
@@ -58,6 +60,6 @@ class CreateAdminCommand extends Command
         $admin->save();
         $admin->fresh();
 
-        $admin->roles()->attach($roleAdmin->id);
+        $admin->roles()->attach([RoleType::Admin->value, RoleType::User->value]);
     }
 }
