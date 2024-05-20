@@ -25,7 +25,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return response()->json(['success' => '']);
+            return response()->json(['success' => 'Аутентификация прошла успешно']);
         }
 
         return response()->json(['errors' => ["Ошибка входа. Пожалуйста, проверьте правильность введенного логина и пароля и попробуйте снова"]], 403);

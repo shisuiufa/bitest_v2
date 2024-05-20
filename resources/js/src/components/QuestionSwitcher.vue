@@ -54,21 +54,21 @@ export default {
         align-items: center;
         width: 35px;
         height: 35px;
-        background-color: var(--button-bg-second);
+        background-color: var(--surface-hover);
         border-radius: 50%;
         cursor: pointer;
         font-weight: 600;
-        color: var(--main-color);
+        color: var(--surface-900);
         font-size: 14px;
         transition: all 0.1s linear;
         &_answered {
             color: #fff;
-            background-color: var(--brand-color);
+            background-color: var(--primary-color);
             opacity: 0.5;
         }
         &_active {
             color: #fff;
-            background-color: var(--brand-color);
+            background-color: var(--primary-color);
             opacity: 1;
         }
     }

@@ -18,44 +18,40 @@
                                 v-if="this.result.percent"
                             >
                                 Процент выполнения заданий:
-                                {{ this.result.percent }}% <br />
+                                {{ this.result.percent }}% <br/>
                                 Оценка: {{ this.result.score }}
                             </p>
                             <p class="text-white mb-0 fs-5" v-else>
                                 Тест еще не проверен
                             </p>
                         </div>
-                        <UiButton @click="showAnswers" class="fs-6"
-                            >Ваши ответы</UiButton
-                        >
+                        <Button @click="visibilityAnswers = true" class="p-primary p-button-sm fs-6"
+                                label="Ваши ответы"/>
                     </div>
                 </div>
             </div>
         </div>
-        <transition name="slide-fade">
-            <div class="row pb-5" ref="answers" v-show="visibilityAnswers">
-                <div class="col-12">
-                    <ListAnswers
-                        :answerCounter="this.result?.answerCounter"
-                        :questionCounter="this.result.questionCounter"
-                        :answers="this.result?.answers"
-                    />
-                </div>
-            </div>
-        </transition>
+        <Dialog v-model:visible="visibilityAnswers" modal header="Ваши ответы" :style="{ width: '80vw' }">
+            <ListAnswers
+                :answerCounter="this.result?.answerCounter"
+                :questionCounter="this.result?.questionCounter"
+                :answers="this.result?.answers"
+            />
+        </Dialog>
     </div>
 </template>
 
 <script>
 import UiButton from "@/components/UI/UiButton.vue";
-import ListAnswers from "@/components/ListAnswers.vue";
-import { useLaravel } from "@/composables/useLaravel.ts";
+import ListAnswers from "@/components/lists/ListAnswers.vue";
+import {useLaravel} from "@/composables/useLaravel.ts";
 import * as toast from "@/composables/useNotifications.ts";
-const { result } = useLaravel();
+
+const {result} = useLaravel();
 
 export default {
     name: "ResultShowView",
-    components: { ListAnswers, UiButton },
+    components: {ListAnswers, UiButton},
     data() {
         return {
             result: {},
@@ -76,21 +72,6 @@ export default {
                     );
                 });
         },
-        showAnswers() {
-            this.visibilityAnswers = true;
-            this.$nextTick(() => {
-                const answersElement = this.$refs.answers;
-                const currentPosition = window.scrollY;
-                const targetPosition =
-                    answersElement.getBoundingClientRect().top +
-                    currentPosition -
-                    60;
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: "smooth",
-                });
-            });
-        },
     },
     mounted() {
         this.getResult();
@@ -99,20 +80,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.slide-fade-enter-active {
-    transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-    transform: translateX(20px);
-    opacity: 0;
-}
-
 .result {
     &__header-wrap {
         width: 100%;

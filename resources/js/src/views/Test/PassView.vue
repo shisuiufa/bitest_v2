@@ -22,9 +22,7 @@
                     ></ui-timer>
                 </div>
                 <div class="col-2 text-end">
-                    <ui-button @click="this.modalShow = !this.modalShow"
-                        >Завершить</ui-button
-                    >
+                    <Button @click="this.modalShow = !this.modalShow" label="Завершить"  class="p-primary"/>
                 </div>
             </div>
             <div class="row" v-if="selectedQuestion">
@@ -40,11 +38,11 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <ui-button
+                    <Button
                         @click="this.nextQuestion"
-                        class="test__btn next-question"
-                        >Следующий</ui-button
-                    >
+                        label="Следующий"
+                        class="p-primary"
+                    />
                 </div>
             </div>
         </div>

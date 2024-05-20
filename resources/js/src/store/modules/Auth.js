@@ -3,8 +3,8 @@ import axios from "axios";
 
 export default {
     actions: {
-        checkAuth(ctx) {
-            return axios
+        async checkAuth(ctx) {
+            return await axios
                 .get("/api/user")
                 .then((res) => {
                     ctx.commit("setUser", res.data);
@@ -14,8 +14,8 @@ export default {
                     ctx.dispatch("logout");
                 });
         },
-        login(ctx) {
-            return axios
+        async login(ctx) {
+            return await axios
                 .get("/api/user")
                 .then((res) => {
                     ctx.commit("setUser", res.data);
@@ -26,10 +26,10 @@ export default {
                     ctx.dispatch("logout");
                 });
         },
-        logout(ctx) {
+        async logout(ctx) {
             ctx.commit("setUser", {});
             ctx.commit("setAuthenticated", false);
-            axios.post("/logout");
+            await axios.post("/logout");
         },
     },
     mutations: {

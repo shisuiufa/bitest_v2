@@ -73,6 +73,7 @@ export default {
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+        color: var(--surface-900);
     }
 
     &__title {
@@ -80,7 +81,6 @@ export default {
     }
 
     &__desc {
-        color: var(--main-color);
         margin-bottom: 10px;
     }
 

@@ -23,6 +23,7 @@
                         v-show="startButtonText"
                         @click="startTest"
                         :label="startButtonText"
+                        class="p-primary"
                     />
                 </div>
                 <div class="order-1 mb-4 order-lg-2 col-lg-6 mb-lg-0">

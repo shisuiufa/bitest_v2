@@ -1,4 +1,5 @@
 import { TestStatus } from "@/models/test";
+import { QuestionType} from "@/models/question";
 
 export const testStatusLabel = (status: TestStatus | null): string => {
     switch (status) {
@@ -10,6 +11,19 @@ export const testStatusLabel = (status: TestStatus | null): string => {
             return "В ожидании";
         case TestStatus.Ongoing:
             return "В процессе";
+    }
+};
+
+export const questionTypeLabel = (type: QuestionType | null): string => {
+    switch (type) {
+        case undefined:
+        case null:
+        case QuestionType.Open:
+            return "Открытые вопросы";
+        case QuestionType.OneOption:
+            return "Один вариант";
+        case QuestionType.SeveralOptions:
+            return "Несколько вариантов";
     }
 };
 

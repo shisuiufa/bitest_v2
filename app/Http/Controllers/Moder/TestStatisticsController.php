@@ -21,6 +21,7 @@ class TestStatisticsController extends Controller
     public function show(Test $test, User $user, Request $request): ShowResultResource
     {
         $userTry = $request->input('try');
+
         $resultUserQuery = $test->testUsers()
             ->whereNot('status', TestStatus::ONGOING)
             ->where('user_id', $user->id);

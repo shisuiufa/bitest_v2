@@ -1,7 +1,7 @@
 import PublicLayout from "@/layouts/PublicLayout.vue";
 import CreatedTestLayout from "@/layouts/CreatedTestLayout.vue";
 
-import LoginView from "@/views/Auth/LoginView.vue";
+import LoginView from "@/views/Auth/IndexView.vue";
 
 import NotFoundView from "@/views/NotFound.vue";
 

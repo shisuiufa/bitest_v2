@@ -313,9 +313,10 @@ class TestService
 
         if(empty($test->test_end_at)) {
             $test->test_end_at = now();
-            $test->update();
-            $test->fresh();
         }
+
+        $test->update();
+        $test->fresh();
 
         return $test;
     }

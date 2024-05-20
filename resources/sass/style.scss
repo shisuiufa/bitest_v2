@@ -25,6 +25,11 @@ ol {
     margin: 0;
 }
 
+.cursor-none {
+    pointer-events: none;
+    user-select: none;
+}
+
 .p-panel {
     border: 1px solid var(--surface-border);
 }
@@ -39,6 +44,10 @@ ol {
     background: var(--primary-color);
     border-color: var(--primary-color);
     color: var(--bs-gray-100)
+}
+
+.p-button {
+    border-radius: 5px;
 }
 
 .p-button.p-button-success, .p-button-group.p-button-success > .p-button, .p-splitbutton.p-button-success > .p-button {
@@ -153,3 +162,20 @@ ol {
     background: #34d399;
 }
 
+.p-inputtext {
+    color: var(--surface-700);
+    background: var(--surface-ground);
+    border: 1px solid var(--surface-border);
+}
+.p-dropdown-label {
+    background: transparent;
+    border: none;
+}
+
+.p-dropdown-trigger {
+    color: var(--text-color-secondary);
+}
+
+.p-button-rounded {
+    border-radius: 2rem;
+}

@@ -26,4 +26,9 @@ class UserAnswer extends Model
     {
         return $this->belongsTo(Question::class);
     }
+
+    public function testUser(): BelongsTo
+    {
+        return $this->belongsTo(TestUser::class, 'test_user_id');
+    }
 }

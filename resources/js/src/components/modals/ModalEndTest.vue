@@ -3,11 +3,11 @@
         <div class="modal__box">
             <div class="modal__header">
                 <h3 class="modal__title">
-                    <template v-if="testPassed"> Тест завершен! </template>
+                    <template v-if="testPassed"> Тест завершен!</template>
                     <template v-else-if="testError">
                         {{ messages }}
                     </template>
-                    <template v-else> Завершение теста </template>
+                    <template v-else> Завершение теста</template>
                 </h3>
                 <div
                     v-show="!loading && !testPassed && !testError"
@@ -43,18 +43,19 @@
                 </div>
             </div>
             <div class="modal__footer">
-                <ui-button
+                <Button
                     v-if="!testError && !loading && !testPassed"
                     @click="this.$emit('post-test')"
-                    >Завершить
-                </ui-button>
-                <button-link
+                    label="Завершить"
+                    class="p-primary"
+                />
+                <router-link
                     v-else-if="(!loading && testPassed) || testError"
                     :to="{ name: 'show-result', params: { id: testId } }"
                 >
-                    Результаты
-                </button-link>
-                <button-spinner v-else> Загрузка... </button-spinner>
+                    <Button class="p-primary" label="Результаты"/>
+                </router-link>
+                <button-spinner v-else> Загрузка...</button-spinner>
             </div>
         </div>
     </div>
@@ -64,7 +65,7 @@
 import UiButton from "@/components/UI/UiButton.vue";
 import ButtonSpinner from "@/components/UI/ButtonSpinner.vue";
 import ButtonLink from "@/components/UI/ButtonLink.vue";
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
     name: "ModalEndTest",
@@ -127,11 +128,12 @@ export default {
 
     &__box {
         position: relative;
-        background-color: var(--body-bg-secondary);
+        background-color: var(--surface-card);
         width: 100%;
         max-width: 500px;
         border-radius: 10px;
         padding: 20px 30px;
+        color: var(--surface-900);
     }
 
     &__header {
@@ -143,7 +145,7 @@ export default {
 
     &__close {
         cursor: pointer;
-        color: var(--main-color);
+        color: var(--surface-900);
         opacity: 0.5;
         transition: opacity 0.2s ease;
 
@@ -169,14 +171,14 @@ export default {
 
     &__list {
         list-style: none;
-        color: var(--main-color);
+        color: var(--surface-900);
         font-size: inherit;
         margin: 0 0 10px 0;
         padding: 0;
         max-height: 200px;
         overflow: auto;
         border-radius: 5px;
-        background-color: var(--button-bg-second);
+        background-color: var(--surface-ground);
 
         li {
             padding: 10px 10px 0 10px;

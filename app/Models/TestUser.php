@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasEvents;
+use App\Enums\QuestionType;
 
 class TestUser extends Model
 {
@@ -43,5 +44,23 @@ class TestUser extends Model
     public function answers(): HasMany
     {
         return $this->hasMany(UserAnswer::class);
+    }
+
+    public function openAnswers(): HasMany
+    {
+        return $this->answers()->whereHas('question', function ($query) {
+            $query->whereHas('type', function ($subQuery) {
+                $subQuery->where('value', QuestionType::Open);
+            });
+        });
+    }
+
+    public function closeAnswers(): HasMany
+    {
+        return $this->answers()->whereHas('question', function ($query) {
+            $query->whereHas('type', function ($subQuery) {
+                $subQuery->whereNot('value', QuestionType::Open);
+            });
+        });
     }
 }

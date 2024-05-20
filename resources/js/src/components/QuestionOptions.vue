@@ -1,12 +1,7 @@
 <template>
     <div class="options">
         <div v-if="this.selectedQuestion.type === 0" class="options__item">
-            <input
-                type="text"
-                class="form-control options__input"
-                v-model="this.userAnswer.openAnswer"
-                @blur="updateAnswerDb"
-            />
+            <Textarea v-model="this.userAnswer.openAnswer" class="w-100" autoResize rows="5" cols="30" @blur="updateAnswerDb" />
         </div>
         <div
             v-else
@@ -152,12 +147,12 @@ export default {
     }
 
     &__check-input:checked {
-        background-color: var(--brand-color);
-        border-color: var(--brand-color);
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
     }
 
     &__input:focus {
-        border-color: var(--border-color-focus);
+        border-color: var(--surface-border);
         box-shadow: none;
     }
 }

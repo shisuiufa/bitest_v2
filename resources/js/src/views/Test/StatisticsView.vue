@@ -38,6 +38,7 @@
             <Panel header="Список пользователей">
                 <TableTestUsers
                     v-model:filters="filters"
+                    @updateValue="this.getData()"
                     :items="statistics?.users"
                 />
             </Panel>
@@ -66,18 +67,19 @@ export default {
         return {
             statistics: [],
             filters: {},
+            testId: this.$route?.params.id,
         };
     },
     mounted() {
-        this.getData(this.$route?.params.id);
+        this.getData();
     },
     created() {
         this.initFilters();
     },
     methods: {
-        async getData(testId) {
+        async getData() {
             await statistics
-                .index(testId)
+                .index(this.testId)
                 .then((res) => {
                     this.statistics = res.data;
                 })

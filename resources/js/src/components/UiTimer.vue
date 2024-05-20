@@ -46,6 +46,7 @@ export default {
 .timer {
     font-size: 20px;
     font-weight: 600;
-    color: var(--main-color);
+    color: var(--surface-900);
+    background-color: var(--surface-hover);
 }
 </style>

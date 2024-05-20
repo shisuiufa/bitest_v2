@@ -83,15 +83,25 @@
     <Dialog v-model:visible="visible" modal header="Результат пользователя" :style="{ width: '80vw' }">
         <DataView :value="this.result.answers">
             <template #header>
-                <Dropdown @change="openStatUser()"
-                          v-model="this.selected.try"
-                          :options="this.attempts"
-                          placeholder="Попытка пользователя"
-                          optionValue="value"
-                          optionLabel="label"/>
+                <div class="d-flex gap-2">
+                    <Dropdown @change="openStatUser()"
+                              v-model="this.selected.try"
+                              :options="this.attempts"
+                              placeholder="Попытка пользователя"
+                              optionValue="value"
+                              optionLabel="label"
+                    />
+                    <Dropdown @change="openStatUser()"
+                              v-model="this.selected.questionType"
+                              :options="questionTypes"
+                              placeholder="Вопросы"
+                              optionValue="value"
+                              optionLabel="label"
+                    />
+                </div>
             </template>
             <template #list="slotProps">
-                <UserResultList @updateValue="openStatUser()" :items="slotProps.items"/>
+                <UserResultList @updateValue="openStatUser(); this.$emit('update-value');" :items="slotProps.items"/>
             </template>
         </DataView>
     </Dialog>
@@ -104,6 +114,7 @@ import {testStatusLabel, testStatusClass} from "@/utils/enum.ts";
 import {FilterMatchMode, FilterOperator} from "primevue/api";
 import {formatDate} from "@/utils/date.ts";
 import {TestStatus} from "@/models/test.ts";
+import {QuestionType} from "@/models/question.ts";
 import {useLaravel} from "@/composables/useLaravel.ts";
 
 const {testStatistics: statistics} = useLaravel();
@@ -148,21 +159,38 @@ export default {
             visible: false,
             result: null,
             attempts: [],
+            questionTypes: [
+                {
+                    value: 'all',
+                    label: 'Все вопросы'
+                },
+                {
+                    value: 'open',
+                    label: 'Открытые вопросы'
+                },
+                {
+                    value: 'close',
+                    label: 'Закрытые вопросы'
+                },
+            ],
             selected: {
                 user: null,
                 test: this.$route?.params.id,
                 try: null,
+                questionType: null,
             }
         };
     },
     created() {
         this.initListStatuses();
+        this.selected.questionType = this.questionTypes[0].value
     },
     methods: {
         formatDate,
         testStatusClass,
         testStatusLabel,
         TestStatus,
+        QuestionType,
         initListStatuses() {
             this.testStatusOptions = Object.keys(TestStatus).map(
                 (key: keyof typeof TestStatus) => TestStatus[key],
@@ -170,7 +198,7 @@ export default {
         },
         async openStatUser() {
             await statistics
-                .show(this.selected.test, this.selected.user, {try: this.selected.try })
+                .show(this.selected.test, this.selected.user, {try: this.selected.try, questionType: this.selected.questionType  })
                 .then(res => {
                     this.visible = true
                     this.result = res.data;
@@ -189,6 +217,6 @@ export default {
                 })
         }
     },
-
+    emits: ['update-value'],
 };
 </script>
