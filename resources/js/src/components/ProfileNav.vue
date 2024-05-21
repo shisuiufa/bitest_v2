@@ -89,13 +89,17 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        border:1px solid var(--surface-border)
     }
     &__img {
-        width: 20px;
-        height: 20px;
-        font-size: 17px;
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
         color: var(--text-color-secondary);
         object-fit: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     &__icon {
         color: #aeb7c2;

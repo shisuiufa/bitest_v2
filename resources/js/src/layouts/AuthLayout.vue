@@ -1,153 +1,24 @@
 <template>
     <main class="wrap-auth">
-        <div class="container">
+        <Panel>
             <div class="auth mx-auto">
                 <div class="auth__img">
-                    <img src="/images/auth.png" alt="Вход в систему" />
+                    <img src="/public/images/auth.png" alt="CheckZone"/>
                 </div>
-                <div class="auth__form">
-                    <h3 class="auth__title">Вход в систему</h3>
-                    <form method="post">
-                        <div class="input-wrap">
-                            <input
-                                v-model="this.form.email"
-                                type="email"
-                                name="email"
-                                id="email"
-                                class="auth__input"
-                                autocomplete="off"
-                                placeholder="Email"
-                                required
-                            />
-                            <label class="auth__label" for="login"
-                                >Логин:</label
-                            >
-                            <div class="auth__icon">
-                                <svg
-                                    enable-background="new 0 0 100 100"
-                                    version="1.1"
-                                    viewBox="0 0 100 100"
-                                    xml:space="preserve"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <g transform="translate(0 -952.36)">
-                                        <path
-                                            d="m17.5 977c-1.3 0-2.4 1.1-2.4 2.4v45.9c0 1.3 1.1 2.4 2.4 2.4h64.9c1.3 0 2.4-1.1 2.4-2.4v-45.9c0-1.3-1.1-2.4-2.4-2.4h-64.9zm2.4 4.8h60.2v1.2l-30.1 22-30.1-22v-1.2zm0 7l28.7 21c0.8 0.6 2 0.6 2.8 0l28.7-21v34.1h-60.2v-34.1z"
-                                        ></path>
-                                    </g>
-                                    <rect
-                                        class="st0"
-                                        width="100"
-                                        height="100"
-                                    ></rect>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="input-wrap">
-                            <input
-                                v-model="this.form.password"
-                                type="password"
-                                name="password"
-                                id="password"
-                                class="auth__input"
-                                autocomplete="off"
-                                placeholder="Пароль"
-                                required
-                            />
-                            <label class="auth__label" for="password"
-                                >Пароль:</label
-                            >
-                            <div class="auth__icon">
-                                <svg
-                                    enable-background="new 0 0 24 24"
-                                    version="1.1"
-                                    viewBox="0 0 24 24"
-                                    xml:space="preserve"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <rect
-                                        class="st0"
-                                        width="24"
-                                        height="24"
-                                    ></rect>
-                                    <path
-                                        class="st1"
-                                        d="M19,21H5V9h14V21z M6,20h12V10H6V20z"
-                                    ></path>
-                                    <path
-                                        class="st1"
-                                        d="M16.5,10h-1V7c0-1.9-1.6-3.5-3.5-3.5S8.5,5.1,8.5,7v3h-1V7c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5V10z"
-                                    ></path>
-                                    <path
-                                        class="st1"
-                                        d="m12 16.5c-0.8 0-1.5-0.7-1.5-1.5s0.7-1.5 1.5-1.5 1.5 0.7 1.5 1.5-0.7 1.5-1.5 1.5zm0-2c-0.3 0-0.5 0.2-0.5 0.5s0.2 0.5 0.5 0.5 0.5-0.2 0.5-0.5-0.2-0.5-0.5-0.5z"
-                                    ></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <ul v-if="this.errors" class="auth__errors">
-                            <li v-for="error in this.errors">
-                                {{
-                                    typeof error === "object"
-                                        ? error.join(", ")
-                                        : error
-                                }}
-                            </li>
-                        </ul>
-                        <ui-button
-                            @click="this.submitForm()"
-                            :class="this.errors ? '' : 'mt-4'"
-                            >Войти</ui-button
-                        >
-                    </form>
-                </div>
+                <RouterView/>
             </div>
-        </div>
+        </Panel>
     </main>
+
 </template>
 
 <script>
-import UiButton from "@/components/UI/UiButton.vue";
-import axios from "axios";
-import { mapActions } from "vuex";
-
 export default {
     name: "AuthLayout",
-    components: { UiButton },
-    data() {
-        return {
-            form: {
-                email: "",
-                password: "",
-            },
-            errors: null,
-        };
-    },
-    methods: {
-        ...mapActions(["login"]),
-        submitForm() {
-            this.errors = null;
-            axios.get("/sanctum/csrf-cookie").then((response) => {
-                axios
-                    .post("/login", this.form)
-                    .then((res) => {
-                        this.login();
-                    })
-                    .catch((err) => {
-                        if (
-                            err.response.status === 403 ||
-                            err.response.status === 422
-                        ) {
-                            this.errors = err.response.data.errors;
-                        }
-                    });
-            });
-        },
-    },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .wrap-auth {
     width: 100%;
     min-height: 100vh;
@@ -155,17 +26,31 @@ export default {
     justify-content: center;
     align-items: center;
     background: #1d1e23;
+
+    .p-panel {
+        border-radius: 15px;
+        .p-panel-header, .p-panel-content {
+            padding: 0;
+        }
+    }
+
 }
 
 .auth {
     width: 100%;
-    max-width: 650px;
+    max-width: 750px;
     display: flex;
     overflow: hidden;
     border-radius: 15px;
 
+    &__link {
+        margin-left: auto;
+        color: var(--primary-color);
+        width: max-content;
+    }
+
     &__img {
-        width: 40%;
+        width: 50%;
         overflow: hidden;
 
         img {
@@ -185,11 +70,11 @@ export default {
         text-align: center;
     }
 
-    &__title {
+    h1,h2,h3,h4,h5,h6 {
         font-size: 1.5rem;
         letter-spacing: 2px;
         margin-bottom: 20px;
-        color: #000;
+        color: #000 !important;
     }
 
     .input-wrap {
@@ -198,9 +83,21 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+
+        &_icon_not {
+            input {
+                margin-left: inherit;
+            }
+
+            label {
+                padding-left: 21px
+            }
+        }
     }
 
     &__input {
+        position: relative;
+        z-index: 2;
         display: block;
         width: calc(100% - 44px);
         height: 56px;
@@ -212,7 +109,7 @@ export default {
         border-bottom: 1px solid #1d1e23;
 
         &:focus {
-            border-bottom: 1px solid var(--brand-color);
+            border-bottom: 1px solid var(--primary-color);
         }
     }
 
@@ -239,6 +136,7 @@ export default {
 
     &__label {
         position: absolute;
+        z-index: 1;
         top: calc(50% - 7px);
         left: 0;
         opacity: 0;
@@ -253,11 +151,12 @@ export default {
 
     &__input:not(:placeholder-shown) + &__label {
         transform: translateY(-12px);
+        z-index: 3;
         opacity: 0.7;
     }
 
     &__input:valid:not(:placeholder-shown) {
-        border-bottom: 1px solid var(--brand-color) !important;
+        border-bottom: 1px solid var(--primary-color) !important;
     }
 
     &__input:valid:not(:placeholder-shown) + &__label + &__icon {
@@ -265,7 +164,7 @@ export default {
 
         svg {
             path {
-                fill: var(--brand-color);
+                fill: var(--primary-color);
             }
         }
     }

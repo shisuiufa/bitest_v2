@@ -1,17 +1,11 @@
 .bg-success {
     background-color: #2dce89 !important;
 }
-//.form-check-input {
-//    &:focus {
-//        border-color: var(--brand-color) !important;
-//        outline: 0;
-//        box-shadow: none;
-//    }
-//    &:checked {
-//        background-color: var(--brand-color) !important;
-//        border-color: var(--brand-color) !important;
-//    }
-//}
+
+h1, h2, h3, h4, h5, h6 ,p, .label {
+    color: var(--surface-900)
+}
+
 .content {
     padding: 40px;
     border-radius: 15px;
@@ -28,10 +22,6 @@ ol {
 .cursor-none {
     pointer-events: none;
     user-select: none;
-}
-
-.label {
-    color: var(--surface-900)
 }
 
 .p-panel {
@@ -197,3 +187,11 @@ ol {
     background: var(--surface-card);
 }
 
+.p-inputtext.p-invalid.p-component {
+    border-color: #f87171 !important;
+    &:focus,
+    &:hover {
+        outline-color: transparent;
+        border-color: transparent;
+    }
+}

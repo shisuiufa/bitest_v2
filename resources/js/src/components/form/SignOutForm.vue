@@ -40,6 +40,9 @@ export default {
 
 <template>
     <form method="post" @submit.prevent="this.submit">
+        <h3>
+            Регистрация
+        </h3>
         <div class="input-wrap input-wrap_icon_not">
             <input
                 v-model="this.form.name"

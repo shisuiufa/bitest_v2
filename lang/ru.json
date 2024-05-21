@@ -1,0 +1,17 @@
+{
+    "(and :count more error)": "(Еще одна ошибка)",
+    "(and :count more errors)": "(Еще несколько ошибок)",
+    "Reset Password Notification": "Уведомление о сбросе пароля",
+    "You are receiving this email because we received a password reset request for your account.": "Вы получили это уведомление, поскольку мы получили запрос на сброс пароля вашей учетной записи.",
+    "Reset Password": "Сбросить пароль",
+    "This password reset link will expire in :count minutes.": "Ссылка для сброса пароля будет действительна в течение :count минут.",
+    "If you did not request a password reset, no further action is required.": "Если вы не запрашивали сброс пароля, то дальнейшие действия не требуются.",
+    "Hello!": "Здравствуйте!",
+    "Regards": "С уважением",
+    "Verify Email Address": "Подтверждение адреса электронной почты",
+    "Please click the button below to verify your email address.": "Пожалуйста, нажмите на кнопку ниже, чтобы подтвердить ваш адрес электронной почты.",
+    "If you did not create an account, no further action is required.": "Если вы не создавали учетную запись, то дальнейшие действия не требуются.",
+    "All rights reserved.": "Все права защищены.",
+    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "Если у вас возникли проблемы с нажатием кнопки \":actionText\", скопируйте и вставьте следующий URL в адресную строку вашего веб-браузера:",
+    "There was an error on row :row. :message": "Ошибка в строке :row. :message"
+}

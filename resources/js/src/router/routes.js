@@ -1,7 +1,9 @@
 import PublicLayout from "@/layouts/PublicLayout.vue";
 import CreatedTestLayout from "@/layouts/CreatedTestLayout.vue";
 
+import AuthLayout from "@/layouts/AuthLayout.vue";
 import LoginView from "@/views/Auth/IndexView.vue";
+import ResetPasswordView from "@/views/Auth/ResetPasswordView.vue";
 
 import NotFoundView from "@/views/NotFound.vue";
 
@@ -22,10 +24,23 @@ import {Role} from "@/models/user.ts";
 
 const routes = [
     {
-        path: "/login",
-        component: LoginView,
-        name: "login",
-        meta: { breadcrumb: "Авторизация", middleware: ["guest"] },
+        component: AuthLayout,
+        redirect: { name: "login" },
+        meta: { middleware: ["guest"] },
+        children: [
+            {
+                path: "/login",
+                component: LoginView,
+                name: "login",
+                meta: { breadcrumb: "Авторизация" },
+            },
+            {
+                path: "/password/reset/:token",
+                component: ResetPasswordView,
+                name: 'reset-password',
+                meta: { breadcrumb: "Сброс пароля" },
+            },
+        ]
     },
     {
         path: "/",

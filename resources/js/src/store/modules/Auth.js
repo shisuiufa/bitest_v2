@@ -26,6 +26,13 @@ export default {
                     ctx.dispatch("logout");
                 });
         },
+        async updateState(ctx) {
+            return await axios
+                .get("/api/user")
+                .then((res) => {
+                    ctx.commit("setUser", res.data.data);
+                })
+        },
         async logout(ctx) {
             ctx.commit("setUser", {});
             ctx.commit("setAuthenticated", false);

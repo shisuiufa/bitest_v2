@@ -19,11 +19,28 @@ export default class AuthClient extends ApiClient {
     }
 
     async register(data: RegisterUser): Promise<User> {
-        const endpoint = 'register'
+        const endpoint = '/register'
 
         await this.getCsrfCookie();
 
         return await this.client.post(endpoint, data).then((response: { data: User }) => response.data)
     }
+
+    async sendResetLinkEmail(email: string){
+        const endpoint = '/password/email'
+
+        await this.getCsrfCookie();
+
+        return await this.client.post(endpoint, {email}).then((response: { data: User }) => response.data)
+    }
+
+    async resetPassword(form: object){
+        const endpoint = '/password/reset'
+
+        await this.getCsrfCookie();
+
+        return await this.client.post(endpoint, form).then((response: { data: User }) => response.data)
+    }
+
 
 }
