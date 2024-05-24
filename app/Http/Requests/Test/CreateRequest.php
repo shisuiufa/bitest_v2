@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Test;
 
+use App\Enums\QuestionEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateRequest extends FormRequest
 {
@@ -14,13 +16,29 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'info.title' => 'required|string',
-            'info.time' => 'nullable|integer',
-            'info.attempts' => 'nullable|integer',
-            'info.limitQuestions' => 'nullable|integer',
-            'info.userId' => 'required|integer',
-            'info.image' => 'required|string',
+            'title' => 'required|string',
+            'desc' => 'nullable|string',
+            'image' => 'required|string',
+            'limit_questions' => 'nullable|integer',
+            'attempts' => 'nullable|integer',
+            'time_complete' => 'nullable|integer',
+            'published' => 'required',
             'questions' => 'required|array',
+            'questions.*.name' => 'required|string',
+            'questions.*.image' => 'nullable|string',
+            'questions.*.question_type_id' => ['required', Rule::enum(QuestionEnum::class)],
+            'questions.*.options' => 'required_if:questions.*.question_type_id,' . QuestionEnum::Close->value . '|nullable|array',
+            'questions.*.options.*.name' => 'required_if:questions.*.question_type_id,' . QuestionEnum::Close->value . '|nullable|string',
+            'questions.*.options.*.value' => 'required_if:questions.*.question_type_id,' . QuestionEnum::Close->value . '|nullable|boolean',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'questions.*.name.required_if' => 'Заголовок вопроса № :position не заполнен.',
+            'questions.*.options.*.name.required_if' => 'Варианты для вопроса № :position не заполнены.',
+        ];
+    }
+
 }

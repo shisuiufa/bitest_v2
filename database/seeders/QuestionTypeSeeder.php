@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\OptionType;
+use App\Enums\QuestionEnum;
 use App\Models\QuestionType;
-use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class QuestionTypeSeeder extends Seeder
@@ -14,19 +13,14 @@ class QuestionTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $typeOpenOption = new QuestionType();
-        $typeOpenOption->caption = 'Открытый';
-        $typeOpenOption->value = 0;
-        $typeOpenOption->save();
+        $typeOpen = new QuestionType();
+        $typeOpen->caption = 'Открытый';
+        $typeOpen->value = QuestionEnum::Open->value;
+        $typeOpen->save();
 
-        $typeOneOption = new QuestionType();
-        $typeOneOption->caption = 'Один вариант';
-        $typeOneOption->value = 1;
-        $typeOneOption->save();
-
-        $typeSeveralOption = new QuestionType();
-        $typeSeveralOption->caption = 'Несколько вариантов';
-        $typeSeveralOption->value = 2;
-        $typeSeveralOption->save();
+        $typeClose = new QuestionType();
+        $typeClose->caption = 'Закрытый';
+        $typeClose->value = QuestionEnum::Close->value;
+        $typeClose->save();
     }
 }

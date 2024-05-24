@@ -47,7 +47,7 @@ export default {
                 id="password"
                 class="auth__input"
                 autocomplete="off"
-                placeholder="Пароль"
+                placeholder="Новый пароль"
                 required
             />
             <label class="auth__label" for="password"

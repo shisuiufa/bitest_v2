@@ -3,8 +3,8 @@ import axios from "axios";
 
 export default {
     actions: {
-        updateInfo(ctx, info) {
-            ctx.commit("updateInfo", info);
+        updateInfo(ctx, [info, testId]) {
+            ctx.commit("updateInfo", [info, testId]);
         },
         updateQuestions(ctx, questions) {
             ctx.commit("updateQuestions", questions);
@@ -12,8 +12,11 @@ export default {
         updateAccesses(ctx, accesses) {
             ctx.commit("updateAccesses", accesses);
         },
-        clearStateTest(ctx) {
-            ctx.commit("clearStateTest", "");
+        clearStateTest(ctx, testId) {
+            ctx.commit("clearStateTest", testId);
+        },
+        clearAll(ctx){
+            ctx.commit("clearAllTest")
         },
         validatedForm(ctx, data) {
             const missingFields = [];
@@ -116,73 +119,54 @@ export default {
         },
     },
     mutations: {
-        updateInfo(state, info) {
-            const keyToUpdate = info[0];
-            const valueToUpdate = info[1];
-            const indexToUpdate = state.test.findIndex(
-                (item) =>
-                    (Object.keys(item)[0] === keyToUpdate &&
-                        !Object.values(item)[0].id) ||
-                    (Object.keys(item)[0] === keyToUpdate &&
-                        Object.values(item)[0].id === valueToUpdate.id),
-            );
+        updateInfo(state, [info, testId]) {
+            const existingTest = state.tests.find(obj => obj.hasOwnProperty(testId));
 
-            if (indexToUpdate !== -1) {
-                const existingItem = state.test[indexToUpdate][keyToUpdate];
-                const updatedItem = { [keyToUpdate]: valueToUpdate };
-
-                if (existingItem.questions) {
-                    updatedItem[keyToUpdate].questions = existingItem.questions;
-                }
-
-                state.test.splice(indexToUpdate, 1, updatedItem);
+            if (existingTest) {
+                existingTest[testId] = { ...existingTest[testId], ...info };
             } else {
-                state.test.push({ [keyToUpdate]: valueToUpdate });
+                const newObject = { [testId]: info };
+                state.tests.push(newObject);
             }
         },
-        updateQuestions(state, data) {
-            const keyToUpdate = data[0];
-            const valueToUpdate = data[1];
-            const testId = data[2];
-            const indexToUpdate = state.test.findIndex(
-                (item) =>
-                    (Object.keys(item)[0] === keyToUpdate &&
-                        !Object.values(item)[0].id) ||
-                    (Object.keys(item)[0] === keyToUpdate &&
-                        Object.values(item)[0].id === testId),
-            );
-
-            if (indexToUpdate !== -1) {
-                state.test[indexToUpdate][keyToUpdate].questions =
-                    valueToUpdate;
+        updateQuestions(state, [data, testId]) {
+            const existingTest = state.tests.find(obj => obj.hasOwnProperty(testId));
+            if (existingTest) {
+                existingTest[testId] = { ...existingTest[testId], ...data };
+            } else {
+                const newObject = { [testId]: data };
+                state.tests.push(newObject);
             }
         },
         setMissingFields(state, missingFields) {
             state.missingFields = missingFields;
         },
         clearStateTest(state, testId) {
-            let indexToRemove = state.test.findIndex((item) => {
-                return Object.values(item)[0].id === testId;
-            });
-            if (indexToRemove !== -1) {
-                state.test.splice(indexToRemove, 1);
-            }
+            state.tests = state.tests.filter(test => !test.hasOwnProperty(testId));
+        },
+        clearTest(state, testId) {
+            state.tests = state.tests.filter(obj => !obj.hasOwnProperty(testId));
             state.missingFields = [];
         },
         clearAllTest(state) {
-            state.test = [];
+            state.tests = [];
         },
     },
     state: {
         missingFields: [],
-        test: [],
+        tests: [],
     },
     getters: {
         missingFields(state) {
             return state.missingFields;
         },
         cachedTest(state) {
-            return state.test;
+            return state.tests;
+        },
+        getTestById: (state) => (testId) => {
+            const test = state.tests.find(obj => obj.hasOwnProperty(testId));
+
+            return test ? test[testId] : null;
         },
     },
 };

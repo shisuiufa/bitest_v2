@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\QuestionEnum;
 use App\Enums\TestFilter;
 use App\Enums\TestStatus;
 use App\Models\Option;
@@ -10,14 +11,16 @@ use App\Models\Test;
 use App\Models\Question;
 use App\Models\TestUser;
 use App\Models\UserAnswer;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
 
 class TestService
 {
-    public function getListTests(string $search, bool $pagination, int $page, int $perPage = 10, string | null $filter): LengthAwarePaginator|Collection
+    public function getListTests(string $search, bool $pagination, int $page, int $perPage = 10, string|null $filter): LengthAwarePaginator|Collection
     {
         $tests = Test::where('published', 1);
 
@@ -58,166 +61,94 @@ class TestService
 
     }
 
-    public function createTest(array $info, $questions): bool
+    public function createTest($info, $questions): void
     {
         try {
             DB::beginTransaction();
 
-            $test = new Test;
-            $test->title = $info['title'];
-            $test->desc = $info['desc'];
-            $test->author_id = $info['userId'];
-            $test->time_complete = $info['time'] ?? null;
-            $test->attempts = $info['attempts'] ?? null;
-            $test->limit_questions = $info['limitQuestions'] ?? null;
-            $test->published = $info['published'];
-            $test->image = $info['image'];
-            $test->save();
+            $test = Test::create($info->toArray());
 
-
-            foreach ($questions as $questionData) {
-                $questionType = QuestionType::where('value', $questionData['type'])->first();
-
+            foreach ($questions as $item) {
                 $question = $test->questions()->create([
-                    'name' => $questionData['name'],
-                    'image' => $questionData['img'] ?? null,
-                    'question_type_id' => $questionType->id,
+                    'name' => $item['name'],
+                    'image' => $item['image'] ?? null,
+                    'question_type_id' => $item['question_type_id'],
                 ]);
 
-                if ($questionData['type'] !== 0) {
-                    $options = $questionData['options'];
+                if ($item['question_type_id'] === QuestionEnum::Close->value) {
+                    $options = $item['options'];
+
                     foreach ($options as $option) {
                         $question->options()->create([
                             'name' => $option['name'],
-                            'correct' => $option['correct'],
+                            'correct' => $option['value'],
                         ]);
                     }
                 }
             }
 
             DB::commit();
-
-            return true;
         } catch (\Exception $e) {
             DB::rollBack();
 
             Log::error($e->getMessage());
-
-            return false;
         }
 
     }
 
-    public function editTest(Test $test, array $info, array $questions): bool
+    public function editTest(Test $test, $info, $questions): void
     {
         try {
             DB::beginTransaction();
 
-            $test->title = $info['title'];
-            $test->desc = $info['desc'];
-            $test->time_complete = $info['timeComplete'] ?? null;
-            $test->attempts = $info['attempts'] ?? null;
-            $test->limit_questions = $info['limitQuestions'] ?? null;
-            $test->published = $info['published'];
-            $test->image = $info['image'];
-            $test->save();
+            $test->update($info->toArray());
 
-            if (!empty($questions)) {
-                $clientQuestionIds = array_column($questions, 'id');
-                $questionsDb = $test->questions;
+            $questionIds = collect($questions)->pluck('id')->filter()->toArray();
 
-                foreach ($questionsDb as $questionDb) {
-                    if (!in_array($questionDb->id, $clientQuestionIds)) {
-                        $questionDb->delete();
-                    } else {
-                        foreach ($questions as $question) {
-                            if ($question['id'] === $questionDb->id) {
-                                $questionType = QuestionType::where('value', $question['type'])->first();
-                                $questionDb->name = $question['name'];
-                                $questionDb->question_type_id = $questionType->id;
+            $test->questions()->whereNotIn('id', $questionIds)->delete();
 
-                                if (!empty($question['img'])) {
-                                    $questionDb->image = $question['img'];
-                                }
+            $questionsDb = $test->questions();
 
-                                $questionDb->save();
-                                $questionDb->fresh();
+            foreach ($questions as $question) {
 
-                                if ($question['type'] > 0) {
-                                    $options = $question['options'];
+                $updatedQuestion = $questionsDb->updateOrCreate(
+                    [
+                        'id' => $question['id'] ?? null
+                    ],
+                    [
+                        'name' => $question['name'],
+                        'question_type_id' => $question['question_type_id'],
+                        'image' => $question['image'],
+                    ]
+                );
 
-                                    if (!empty($options)) {
-                                        $optionsIds = array_column($options, 'id');
-                                        $optionsDb = $questionDb->options;
+                $questionDb = $test->questions()->where('id', $updatedQuestion->id)->first();
 
-                                        foreach ($optionsDb as $optionDb) {
-                                            if (!in_array($optionDb->id, $optionsIds)) {
-                                                $optionDb->delete();
-                                            } else {
-                                                foreach ($options as $option) {
-                                                    if ($option['id'] === $optionDb->id) {
-                                                        $optionDb->name = $option['name'];
-                                                        $optionDb->correct = $option['correct'];
-                                                        $optionDb->question_id = $question['id'];
-                                                        $optionDb->save();
-                                                    }
-                                                }
-                                            }
-                                        }
+                if ($question['question_type_id'] === QuestionEnum::Close->value) {
+                    $optionsIds = collect($question['options'])->pluck('id')->filter()->toArray();
+                    $questionDb->options()->whereNotIn('id', $optionsIds)->delete();
 
-                                        foreach ($options as $option) {
-                                            $existingOption = $optionsDb->firstWhere('id', $option['id']);
-
-                                            if (!$existingOption) {
-                                                $newOption = new Option();
-                                                $newOption->name = $option['name'];
-                                                $newOption->correct = $option['correct'];
-                                                $newOption->question_id = $question['id'];
-                                                $newOption->save();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    foreach ($question['options'] as $option) {
+                        $questionDb->options()->updateOrCreate(
+                            [
+                                'id' => $option['id'] ?? null
+                            ],
+                            [
+                                'name' => $option['name'],
+                                'correct' => $option['value'],
+                            ]
+                        );
                     }
-                }
-
-                foreach ($questions as $question) {
-                    $existingQuestion = $questionsDb->firstWhere('id', $question['id']);
-                    if (!$existingQuestion) {
-                        $questionType = QuestionType::where('value', $question['type'])->first();
-
-                        $newQuestion = new Question();
-                        $newQuestion->name = $question['name'];
-                        $newQuestion->question_type_id = $questionType->id;
-                        $newQuestion->test_id = $test->id;
-                        $newQuestion->save();
-                        $newQuestion->fresh();
-
-                        if ($question['type'] > 0) {
-                            $options = $question['options'];
-
-                            foreach ($options as $option) {
-                                $newOption = new Option();
-                                $newOption->name = $option['name'];
-                                $newOption->correct = $option['correct'];
-                                $newOption->question_id = $newQuestion->id;
-                                $newOption->save();
-                            }
-                        }
-                    }
+                } else {
+                    $questionDb->options()->delete();
                 }
             }
 
             DB::commit();
 
-            return true;
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-
-            return false;
         }
     }
 
@@ -311,7 +242,7 @@ class TestService
             $test->status = TestStatus::PENDING->value;
         }
 
-        if(empty($test->test_end_at)) {
+        if (empty($test->test_end_at)) {
             $test->test_end_at = now();
         }
 

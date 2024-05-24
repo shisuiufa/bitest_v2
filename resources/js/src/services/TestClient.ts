@@ -42,6 +42,27 @@ export default class TestClient extends ApiClient {
             .get(endpoint, { params: params })
             .then((res) => res.data);
     }
+
+    async getCreatedTest(testId: string | number){
+        const endpoint: string = `/api/moder/tests/${testId}`;
+
+        return await this.client
+            .get(endpoint)
+            .then((res) => res.data);
+    }
+
+    async update(testId:string | number, info: object, questions: array){
+        const endpoint: string = `/api/moder/tests/${testId}`;
+
+        return await this.client.post(endpoint, {...info, questions})
+    }
+
+    async store(info: object, questions: array){
+        const endpoint: string = `/api/moder/tests`;
+
+        return await this.client.post(endpoint, {...info, questions})
+    }
+
     async destroy(testId: string | number) {
         const endpoint: string = `/api/moder/tests/${testId}`;
 

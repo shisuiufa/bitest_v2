@@ -6,6 +6,7 @@ import UserClient from "@/services/UserClient";
 import TestStatisticsClient from "@/services/TestStatisticsClient";
 import AnswerClient from "@/services/AnswerClient";
 import AuthClient from "@/services/AuthClient";
+import ImageClient from "@/services/ImageClient";
 
 export function useLaravel(): ApiClientContainer {
     return {
@@ -14,6 +15,7 @@ export function useLaravel(): ApiClientContainer {
         user: new UserClient(),
         testStatistics: new TestStatisticsClient(),
         answer: new AnswerClient(),
-        auth: new AuthClient()
+        auth: new AuthClient(),
+        image: new ImageClient()
     };
 }

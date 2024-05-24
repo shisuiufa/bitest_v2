@@ -3,7 +3,8 @@
 }
 
 h1, h2, h3, h4, h5, h6 ,p, .label {
-    color: var(--surface-900)
+    color: var(--surface-900);
+    margin: 0;
 }
 
 .content {
@@ -17,6 +18,11 @@ ul,
 ol {
     padding: 0;
     margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
 .cursor-none {
@@ -182,7 +188,7 @@ ol {
     border: 1px solid var(--surface-border);
     background: var(--surface-card);
 }
-.p-dialog .p-dialog-content, .p-dialog-header {
+.p-dialog .p-dialog-content, .p-dialog-header, .p-tabview .p-tabview-panels {
     color: var(--surface-700);
     background: var(--surface-card);
 }
@@ -194,4 +200,81 @@ ol {
         outline-color: transparent;
         border-color: transparent;
     }
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    color: var(--surface-700);
+    text-decoration: none;
+    background: var(--surface-card);
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    transition: background-color 0s;
+    border-radius: 0;
+    border-color: var(--surface-border);
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    color: var(--primary-color);
+}
+
+.p-tabview .p-tabview-ink-bar {
+    background-color: var(--primary-color);
+}
+
+.p-tabview .p-tabview-nav {
+    background: var(--surface-card);
+    border-color: var(--surface-border);
+}
+
+.p-inputswitch.p-highlight .p-inputswitch-slider {
+    background: var(--primary-color);
+}
+
+.p-inputtext {
+    &::-webkit-input-placeholder {
+        color: var(--text-color-secondary);
+    }
+
+    &:-moz-placeholder {
+        color: var(--text-color-secondary);
+    }
+
+    &::-moz-placeholder {
+        color: var(--text-color-secondary);
+    }
+
+    &:-ms-input-placeholder {
+        color: var(--text-color-secondary);
+    }
+}
+
+.p-card {
+    color: var(--primary-color);
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    box-shadow: none;
+    border-radius: 6px;
+}
+
+.p-card .p-tabview .p-tabview-panels {
+    padding-left: 0;
+    padding-right: 0;
+}
+.p-inputgroup > .p-component, .p-inputgroup > .p-inputwrapper > .p-inputtext, .p-inputgroup > .p-float-label > .p-component {
+    border-radius: 0;
+    margin: 0;
+}
+
+.p-accordion-tab {
+    border-color: var(--surface-border);
+}
+
+.p-accordion-header-link, .p-accordion-content {
+    color: var(--surface-700);
+    background: var(--surface-card);
+}
+
+.p-accordion-header-link .p-link {
+    color: var(--surface-700);
 }

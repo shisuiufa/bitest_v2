@@ -19,7 +19,7 @@ class TestDetailResource extends JsonResource
             'time_complete' => $this->time_complete,
             'attempts' => $this->attempts,
             'limit_questions' => $this->limit_questions,
-            'published' => $this->published,
+            'published' => (bool)$this->published,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'questions' => QuestionResource::collection($this->questions),

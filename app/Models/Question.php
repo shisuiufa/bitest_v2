@@ -18,7 +18,7 @@ class Question extends Model
         'name',
         'image',
         'question_type_id',
-        'test_id'
+        'test_id',
     ];
 
     public function test(): belongsTo

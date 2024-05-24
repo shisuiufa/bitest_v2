@@ -89,6 +89,7 @@ createApp(App)
     .component("Toast", Toast)
     .component('ConfirmPopup', ConfirmPopup)
     .use(PrimeVue, {
+        unstyled: false,
         locale: locales,
         ripple: true,
     })

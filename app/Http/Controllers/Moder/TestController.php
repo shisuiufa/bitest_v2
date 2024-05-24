@@ -8,11 +8,11 @@ use App\Http\Requests\Test\EditRequest;
 use App\Http\Resources\TestDetailResource;
 use App\Http\Resources\TestResource;
 use App\Models\Test;
+use App\Services\ImageService;
 use App\Services\TestService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-
+use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
@@ -32,20 +32,22 @@ class TestController extends Controller
         return new TestDetailResource($test);
     }
 
-    public function store(CreateRequest $request, TestService $testService): void
+    public function store(CreateRequest $request, TestService $testService):void
     {
-        $mainInfo = $request->input('info');
         $questions = $request->input('questions');
+        $testInfo = $request->safe()->collect()->except('questions');
+        $testInfo = $testInfo->merge(['author_id' => Auth::user()->id]);
 
-        $testService->createTest($mainInfo, $questions);
+        $testService->createTest($testInfo, $questions);
     }
 
     public function update(Test $test, EditRequest $request, TestService $testService): void
     {
-        $mainInfo = $request->input('info');
-        $questions = $request->input('questions') ?? [];
+        $questions = $request->input('questions');
+        $testInfo = $request->safe()->collect()->except('questions');
+        $testInfo = $testInfo->merge(['author_id' => Auth::user()->id]);
 
-        $testService->editTest($test, $mainInfo, $questions);
+        $testService->editTest($test, $testInfo, $questions);
     }
 
     public function destroy(Test $test): void

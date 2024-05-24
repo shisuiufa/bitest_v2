@@ -19,11 +19,9 @@ export const questionTypeLabel = (type: QuestionType | null): string => {
         case undefined:
         case null:
         case QuestionType.Open:
-            return "Открытые вопросы";
-        case QuestionType.OneOption:
-            return "Один вариант";
-        case QuestionType.SeveralOptions:
-            return "Несколько вариантов";
+            return "Открытый";
+        case QuestionType.Close:
+            return "Закрытый";
     }
 };
 

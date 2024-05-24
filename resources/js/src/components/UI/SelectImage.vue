@@ -10,10 +10,10 @@
             />
             <figure class="select-img__figure">
                 <img
-                    :src="selectedImages"
+                    :src="modelValue"
                     alt="Обложка теста"
                     class="select-img__img"
-                    :class="selectedImages ? 'select-img__img_active' : ''"
+                    :class="modelValue ? 'select-img__img_active' : ''"
                 />
                 <figcaption class="select-img__figcaption">
                     <i class="bi bi-image-fill"></i>
@@ -24,59 +24,41 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import {useLaravel} from "@/composables/useLaravel.ts";
+import * as toast from "@/composables/useNotifications.ts";
+const {image: imageClient} = useLaravel();
 export default {
     name: "SelectImage",
     props: {
-        image: {
+        modelValue: {
             type: String,
-        },
-    },
-    data() {
-        return {
-            selectedImages: null,
-        };
-    },
-    watch: {
-        image(newValue, oldValue) {
-            this.selectedImages = newValue;
         },
     },
     methods: {
         handleClick() {
             this.$refs.image.click();
         },
-        handleImageChange(event) {
+        async handleImageChange(event) {
             const fileInput = event.target;
             const file = fileInput.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    this.selectedImages = e.target.result;
-                };
+
                 reader.readAsDataURL(file);
 
-                axios
-                    .post(
-                        "/api/upload-image",
-                        { image: file },
-                        {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        },
-                    )
+                await imageClient.store(file)
                     .then((res) => {
-                        this.$emit("select-image", res.data.image);
+                        this.$emit("update:modelValue", res.data.image);
+                        toast.success('Изображение загружено!')
                     })
                     .catch((err) => {
-                        console.log(err);
-                    });
+                        toast.error('Ошибка', err.response.data.message)
+                    })
+
             }
         },
     },
-    emits: ["select-image"],
+    emits: ["update:modelValue"],
 };
 </script>
 
@@ -84,9 +66,9 @@ export default {
 .select-img {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 16px;
+    border-radius: 5px;
     overflow: hidden;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--surface-border);
 
     &__label {
         width: 100%;
@@ -136,7 +118,7 @@ export default {
         justify-content: center;
         align-items: center;
         font-size: 45px;
-        color: var(--border-color);
+        color: var(--surface-border);
     }
 
     &__figure:hover &__figcaption {

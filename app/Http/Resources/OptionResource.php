@@ -12,7 +12,7 @@ class OptionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'correct' => (bool) $this->correct,
+            'value' => (bool) $this->correct,
         ];
     }
 }

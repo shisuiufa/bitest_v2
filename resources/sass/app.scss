@@ -4,11 +4,6 @@
 // Variables
 @import "variables";
 
-//primeVue
-@import "primevue/resources/themes/aura-light-purple/theme.css";
-@import 'primevue/resources/primevue.min.css';
-@import "primeicons/primeicons.css";
-
 // Bootstrap
 @import "bootstrap-icons/font/bootstrap-icons.css";
 @import "bootstrap/scss/bootstrap-utilities";
@@ -29,3 +24,7 @@ $utilities: map-merge(
 // Style
 @import "style";
 
+//primeVue
+@import "primevue/resources/themes/aura-light-purple/theme.css";
+@import 'primevue/resources/primevue.min.css';
+@import "primeicons/primeicons.css";
