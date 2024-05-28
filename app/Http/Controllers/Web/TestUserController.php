@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Web;
 use App\Enums\TestStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Test\ManipulateAnswerRequest;
+use App\Http\Resources\AnswersPassResource;
+use App\Http\Resources\AnswersResource;
 use App\Http\Resources\TestPassResource;
 use App\Http\Resources\UserResultResource;
 use App\Models\Test;
 use App\Models\TestUser;
 use App\Services\TestService;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 class TestUserController extends Controller
@@ -59,6 +62,13 @@ class TestUserController extends Controller
         $answers = $request->input('answer');
 
         $service->manipulateAnswer($testUser, $questionId, $answers);
+    }
+
+    public function getAnswers(Test $test, TestUser $testUser): ResourceCollection
+    {
+        $answers = $testUser->answers;
+
+        return AnswersPassResource::collection($answers);
     }
 
 }

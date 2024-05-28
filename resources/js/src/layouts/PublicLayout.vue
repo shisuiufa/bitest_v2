@@ -1,26 +1,25 @@
 <template>
-    <div class="layout-wrapper">
-        <app-header :dark="this.dark" @change-theme="changeTheme"/>
+    <div class="layout-wrapper d-flex align-items-stretch">
+        <SidebarApp/>
         <main class="main">
-            <div class="container">
-                <template v-if="$route.name === 'home'">
-                    <router-view/>
-                </template>
-                <template v-else>
-                    <div class="row">
-                        <div class="col-12">
-                            <app-breadcrumbs/>
+            <app-header/>
+            <div class="content w-100">
+                <div class="container">
+                    <template v-if="$route.name === 'home' || $route.name === 'admin'">
+                        <router-view/>
+                    </template>
+                    <template v-else>
+                        <div class="row">
+                            <div class="col-12">
+                                <app-breadcrumbs/>
+                            </div>
                         </div>
-                    </div>
-                    <router-view/>
-                </template>
+                        <router-view/>
+                    </template>
+                </div>
             </div>
-            <navbar-menu/>
-            <ScrollTop target="parent"
-                       :threshold="100"
-                       icon="pi pi-arrow-up"
-            />
         </main>
+
         <modal-search v-if="this.modalSearch"/>
     </div>
 </template>
@@ -28,9 +27,9 @@
 <script>
 import {mapGetters} from "vuex";
 import ModalSearch from "@/components/modals/ModalSearch.vue";
-import AppHeader from "@/components/AppHeader.vue";
-import NavbarMenu from "@/components/NavbarMenu.vue";
-import AppBreadcrumbs from "@/components/AppBreadcrumb.vue";
+import AppHeader from "@/components/nav/AppHeader.vue";
+import AppBreadcrumbs from "@/components/nav/AppBreadcrumb.vue";
+import SidebarApp from "@/components/nav/SidebarApp.vue";
 
 export default {
     name: "PublicLayout",
@@ -38,54 +37,24 @@ export default {
         AppBreadcrumbs,
         AppHeader,
         ModalSearch,
-        NavbarMenu,
+        SidebarApp
     },
     data() {
         return {
-            dark: false,
             loader: false,
+            visible: true,
+            collapsed: false,
         };
     },
     computed: {
         ...mapGetters(["modalSearch", "user"]),
     },
-    mounted() {
-        const initUserTheme = this.getTheme() || this.getMediaPreference();
-        this.dark = initUserTheme;
-        this.setTheme(initUserTheme);
-    },
     methods: {
-        setTheme(theme) {
-            if (theme === "dark") {
-                this.dark = true;
-                document.body.classList.add("dark");
-            } else {
-                this.dark = false;
-                document.body.classList.remove("dark");
-            }
-            localStorage.setItem("theme-mode", theme);
-        },
-        changeTheme() {
-            if (this.dark === true) {
-                this.setTheme('light');
-            } else {
-                this.setTheme('dark');
-            }
-        },
-        getMediaPreference() {
-            const hasDarkPreference = window.matchMedia(
-                "(prefers-color-scheme: dark)",
-            ).matches;
-            if (hasDarkPreference) {
-                return "dark";
-            } else {
-                return "light";
-            }
-        },
-        getTheme() {
-            return localStorage.getItem("theme-mode");
-        },
-    },
+        toggleSidebar(){
+            console.log('s')
+            this.collapsed = !this.collapsed;
+        }
+    }
 };
 </script>
 
@@ -93,22 +62,11 @@ export default {
 .layout-wrapper {
     background-color: var(--surface-ground);
 }
-
-.v-enter-active,
-.v-leave-active {
-    transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-    opacity: 0;
-}
-
 .main {
+    width: 100%;
     height: 100%;
     min-height: 100vh;
-    padding-top: 55px;
-    padding-bottom: 1rem;
-    //background-color: var(--body-bg);
+    padding-top: 0;
+    margin-top: 0;
 }
 </style>

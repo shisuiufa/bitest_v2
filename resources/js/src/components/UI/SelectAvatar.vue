@@ -24,7 +24,9 @@
 </template>
 
 <script>
-import axios from "axios";
+import {useLaravel} from "@/composables/useLaravel.ts";
+import * as toast from "@/composables/useNotifications.ts";
+const {image: imageClient} = useLaravel();
 
 export default {
     name: "SelectAvatar",
@@ -47,7 +49,7 @@ export default {
         handleClick() {
             this.$refs.image.click();
         },
-        handleImageChange(event) {
+       async handleImageChange(event) {
             const fileInput = event.target;
             const file = fileInput.files[0];
             if (file) {
@@ -57,22 +59,15 @@ export default {
                 };
                 reader.readAsDataURL(file);
 
-                axios
-                    .post(
-                        "/api/upload-image",
-                        { image: file },
-                        {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        },
-                    )
+                await imageClient.store(file)
                     .then((res) => {
                         this.$emit("select-image", res.data.image);
+                        toast.success('Изображение загружено!')
                     })
                     .catch((err) => {
-                        console.log(err);
-                    });
+                        toast.error('Ошибка', err.response.data.message)
+                    })
+
             }
         },
     },

@@ -35,6 +35,12 @@ export default class TestClient extends ApiClient {
 
         return await this.client.post(endpoint, data).then((res) => res.data);
     }
+
+    async getAnswers(testId: string | number, testUserId: string | number){
+        const endpoint: string = `/api/tests/${testId}/test_user/${testUserId}/answers`;
+
+        return await this.client.get(endpoint).then((res) => res.data);
+    }
     async getTestsAuthor(authorId: string | number, params: object) {
         const endpoint: string = `/api/moder/tests/created-by/${authorId}`;
 

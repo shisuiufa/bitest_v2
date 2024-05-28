@@ -1,6 +1,6 @@
 <template>
     <div class="timer">
-        {{ timeLeft }}
+        <p>{{ timeLeft }}</p>
     </div>
 </template>
 
@@ -44,9 +44,13 @@ export default {
 
 <style scoped lang="scss">
 .timer {
+    display: block;
     font-size: 20px;
+    text-align: center;
     font-weight: 600;
     color: var(--surface-900);
     background-color: var(--surface-hover);
+    border-radius: 10px;
+    padding: 0 10px
 }
 </style>

@@ -1,51 +1,28 @@
 <template>
-    <div class="options">
-        <div v-if="this.selectedQuestion.type === 0" class="options__item">
-            <Textarea v-model="this.userAnswer.openAnswer" class="w-100" autoResize rows="5" cols="30" @blur="updateAnswerDb" />
-        </div>
-        <div
-            v-else
-            v-for="option in this.selectedQuestion.options"
-            :key="option.id"
-            class="options__item"
-        >
-            <div class="form-check">
-                <input
-                    v-if="this.selectedQuestion.type === 1"
-                    name="option"
-                    type="radio"
-                    :value="option.id"
-                    class="form-check-input options__check-input"
-                    :id="'option-' + option.id"
-                    @change="addToSelectedAnswers(option.id)"
-                    :checked="
-                        this.userAnswer.selectedAnswers.find(
-                            (answer) => answer === option.id,
-                        )
-                    "
-                />
-                <input
-                    v-if="this.selectedQuestion.type === 2"
-                    name="option"
-                    type="checkbox"
-                    :value="option.id"
-                    class="form-check-input options__check-input"
-                    :id="'option-' + option.id"
-                    v-model="this.userAnswer.selectedAnswers"
-                />
-                <label class="form-check-label" :for="'option-' + option.id">
-                    {{ option.name }}
-                </label>
+    <div class="options d-flex flex-column gap-2">
+        <template v-if="this.selectedQuestion?.type === QuestionType.Open" class="options__item">
+            <Textarea v-model="this.userAnswer.openAnswer" class="w-100" autoResize rows="5" cols="30"
+                      @blur="updateAnswerDb"/>
+        </template>
+        <template v-else>
+            <div v-for="option in this.selectedQuestion?.options" :key="option.id"
+                 class="options__wrap-check d-flex gap-2 align-items-center p-3 rounded"
+                 style="background-color: var(--surface-hover)">
+                <Checkbox v-model="this.userAnswer.selectedAnswers" :inputId="'answer-' + option.id"
+                          :value="option.id"/>
+                <label :for="'answer-' + option.id" class="ml-2"> {{ option.name }} </label>
             </div>
-        </div>
+        </template>
     </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import { useLaravel } from "@/composables/useLaravel.ts";
+import {mapActions, mapGetters} from "vuex";
+import {useLaravel} from "@/composables/useLaravel.ts";
 import * as toast from "@/composables/useNotifications.ts";
-const { test } = useLaravel();
+import {QuestionType} from "@/models/question.ts";
+
+const {test} = useLaravel();
 
 export default {
     name: "QuestionOptions",
@@ -71,6 +48,9 @@ export default {
         },
     },
     computed: {
+        QuestionType() {
+            return QuestionType
+        },
         ...mapGetters(["getAnswersByQuestionId"]),
     },
     watch: {
@@ -109,16 +89,13 @@ export default {
     },
     methods: {
         ...mapActions(["updateUserAnswer"]),
-        addToSelectedAnswers(optionId) {
-            this.userAnswer.selectedAnswers = [optionId];
-        },
         async updateAnswerDb() {
             await test
                 .updateAnswers(this.testId, this.testUserId, {
                     questionId: this.selectedQuestion?.id,
                     answer: this.userAnswer,
                 })
-                .then((res) => {
+                .then(() => {
                     this.updateUserAnswer([
                         this.testId,
                         this.selectedQuestion?.id,
@@ -139,21 +116,3 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.options {
-    &__item {
-        font-size: 17px;
-        margin-bottom: 10px;
-    }
-
-    &__check-input:checked {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-    }
-
-    &__input:focus {
-        border-color: var(--surface-border);
-        box-shadow: none;
-    }
-}
-</style>

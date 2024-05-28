@@ -2,7 +2,7 @@
     <panel v-if="!testError && !testPassed" class="p-3">
         <div class="test">
             <div class="row mb-3 align-items-center justify-content-between">
-                <div class="col-9">
+                <div class="order-2 order-md-1 col-12 col-md-6">
                     <question-switcher
                         v-if="this.test.questions"
                         :selectedQuestion="this.selectedQuestion"
@@ -15,14 +15,13 @@
                     >
                     </question-switcher>
                 </div>
-                <div class="col-1 text-end" v-if="this.test.time > 0">
+                <div class="mb-2 mb-md-0 order-1 order-md-2 col-12 col-md-6 d-flex gap-2 gap-md-5 align-items-center justify-content-between justify-content-md-end">
                     <ui-timer
+                        v-if="this.test.time > 0"
                         @endTime="this.postTest"
                         :seconds="this.test.time"
                     ></ui-timer>
-                </div>
-                <div class="col-2 text-end">
-                    <Button @click="this.modalShow = !this.modalShow" label="Завершить"  class="p-primary"/>
+                    <Button @click="this.modalShow = !this.modalShow" label="Завершить" class="p-button-sm p-primary"/>
                 </div>
             </div>
             <div class="row" v-if="selectedQuestion">
@@ -41,7 +40,7 @@
                     <Button
                         @click="this.nextQuestion"
                         label="Следующий"
-                        class="p-primary"
+                        class="p-primary p-button-sm"
                     />
                 </div>
             </div>
@@ -66,10 +65,11 @@
 import QuestionSwitcher from "@/components/QuestionSwitcher.vue";
 import QuestionDisplay from "@/components/QuestionDisplay.vue";
 import UiButton from "@/components/UI/UiButton.vue";
-import UiTimer from "@/components/UiTimer.vue";
+import UiTimer from "@/components/UI/UiTimer.vue";
 import ModalEndTest from "@/components/modals/ModalEndTest.vue";
 import { mapActions, mapGetters } from "vuex";
 import { useLaravel } from "@/composables/useLaravel.ts";
+import * as toast from "@/composables/useNotifications.ts";
 const { test } = useLaravel();
 
 export default {
@@ -128,9 +128,10 @@ export default {
     },
     mounted() {
         this.getTestUser(this.$route.params.id, this.$route.params.testUserId);
+        this.getAnswers(this.$route.params.id, this.$route.params.testUserId);
     },
     methods: {
-        ...mapActions(["clearAnswersTest"]),
+        ...mapActions(["clearAnswersTest", "setUserAnswer"]),
         checkAnswers() {
             let testValidated = false;
             for (let i = 0; i < this.test.questions.length; i++) {
@@ -188,20 +189,33 @@ export default {
                     }
                 });
         },
+        async getAnswers(testId, testUserId){
+            await test
+                .getAnswers(testId, testUserId)
+                .then((res) => {
+                   this.setUserAnswer([this.$route.params.id, res.data]);
+
+                })
+                .catch((err) => {
+                    toast.error(
+                        "Возникла ошибка при загрузки ответов пользователя",
+                        err.response.data.message,
+                    );
+                })
+        },
         async postTest() {
             this.testLoading = true;
             await test
                 .updateTestUser(this.test.id, this.testUser.id)
-                .then((res) => {
+                .then(() => {
                     this.testPassed = true;
-                    this.clearAnswersTest(this.test.id);
                 })
                 .catch((err) => {
                     if (err.response.status === 403) {
                         this.endTest(err.response.data);
                     }
                 })
-                .finally((res) => {
+                .finally(() => {
                     this.testLoading = false;
                 });
         },

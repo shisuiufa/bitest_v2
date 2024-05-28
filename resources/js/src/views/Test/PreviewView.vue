@@ -4,17 +4,17 @@
             <div class="row align-items-center">
                 <div class="order-2 order-lg-1 col-lg-6">
                     <h2 class="preview__title">{{ this.test.title }}</h2>
-                    <p class="preview__desc fw-normal fs-6">
+                    <p class="preview__desc fw-normal">
                         {{ this.test.desc }}
                     </p>
                     <div class="preview__meta">
                         <p
-                            class="preview__attempts mb-1 fw-normal fs-6"
+                            class="preview__attempts mb-1 fw-normal"
                         >
                             {{ messageAttempts }}
                         </p>
                         <p
-                            class="preview__time mb-0 fw-normal fs-6"
+                            class="preview__time mb-0 fw-normal"
                         >
                             {{ messageTime }}
                         </p>
@@ -27,13 +27,11 @@
                     />
                 </div>
                 <div class="order-1 mb-4 order-lg-2 col-lg-6 mb-lg-0">
-                    <div class="preview__wrap">
-                        <img
-                            class="preview__img"
-                            :src="this.test.image"
-                            :alt="this.test.title"
-                        />
-                    </div>
+                    <Image>
+                        <template #image>
+                            <img :src="this.test.image" :alt="this.test.title" class="w-100" />
+                        </template>
+                    </Image>
                 </div>
             </div>
         </div>
@@ -161,7 +159,6 @@ export default {
 
     &__desc {
         color: var(--surface-700);
-        font-size: 15px;
         font-weight: 400;
         margin-bottom: 20px;
     }

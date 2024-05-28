@@ -16,13 +16,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::middleware('test.access')->group(function (){
 
-        Route::post('{test}/test_user', [TestUserController::class, 'store'])->name('test_user.store');
+        Route::post('{test}/test_user', [TestUserController::class, 'store']);
 
         Route::middleware('test.status')->group(function (){
-            Route::get('{test}/test_user/{test_user}', [TestUserController::class, 'show'])->name('test_user.show');
-            Route::put('{test}/test_user/{test_user}', [TestUserController::class, 'update'])->name('test_user.update');
-            Route::post('{test}/test_user/{test_user}/answers', [TestUserController::class, 'manipulateAnswer'])
-                ->name('test.test_user.answers');
+            Route::get('{test}/test_user/{test_user}', [TestUserController::class, 'show']);
+
+            Route::put('{test}/test_user/{test_user}', [TestUserController::class, 'update']);
+
+            Route::get('{test}/test_user/{test_user}/answers', [TestUserController::class, 'getAnswers']);
+
+            Route::post('{test}/test_user/{test_user}/answers', [TestUserController::class, 'manipulateAnswer']);
         });
     });
 });

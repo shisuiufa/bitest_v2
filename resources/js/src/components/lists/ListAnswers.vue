@@ -1,11 +1,6 @@
 <template>
     <div class="row">
         <div class="col-12">
-            <p>
-                Вы ответили на {{ this.answerCounter}} из {{ this.questionCounter}} вопросов
-            </p>
-        </div>
-        <div class="col-12">
             <ListAnswersItem
                 v-for="(answer, idx) in answers"
                 :key="idx"
@@ -24,14 +19,6 @@ export default {
     name: "ListAnswers",
     components: {ListAnswersItem},
     props: {
-        answerCounter: {
-            required: true,
-            type: Number,
-        },
-        questionCounter: {
-            required: true,
-            type: Number,
-        },
         answers: {
             required: true,
             type: Object,

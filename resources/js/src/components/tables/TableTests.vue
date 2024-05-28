@@ -8,17 +8,17 @@
                 <Button
                     label="Создать"
                     icon="pi pi-plus"
-                    class="btn btn-success d-flex align-items-center gap-2 me-2 text-white"
-                    unstyled
+                    severity="success"
+                    class="p-button-sm d-flex align-items-center gap-2 me-2 text-white"
                 />
             </router-link>
             <Button
-                class="btn btn-danger d-flex gap-2 align-items-center"
+                class="p-button-sm d-flex gap-2 align-items-center"
                 label="Удалить"
                 icon="pi pi-trash"
+                severity="danger"
                 @click="confirmDeleteSelected"
                 :disabled="!selectedTests || !selectedTests.length"
-                unstyled
             />
         </template>
     </Toolbar>
@@ -83,11 +83,11 @@
                     class="flex align-items-center justify-content-between px-2"
                 >
                     <span>{{
-                        filterModel.value ? filterModel.value[0] : 0
-                    }}</span>
+                            filterModel.value ? filterModel.value[0] : 0
+                        }}</span>
                     <span>{{
-                        filterModel.value ? filterModel.value[1] : 100
-                    }}</span>
+                            filterModel.value ? filterModel.value[1] : 100
+                        }}</span>
                 </div>
             </template>
         </Column>
@@ -117,7 +117,7 @@
                             :href="item.url"
                             class="d-flex gap-2 align-items-center p-2 dropdown-item cursor-pointer text-decoration-none"
                         >
-                            <span :class="item.icon" />
+                            <span :class="item.icon"/>
                             {{ item.label }}
                         </a>
                     </template>
@@ -128,10 +128,11 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { FilterMatchMode, FilterOperator } from "primevue/api";
-import { testPublishedLabel, testPublishedClass } from "@/utils/enum.ts";
-import { formatDate } from "@/utils/date.ts";
+import {ref} from "vue";
+import {FilterMatchMode, FilterOperator} from "primevue/api";
+import {testPublishedLabel, testPublishedClass} from "@/utils/enum.ts";
+import {formatDate} from "@/utils/date.ts";
+
 export default {
     name: "TableTests",
     props: {
@@ -172,7 +173,7 @@ export default {
                     command: () => {
                         this.$router.push({
                             name: "edit-test",
-                            params: { id: this.selectedTest },
+                            params: {id: this.selectedTest},
                         });
                     },
                 },
@@ -182,7 +183,7 @@ export default {
                     command: () => {
                         this.$router.push({
                             name: "statistics",
-                            params: { id: this.selectedTest },
+                            params: {id: this.selectedTest},
                         });
                     },
                 },
@@ -195,20 +196,20 @@ export default {
                 },
             ],
             filters: ref({
-                global: { value: null },
+                global: {value: null},
                 title: {
                     operator: FilterOperator.AND,
                     constraints: [
-                        { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+                        {value: null, matchMode: FilterMatchMode.STARTS_WITH},
                     ],
                 },
                 date: {
                     operator: FilterOperator.AND,
                     constraints: [
-                        { value: null, matchMode: FilterMatchMode.DATE_IS },
+                        {value: null, matchMode: FilterMatchMode.DATE_IS},
                     ],
                 },
-                status: { value: null, matchMode: FilterMatchMode.EQUALS },
+                status: {value: null, matchMode: FilterMatchMode.EQUALS},
             }),
         };
     },

@@ -1,13 +1,13 @@
 <template>
     <div class="cards row g-4">
-        <div class="col-12 col-lg-4" v-for="test in tests" :key="test.id">
+        <div class="col-12 col-md-6 col-lg-4" v-for="test in tests" :key="test.id">
             <card-item class="cards__item" :test="test"></card-item>
         </div>
     </div>
 </template>
 
 <script>
-import CardItem from "@/components/CardItem.vue";
+import CardItem from "@/components/lists/CardItem.vue";
 export default {
     name: "CardList",
     components: {
@@ -22,4 +22,3 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>

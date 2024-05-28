@@ -133,8 +133,8 @@ export default {
         border-radius: 8px;
         margin-bottom: 5px;
         &:hover {
-            color: var(--text-color);
-            background-color: var(--surface-hover);
+            color: #fff;
+            background-color: var(--primary-color);
         }
     }
 }

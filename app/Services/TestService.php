@@ -5,15 +5,11 @@ namespace App\Services;
 use App\Enums\QuestionEnum;
 use App\Enums\TestFilter;
 use App\Enums\TestStatus;
-use App\Models\Option;
-use App\Models\QuestionType;
 use App\Models\Test;
 use App\Models\Question;
 use App\Models\TestUser;
 use App\Models\UserAnswer;
-use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
@@ -170,7 +166,7 @@ class TestService
             $questionDb = Question::find($questionId);
             $correct = null;
 
-            if (boolval($questionDb->type->value)) {
+            if ($questionDb->type->value === QuestionEnum::Close->value) {
                 $correctOptions = $questionDb->options->where('correct', true)->pluck('id')->toArray();
                 $selectedAnswers = $answers['selectedAnswers'];
 

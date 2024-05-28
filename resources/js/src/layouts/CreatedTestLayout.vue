@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import ScrollTop from 'primevue/scrolltop';
 export default {
     name: "CreatedTestLayout",
 };

@@ -2,12 +2,12 @@
     <div class="row">
         <div class="col-12">
             <div class="d-flex flex-column gap-2">
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex align-items-center justify-content-end gap-2">
+                <div class="d-block d-md-flex justify-content-between">
+                    <div class="order-2 order-md-1 d-flex align-items-center justify-content-md-end gap-2 mb-2 mb-md-0">
                         <label class="cursor-pointer" for="published">Опубликовать</label>
                         <InputSwitch inputId="published" v-model="this.form.published"/>
                     </div>
-                    <div class="d-flex gap-2">
+                    <div class="order-1 order-md-2 d-flex flex-wrap gap-2 justify-content-between justify-content-md-end mb-2 mb-md-0">
                         <Button v-if="this.enableCache" label="Очистить" class="p-primary" @click="this.$emit('clear')" />
                         <Button label="Сохранить" class="p-primary" @click="this.$emit('submit')" />
                     </div>

@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Filters\SortByFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TestResource;
 use App\Http\Resources\TestShowResource;
 use App\Models\Test;
-use App\Services\TestService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TestController extends Controller
 {
-    public function index(Request $request, TestService $service): ResourceCollection
+    public function index(): ResourceCollection
     {
-        $search = $request->input('search') ?? '';
-        $page = $request->input('page');
-        $perPage = $request->input('per_page');
-        $filter = $request->input('filter');
-
-        $tests = $service->getListTests($search, true, $page, $perPage, $filter = null);
+        $tests = QueryBuilder::for(Test::class)
+            ->allowedFilters([
+                AllowedFilter::partial('search', 'title'),
+                AllowedFilter::custom('sort_by', new SortByFilter)
+            ])
+            ->allowedIncludes(['author'])
+            ->paginate(6)
+            ->appends(request()->query());
 
         return TestResource::collection($tests);
     }

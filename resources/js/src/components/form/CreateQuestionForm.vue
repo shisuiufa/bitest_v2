@@ -1,15 +1,15 @@
 <template>
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 mb-2">
             <div class="d-flex align-items-center justify-content-end gap-2">
                 <label class="cursor-pointer" for="published">Картинка</label>
                 <InputSwitch inputId="published" v-model="this.question.hasImage"/>
             </div>
         </div>
-        <div v-if="this.question.hasImage" class="col-5">
-            <SelectImage class="w-100" style="height: 300px;" v-model="this.question.image"/>
+        <div v-if="this.question.hasImage" class="col-md-5 col-12 mb-2 mb-md-0">
+            <SelectImage class="w-100" style="height: 350px"  v-model="this.question.image"/>
         </div>
-        <div :class="this.question.hasImage ? 'col-7' : 'col-12'">
+        <div :class="this.question.hasImage ? 'col-12 col-md-7' : 'col-12'" class="">
             <div class="d-flex flex-column gap-2">
                 <div class="d-flex flex-column gap-2">
                     <label for="name">Вопрос</label>
@@ -29,7 +29,7 @@
                             <Checkbox @change="this.selectOption(option)" v-model="option.value" :binary="true"/>
                         </InputGroupAddon>
                         <InputText v-model="option.name" :placeholder="'Вариант ' + (idx + 1)"/>
-                        <Button v-if="idx > 1" icon="pi pi-times" severity="danger" @click="this.deleteOption(option)"/>
+                        <Button class="radius-right" v-if="idx > 1" icon="pi pi-times" severity="danger" @click="this.deleteOption(option)"/>
                     </InputGroup>
                     <div class="d-flex justify-content-center">
                         <Button icon="pi pi-plus" rounded class="p-primary p-button-sm" @click="this.addOption()"/>

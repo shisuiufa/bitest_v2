@@ -1,18 +1,18 @@
 <template>
     <div class="profile">
         <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-md-4 mb-2 mb-md-0">
                 <Panel class="h-100 p-0 p-md-5">
                     <div class="d-flex flex-column align-items-center">
                         <SelectAvatar @select-image="(avatar) => this.form.avatar = avatar" :image="this.form.avatar"
-                                      class="mb-3"/>
-                        <h5 class="">{{ this.user.last_name + " " + this.user.first_name }}</h5>
-                        <p class="">{{ this.user.email }}</p>
+                                      class="mb-4"/>
+                        <h5 class="mb-2">{{ this.user.last_name + " " + this.user.first_name }}</h5>
+                        <p class="mb-3">{{ this.user.email }}</p>
                         <Tag :value="activeRole.name"/>
                     </div>
                 </Panel>
             </div>
-            <div class="col-8">
+            <div class="col-12 col-md-8">
                 <Panel header="Основная информация" class="p-0 p-md-5">
                     <form method="POST" class="d-flex flex-column gap-3">
                         <div class="d-flex flex-column gap-2">

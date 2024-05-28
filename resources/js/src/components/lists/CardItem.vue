@@ -68,7 +68,7 @@ export default {
     overflow: hidden;
     background-color: transparent;
 
-    &:hover &__picture {
+    &:hover &__picture  {
         transform: scale(1.2);
     }
 
@@ -79,6 +79,15 @@ export default {
         z-index: 1;
         width: 100%;
         height: 100%;
+        &::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: inherit;
+            height: inherit;
+            content: '';
+            background-color: rgba(29, 30, 35, 0.4);
+        }
     }
 
     &__picture {
@@ -112,7 +121,7 @@ export default {
         color: #fff;
         margin: 5px 0;
         font-size: 20px;
-        font-weight: 500;
+        font-weight: 600;
         line-height: 34px;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
     }
@@ -121,6 +130,7 @@ export default {
         font-size: 13px;
         color: #fff;
         margin-bottom: 10px;
+        font-weight: 500;
     }
 
     &__author {

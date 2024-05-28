@@ -1,5 +1,5 @@
 <template>
-    <Accordion :multiple="true" :activeIndex="[0]" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
+    <Accordion :activeIndex="this.questions.length - 1" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
         <AccordionTab v-for="(question, idx) in this.questions" :key="question.id">
             <template #header>
                 <span class="d-flex align-items-center justify-content-between gap-2 w-100">

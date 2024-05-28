@@ -57,6 +57,53 @@
             </template>
         </Column>
         <Column
+            field="attempt"
+            header="Попытка"
+            sortable
+        >
+            <template #body="{ data }">
+                <div class="p-tag p-component">
+                    {{ data.attempt }}
+                </div>
+            </template>
+        </Column>
+        <Column
+            field="score"
+            header="Балл"
+            sortable
+        >
+            <template #body="{ data }">
+                <div
+                    class="p-tag p-component"
+                    :class="scoreStockClass(data.score)"
+                >
+                    <span class="p-tag-value">
+                        {{ data.score ? data.score : "-" }}
+                    </span>
+                </div>
+            </template>
+        </Column>
+        <Column
+            field="percent"
+            header="Процент"
+            sortable
+        >
+            <template #body="{ data }">
+                <div
+                    class="p-tag p-component"
+                    :class="percentStockClass(data.percent)"
+                >
+                    <span class="p-tag-value">
+                        {{
+                            data.percent
+                                ? data.percent
+                                : "-"
+                        }}
+                    </span>
+                </div>
+            </template>
+        </Column>
+        <Column
             field="test_end_at"
             header="Дата завершения"
             dataType="date"
@@ -80,9 +127,10 @@
             </template>
         </Column>
     </DataTable>
-    <Dialog v-model:visible="visible" modal header="Результат пользователя" :style="{ width: '80vw' }">
-        <DataView :value="this.result.answers">
-            <template #header>
+    <Dialog v-model:visible="visible" modal class="mx-2 mx-md-0 w-100 w-md-75">
+        <template #header>
+            <div>
+                <h5 class="mb-4">Результат пользователя</h5>
                 <div class="d-flex gap-2">
                     <Dropdown @change="openStatUser()"
                               v-model="this.selected.try"
@@ -99,11 +147,11 @@
                               optionLabel="label"
                     />
                 </div>
-            </template>
-            <template #list="slotProps">
-                <UserResultList @updateValue="openStatUser(); this.$emit('update-value');" :items="slotProps.items"/>
-            </template>
-        </DataView>
+            </div>
+        </template>
+        <UserResultList @updateValue="openStatUser();
+                        this.$emit('update-value');"
+                        :items="this.result.answers"/>
     </Dialog>
 </template>
 
@@ -198,13 +246,16 @@ export default {
         },
         async openStatUser() {
             await statistics
-                .show(this.selected.test, this.selected.user, {try: this.selected.try, questionType: this.selected.questionType  })
+                .show(this.selected.test, this.selected.user, {
+                    try: this.selected.try,
+                    questionType: this.selected.questionType
+                })
                 .then(res => {
                     this.visible = true
                     this.result = res.data;
                 })
         },
-        async getTotalAttempts(){
+        async getTotalAttempts() {
             await statistics
                 .totalAttempts(this.selected.test, this.selected.user)
                 .then(res => {
@@ -215,7 +266,31 @@ export default {
                     this.selected.try = res.data;
                     this.attempts = items;
                 })
-        }
+        },
+        scoreStockClass(data) {
+            switch (true) {
+                case data === null:
+                    break;
+                case data >= 4:
+                    return "p-tag-success";
+                case data === 3:
+                    return "p-tag-warning";
+                case data < 3:
+                    return "p-tag-danger";
+            }
+        },
+        percentStockClass(data) {
+            switch (true) {
+                case data === null:
+                    break;
+                case data >= 68:
+                    return "p-tag-success";
+                case data >= 56:
+                    return "p-tag-warning";
+                case data < 56:
+                    return "p-tag-danger";
+            }
+        },
     },
     emits: ['update-value'],
 };

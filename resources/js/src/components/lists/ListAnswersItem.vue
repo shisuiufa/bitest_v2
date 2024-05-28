@@ -1,8 +1,8 @@
 <template>
     <div class="col-12 mb-4 pb-4 border-bottom">
         <div class="d-flex align-items-center">
-            <div class="d-flex flex-wrap gap-5 w-100">
-                <Image v-show="item.question.image" src="https://klike.net/uploads/posts/2023-01/1675065366_4-1.jpg" alt="Image" width="250" preview />
+            <div class="d-flex flex-wrap gap-4 w-100">
+                <Image v-show="item.question.image" :src="item.question.image" alt="Image" width="250" preview />
                 <div class="d-flex flex-column gap-2">
                     <h5>{{ item.question.name }}</h5>
                     <p v-if="answer?.openAnswer">

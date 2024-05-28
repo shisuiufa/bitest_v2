@@ -147,20 +147,26 @@ class Test extends Model
 
     public function getTestDurationStatistics(): array
     {
+        // Fetch users who have attempted the test, sorted by attempt time in descending order
         $testUsers = $this->uniqueUsersByAttemptDesc();
 
         $durations = [];
 
+        // Calculate duration in minutes for each user's test attempt
         foreach ($testUsers as $user) {
-            $durationInMinutes = $user->created_at->diffInMinutes($user->test_end_at);
-
-            $durations[] = $durationInMinutes;
+            if ($user->created_at && $user->test_end_at) {
+                $durationInSeconds = $user->created_at->diffInSeconds($user->test_end_at);
+                $durationInMinutes = $durationInSeconds / 60;
+                $durations[] = $durationInMinutes;
+            }
         }
-
+       
+        // Calculate the minimum, average, and maximum durations
         $minDuration = !empty($durations) ? min($durations) : null;
-        $averageDuration = count($durations) > 0 ? array_sum($durations) / count($durations) : 0;
+        $averageDuration = count($durations) > 0 ? array_sum($durations) / count($durations) : null;
         $maxDuration = !empty($durations) ? max($durations) : null;
 
+        // Return the statistics in the desired format
         return [
             'labels' => ['Минимальное', 'Среднее', 'Максимальное'],
             'datasets' => [

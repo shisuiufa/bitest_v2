@@ -20,6 +20,8 @@ import StatisticsView from "@/views/Test/StatisticsView.vue";
 
 import ResultIndexView from "@/views/Result/IndexView.vue";
 import ResultShowView from "@/views/Result/ShowView.vue";
+
+import AdminIndexView from "@/views/Admin/IndexView.vue";
 import {Role} from "@/models/user.ts";
 
 const routes = [
@@ -89,12 +91,13 @@ const routes = [
                         path: "create",
                         component: CreateTestView,
                         name: "create-test",
-                        meta: { breadcrumb: "Создать" },
+                        meta: { breadcrumb: "Создание теста" },
                     },
                     {
                         path: ":id/edit",
                         component: EditTestView,
                         name: "edit-test",
+                        meta: { breadcrumb: "Редактирование теста" },
                     },
                     {
                         path: ":id/statistics",
@@ -130,11 +133,16 @@ const routes = [
                         path: ":id",
                         component: ResultShowView,
                         name: "show-result",
-                        meta: { breadcrumb: "Результат" },
                     },
                 ],
             },
         ],
+    },
+    {
+        path: '/admin',
+        component: PublicLayout,
+        meta: { middleware: [Role.Admin] },
+        name: "admin"
     },
     {
         path: "/:pathMatch(.*)*",

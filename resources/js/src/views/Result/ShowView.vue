@@ -6,7 +6,7 @@
                     class="result__header-wrap"
                     :style="`background-image: url('${this.result.image}')`"
                 >
-                    <div class="result__header">
+                    <div class="result__header w-100 w-md-50">
                         <h1
                             class="result__title text-white text-uppercase mb-2 text-center"
                         >
@@ -15,7 +15,7 @@
                         <div class="d-flex gap-4 mb-2">
                             <p
                                 class="text-white mb-0 fs-5 text-center"
-                                v-if="this.result.percent"
+                                v-if="this.result.percent !== null"
                             >
                                 Процент выполнения заданий:
                                 {{ this.result.percent }}% <br/>
@@ -25,16 +25,22 @@
                                 Тест еще не проверен
                             </p>
                         </div>
-                        <Button @click="visibilityAnswers = true" class="p-primary p-button-sm fs-6"
+                        <Button v-if="this.result.answerCounter > 0"
+                                @click="visibilityAnswers = true"
+                                class="p-primary p-button-sm fs-6"
                                 label="Ваши ответы"/>
                     </div>
                 </div>
             </div>
         </div>
-        <Dialog v-model:visible="visibilityAnswers" modal header="Ваши ответы" :style="{ width: '60vw' }">
+        <Dialog v-model:visible="visibilityAnswers" modal class="mx-2 mx-md-0 w-100 w-md-50">
+            <template #header>
+                <div class="inline-flex align-items-center justify-content-center gap-2">
+                    <h4 class="mb-2">Ваши ответы</h4>
+                    <p>Вы ответили на {{ this.result.answerCounter }} из {{ this.result.questionCounter }} вопросов</p>
+                </div>
+            </template>
             <ListAnswers
-                :answerCounter="this.result?.answerCounter"
-                :questionCounter="this.result?.questionCounter"
                 :answers="this.result?.answers"
             />
         </Dialog>
@@ -92,7 +98,6 @@ export default {
     }
 
     &__header {
-        width: 50%;
         height: 100%;
         background-color: #ffffff10;
         backdrop-filter: blur(12px);

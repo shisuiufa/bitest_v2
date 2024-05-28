@@ -57,7 +57,6 @@
         <Column
             field="test_user.attempt"
             header="Попытка"
-            class="text-center"
             sortable
         >
             <template #body="{ data }">
@@ -69,7 +68,6 @@
         <Column
             field="test_user.score"
             header="Балл"
-            class="text-center"
             sortable
         >
             <template #body="{ data }">
@@ -86,7 +84,6 @@
         <Column
             field="test_user.percent"
             header="Процент"
-            class="text-center"
             sortable
         >
             <template #body="{ data }">
