@@ -8,7 +8,8 @@
             <Button v-if="showForm === 'register' || showForm === 'reset'"
                     @click="showForm = 'login'" class="auth__link d-inline-block"
                     label="Войти в аккаунт"
-                    link/>
+                    link
+            />
             <Button v-if="showForm !== 'reset' && showForm !== 'register'"
                     @click="showForm = 'reset'" class="auth__link d-inline-block"
                     label="Забыл пароль"

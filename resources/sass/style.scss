@@ -78,6 +78,11 @@ a {
     border: 1px solid var(--primary-color);
 }
 
+.p-button-link {
+    background: transparent;
+    border: 1px solid transparent;
+}
+
 .p-button-success {
     color: #ffffff;
     background: #10b981;
@@ -292,6 +297,11 @@ a {
 }
 
 .p-inputgroup-addon {
+    background-color: var(--surface-overlay);
+    border-color: var(--surface-border);
+}
+
+.p-datatable-header {
     background-color: var(--surface-overlay);
     border-color: var(--surface-border);
 }

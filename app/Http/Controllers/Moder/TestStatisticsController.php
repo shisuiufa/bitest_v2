@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Moder;
 
 use App\Enums\TestStatus;
+use App\Exports\resultExport;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ShowResultResource;
 use App\Http\Resources\TestStatisticsResource;
@@ -10,6 +11,7 @@ use App\Models\Test;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TestStatisticsController extends Controller
 {
@@ -41,5 +43,10 @@ class TestStatisticsController extends Controller
             ->value('attempt');
 
         return response()->json(['data' => $totalAttempts]);
+    }
+
+    public function export(Test $test)
+    {
+        return Excel::download(new resultExport($test), 'result.xlsx');
     }
 }

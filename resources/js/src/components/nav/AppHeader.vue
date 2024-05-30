@@ -10,9 +10,6 @@
                         <i v-if="dark" class="bi bi-brightness-high"></i>
                         <i v-else class="bi bi-moon"></i>
                     </div>
-                    <div @click="toggleModal('search')" class="header__search">
-                        <i class="bi bi-search"></i>
-                    </div>
                     <profile-nav></profile-nav>
                 </div>
             </nav>

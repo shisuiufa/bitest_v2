@@ -23,4 +23,12 @@ export default class TestStatisticsClient extends ApiClient {
             .get(endpoint)
             .then((res) => res.data)
     }
+
+    async exportExcel(testId: number | string){
+        const endpoint: string = `/api/moder/tests/${testId}/statistics/export`;
+
+        return await this.client
+            .get(endpoint, { responseType: 'blob' })
+            .then((res) => res.data)
+    }
 }

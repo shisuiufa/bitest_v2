@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('tests/{test}/statistics', [TestStatisticsController::class, 'index'])->name('statistics.index');
 
+    Route::get('tests/{test}/statistics/export', [TestStatisticsController::class, 'export'])->name('statistics.export');
+
     Route::get('tests/{test}/statistics/{user}', [TestStatisticsController::class, 'show'])->name('statistics.user.show');
 
     Route::get('tests/{test}/statistics/{user}/attempts', [TestStatisticsController::class, 'totalAttempts'])->name('statistics.user.attempts');

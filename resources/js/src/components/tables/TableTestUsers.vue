@@ -7,6 +7,11 @@
         :value="items"
         filterDisplay="menu"
     >
+        <template #header>
+            <div style="text-align: left">
+                <Button icon="pi pi-external-link" label="Экспорт" @click="exportCSV" />
+            </div>
+        </template>
         <Column field="user_full_name" header="Пользователь" sortable>
             <template #body="{ data }">
                 <div class="d-flex gap-2 align-items-center">
@@ -14,7 +19,7 @@
                         v-show="data?.user_avatar"
                         :alt="data?.title"
                         :src="data?.user_avatar"
-                        class="rounded-circle"
+                        class="rounded-circle object-fit-cover"
                         style="width: 45px; height: 45px"
                     />
                     <span>{{ data.user_full_name }}</span>
@@ -291,6 +296,19 @@ export default {
                     return "p-tag-danger";
             }
         },
+        async exportCSV() {
+            await statistics.exportExcel(this.$route.params.id)
+                .then((res)=> {
+                    console.log(res)
+                    const url = window.URL.createObjectURL(new Blob([res]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'result.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+        }
     },
     emits: ['update-value'],
 };
