@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'middle_name' => $this->middle_name,
+            'full_name' => $this->last_name . ' ' . $this->first_name,
             'roles' => RolesResource::collection($this->roles),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

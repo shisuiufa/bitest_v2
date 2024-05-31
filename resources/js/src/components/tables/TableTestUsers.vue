@@ -9,7 +9,7 @@
     >
         <template #header>
             <div style="text-align: left">
-                <Button icon="pi pi-external-link" label="Экспорт" @click="exportCSV" />
+                <Button icon="pi pi-external-link" class="p-button-sm" label="Экспорт" @click="exportCSV" />
             </div>
         </template>
         <Column field="user_full_name" header="Пользователь" sortable>

@@ -3,6 +3,13 @@ export enum Role {
     Moderator = "moderator",
     User = "user",
 }
+
+export enum RoleValue {
+    Admin = 1,
+    Moderator = 2,
+    User = 3,
+}
+
 export interface User {
     id?: string | number
     firstName: string

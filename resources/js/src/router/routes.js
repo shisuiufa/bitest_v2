@@ -142,7 +142,14 @@ const routes = [
         path: '/admin',
         component: PublicLayout,
         meta: { middleware: [Role.Admin] },
-        name: "admin"
+        redirect: { name: "home" },
+        children: [
+            {
+                path: '',
+                component: AdminIndexView,
+                name: "admin"
+            }
+        ]
     },
     {
         path: "/:pathMatch(.*)*",

@@ -92,7 +92,7 @@ import SelectAvatar from "@/components/UI/SelectAvatar.vue";
 import {mapActions, mapGetters} from "vuex";
 import {useVuelidate} from '@vuelidate/core'
 import {required, email} from '@vuelidate/validators'
-const {user} = useLaravel();
+const {profile} = useLaravel();
 
 export default {
     name: "ProfileView",
@@ -137,7 +137,7 @@ export default {
     methods: {
         ...mapActions(["updateState"]),
         async submit() {
-            await user.update(this.form)
+            await profile.update(this.form)
                 .then(() => {
                     this.updateState();
                     toast.success('Профиль обновлен!')
@@ -147,7 +147,7 @@ export default {
                 })
         },
         async submitPassword(){
-            await user.updatePassword(this.current_password, this.password, this.password_confirmation)
+            await profile.updatePassword(this.current_password, this.password, this.password_confirmation)
                 .then(() => {
                     toast.success('Пароль обновлен!')
                     this.visible = false;

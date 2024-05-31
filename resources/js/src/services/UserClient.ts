@@ -1,19 +1,28 @@
 import { ApiClient } from "./ApiClient";
 import {User} from "@/models/user";
 export default class UserClient extends ApiClient {
-    async update(form: User) {
-        const endpoint: string = `/api/profile`;
+    async index(){
+        const endpoint: string = `/api/admin/users`;
 
-        return await this.client.post(endpoint, form).then((res) => res.data);
+        return await this.client.get(endpoint).then((res) => res.data)
     }
 
-    async updatePassword(current_password: string, password: string, password_confirmation: string) {
-        const endpoint: string = `/api/profile/update_password`;
+    async show(userId: string | number) {
+        const endpoint: string = `/api/admin/users/${userId}`;
 
-        return await this.client.post(endpoint, {
-            current_password,
-            password,
-            password_confirmation
-        }).then((res) => res.data);
+        return await this.client.get(endpoint).then((res) => res.data)
     }
+
+    async store(user: User){
+        const endpoint: string = `/api/admin/users`;
+
+        return await this.client.post(endpoint, user).then((res) => res.data)
+    }
+
+    async update(user: User){
+        const endpoint: string = `/api/admin/users/${user.id}`;
+
+        return await this.client.put(endpoint, user).then((res) => res.data)
+    }
+
 }

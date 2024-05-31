@@ -305,3 +305,71 @@ a {
     background-color: var(--surface-overlay);
     border-color: var(--surface-border);
 }
+
+.color-white {
+    color: #fff;
+}
+
+.text-color {
+    color: var(--surface-900)
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.bg-teal-500 {
+    background-color: var(--teal-500) !important;
+}
+
+.p-multiselect {
+    background-color: var(--surface-hover);
+    border: 1px solid var(--surface-border);
+}
+
+.p-multiselect-panel, .p-multiselect-header {
+    background-color: var(--surface-overlay);
+}
+
+.p-multiselect-header {
+    padding: 0.5rem 0.75rem;
+}
+
+.p-multiselect-panel {
+    border: 1px solid var(--surface-border);
+}
+
+.p-multiselect-label {
+    color: var(--surface-900);
+}
+
+.p-multiselect-item {
+    color: var(--surface-900);
+}
+
+.p-multiselect-item.p-focus {
+    color: #fff;
+    background-color: var(--primary-color);
+}
+
+.p-fileupload-buttonbar {
+    background-color: var(--surface-overlay);
+    border: 1px solid var(--surface-border);
+}
+
+.p-fileupload-content {
+    background-color: var(--surface-overlay);
+    border: 1px solid var(--surface-border);
+}
+
+.p-progressbar-determinate {
+    background-color: var(--surface-border);
+}
+
+.p-fileupload-file {
+    border: 1px solid var(--surface-border);
+}
+
+.p-fileupload-file-details {
+    color: var(--surface-900)
+}

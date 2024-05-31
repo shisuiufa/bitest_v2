@@ -82,7 +82,6 @@ export default {
 
     &__content {
         position: sticky;
-        height: 100%;
         top: 0;
         left: 0;
         padding: 20px;
