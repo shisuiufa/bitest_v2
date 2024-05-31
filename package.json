@@ -23,7 +23,7 @@
         "laravel-vite-plugin": "^0.8.0",
         "prettier": "3.2.5",
         "pusher-js": "^8.4.0-rc2",
-        "sass": "^1.56.1",
+        "sass": "^1.77.4",
         "unplugin-vue-components": "^0.27.0",
         "vite": "^4.0.0"
     },

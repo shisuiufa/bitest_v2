@@ -78,7 +78,7 @@
                             <span class="fw-bolder text-color">Пользователи</span>
                             <div class="d-flex gap-1">
                                 <Button icon="pi pi-external-link" class="p-button-sm fs-6 rounded" label="Добавить" @click="addUser"  />
-                                <Button icon="pi pi-external-link" class="p-button-sm fs-6 rounded" label="Экспорт"  />
+                                <Button icon="pi pi-external-link" class="p-button-sm fs-6 rounded" label="Экспорт"  @click="exportUsers"/>
                             </div>
                         </div>
                     </template>
@@ -91,7 +91,7 @@
                     <template #header>
                         <div class="d-flex align-items-center justify-content-between w-100">
                             <span class="fw-bolder text-color">Тесты</span>
-                            <Button icon="pi pi-external-link" class="p-button-sm fs-6 rounded" label="Экспорт"  />
+                            <Button icon="pi pi-external-link" class="p-button-sm fs-6 rounded" label="Экспорт" @click="exportTests"  />
                         </div>
                     </template>
                     <TableTestsClean/>
@@ -119,7 +119,7 @@ import CreateUserForm from "@/components/form/CreateUserForm.vue";
 import { useLaravel } from "@/composables/useLaravel.ts";
 import * as toast from "@/composables/useNotifications.ts";
 import SettingForm from "@/components/form/SettingForm.vue";
-const { user } = useLaravel();
+const { user, test } = useLaravel();
 export default {
     name: "IndexView",
     components: {SettingForm, TableTestsClean, CleanLineChart, TableUsers, CreateUserForm},
@@ -150,6 +150,31 @@ export default {
                     toast.success('Пользователи загружены!')
                 })
         },
+        async exportUsers(){
+            await user.exportExcel()
+                .then((res) => {
+                    const url = window.URL.createObjectURL(new Blob([res]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'users.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+        },
+        async exportTests(){
+            await test.exportExcel()
+                .then((res) => {
+                    const url = window.URL.createObjectURL(new Blob([res]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'tests.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+        }
+
     }
 }
 </script>

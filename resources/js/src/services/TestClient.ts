@@ -74,4 +74,10 @@ export default class TestClient extends ApiClient {
 
         return await this.client.delete(endpoint).then((res) => res.data);
     }
+
+    async exportExcel(){
+        const endpoint: string = `/api/admin/tests/export`;
+
+        return await this.client.get(endpoint, { responseType: 'blob' }).then((res) => res.data)
+    }
 }

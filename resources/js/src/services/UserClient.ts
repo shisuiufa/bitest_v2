@@ -25,4 +25,10 @@ export default class UserClient extends ApiClient {
         return await this.client.put(endpoint, user).then((res) => res.data)
     }
 
+    async exportExcel(){
+        const endpoint: string = `/api/admin/users/export`;
+
+        return await this.client.get(endpoint, { responseType: 'blob' }).then((res) => res.data)
+    }
+
 }

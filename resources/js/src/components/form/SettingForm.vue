@@ -66,10 +66,6 @@ export default {
                 <Checkbox v-model="emailVerification" :binary="true" />
                 <label class="label" for="emailVerification">Требовать подтверждение email при регистрации</label>
             </div>
-            <div class="d-flex gap-2 align-items-center mt-3">
-                <Checkbox v-model="captchaEnabled" :binary="true" />
-                <label class="label" for="captchaEnabled">Включить CAPTCHA для регистрации</label>
-            </div>
         </Panel>
 
         <Panel header="Настройки тестирования" toggleable>
@@ -112,10 +108,6 @@ export default {
         </Panel>
 
         <Panel header="Настройки безопасности" toggleable>
-            <div class="d-flex gap-2 align-items-center">
-                <Checkbox v-model="enable2FA" :binary="true" />
-                <label class="label" for="enable2FA">Включить двухфакторную аутентификацию</label>
-            </div>
             <div class="d-flex flex-column gap-2 mt-3">
                 <label class="label" for="passwordPolicy">Политика паролей</label>
                 <Dropdown v-model="passwordPolicy" :options="typesPassword"

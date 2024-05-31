@@ -299,7 +299,6 @@ export default {
         async exportCSV() {
             await statistics.exportExcel(this.$route.params.id)
                 .then((res)=> {
-                    console.log(res)
                     const url = window.URL.createObjectURL(new Blob([res]));
                     const link = document.createElement('a');
                     link.href = url;

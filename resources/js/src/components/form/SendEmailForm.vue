@@ -28,7 +28,7 @@ export default {
 
 <template>
     <form method="post" @submit.prevent="this.submit">
-        <h3>Сброс пароля</h3>
+        <h3>Восстановление доступа</h3>
         <div class="input-wrap">
             <input
                 v-model="this.form.email"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Moder;
 
+use App\Exports\TestsExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Test\CreateRequest;
 use App\Http\Requests\Test\EditRequest;
@@ -12,6 +13,7 @@ use App\Services\TestService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TestController extends Controller
 {
@@ -52,6 +54,13 @@ class TestController extends Controller
     public function destroy(Test $test): void
     {
         $test->delete();
+    }
+
+    public function export()
+    {
+        $users = Test::all();
+
+        return Excel::download(new TestsExport($users), 'tests.xlsx');
     }
 
 }

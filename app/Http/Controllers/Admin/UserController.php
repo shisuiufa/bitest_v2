@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\usersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
@@ -9,6 +10,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -40,5 +42,12 @@ class UserController extends Controller
 
         $user->update($data);
         $user->roles()->sync($roles);
+    }
+
+    public function export()
+    {
+        $users = User::all();
+
+        return Excel::download(new usersExport($users), 'users.xlsx');
     }
 }
