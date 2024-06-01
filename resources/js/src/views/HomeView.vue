@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="tests && tests.length">
         <div class="col-12 mb-3">
             <card-list :tests="this.tests"></card-list>
         </div>
@@ -28,6 +28,26 @@
                 <i class="bi bi-arrow-clockwise"></i>
                 Загрузить ещё
             </Button>
+        </div>
+    </div>
+    <div class="row" v-else>
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <Skeleton width="100%" height="300px" ></Skeleton>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <Skeleton width="100%" height="300px"></Skeleton>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <Skeleton width="100%" height="300px"></Skeleton>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <Skeleton width="100%" height="300px"></Skeleton>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <Skeleton width="100%" height="300px"></Skeleton>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <Skeleton width="100%" height="300px"></Skeleton>
         </div>
     </div>
 </template>

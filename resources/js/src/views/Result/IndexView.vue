@@ -1,6 +1,7 @@
 <template>
     <panel header="Список результатов">
-        <TableResult :items="this.results" />
+        <TableResult :items="this.results" v-if="this.results && this.results.length" />
+        <TableSkeleton v-else/>
     </panel>
 </template>
 
@@ -8,11 +9,12 @@
 import TableResult from "@/components/tables/TableResult.vue";
 import { useLaravel } from "@/composables/useLaravel.ts";
 import * as toast from "@/composables/useNotifications.ts";
+import TableSkeleton from "@/components/tables/TableSkeleton.vue";
 const { result } = useLaravel();
 
 export default {
     name: "ResultIndexView",
-    components: { TableResult },
+    components: {TableSkeleton, TableResult },
     data() {
         return {
             results: [],

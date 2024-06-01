@@ -10,7 +10,7 @@
                 <ul class="navbar-nav">
                     <template v-for="link in links">
                         <li class="nav-item " v-if="this.hasRole(link.role)">
-                            <router-link class="nav-link d-flex gap-2 py-3 px-4 rounded" :to="link.route">
+                            <router-link class="nav-link d-flex gap-2 py-3 px-4 rounded" :to="link.route" @click="handleLinkClick">
                                 <i :class="link.icon"></i>
                                 <span>{{link.name}}</span>
                             </router-link>
@@ -24,7 +24,7 @@
 
 <script>
 import {Role} from "@/models/user.ts";
-import {mapGetters} from "vuex";
+import {mapGetters, mapActions} from "vuex";
 export default {
     name: "SidebarApp",
     data() {
@@ -58,9 +58,15 @@ export default {
         }
     },
     methods: {
+        ...mapActions(["toggleSidebar"]),
         hasRole(roles) {
             const userRoles = this.user.roles.map(role => role.slug);
             return userRoles.some(role => roles.includes(role))
+        },
+        handleLinkClick() {
+            if (window.innerWidth <= 768) {
+                this.toggleSidebar();
+            }
         },
     },
     computed: {

@@ -40,7 +40,9 @@
                     v-model:filters="filters"
                     @updateValue="this.getData()"
                     :items="statistics?.users"
+                    v-if="statistics?.users && statistics?.users.length"
                 />
+                <TableSkeleton v-else/>
             </Panel>
         </div>
     </div>
@@ -53,11 +55,13 @@ import CustomPieChart from "@/components/charts/CustomPieChart.vue";
 import CustomBarChart from "@/components/charts/CustomBarChart.vue";
 import { useLaravel } from "@/composables/useLaravel.ts";
 import * as toast from "@/composables/useNotifications.ts";
+import TableSkeleton from "@/components/tables/TableSkeleton.vue";
 const { testStatistics: statistics } = useLaravel();
 
 export default {
     name: "StatisticsView",
     components: {
+        TableSkeleton,
         CustomBarChart,
         CustomPieChart,
         CustomLineChart,

@@ -26,10 +26,11 @@ $utilities: map-merge(
 
 @import "bootstrap/scss/bootstrap";
 
-// Style
-@import "style";
 
 //primeVue
 @import "primevue/resources/themes/aura-light-purple/theme.css";
 @import 'primevue/resources/primevue.min.css';
 @import "primeicons/primeicons.css";
+
+// Style
+@import "style";

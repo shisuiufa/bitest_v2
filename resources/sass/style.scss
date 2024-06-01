@@ -7,13 +7,6 @@ h1, h2, h3, h4, h5, h6 ,p, .label, label {
     margin: 0;
 }
 
-//.content {
-//    padding: 40px;
-//    border-radius: 15px;
-//    background-color: var(--body-bg-secondary);
-//    box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;
-//}
-
 ul,
 ol {
     padding: 0;
@@ -373,4 +366,15 @@ a {
 
 .p-fileupload-file-details {
     color: var(--surface-900)
+}
+
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+    color: var(--surface-900);
+}
+.p-paginator {
+    gap: 10px;
+}
+
+.p-skeleton {
+    background-color: var(--surface-border);
 }

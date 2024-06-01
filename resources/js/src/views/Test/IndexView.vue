@@ -7,8 +7,10 @@
                     @delete-test="(testId) => deleteTest(testId)"
                     v-model:filters="this.filters"
                     :tests="this.tests"
+                    v-if="this.tests && this.tests.length"
                 >
                 </table-tests>
+                <TableSkeleton v-else/>
             </div>
         </div>
     </panel>
@@ -16,6 +18,7 @@
 
 <script lang="ts">
 import TableTests from "@/components/tables/TableTests.vue";
+import TableSkeleton from "@/components/tables/TableSkeleton.vue";
 import { mapActions, mapGetters } from "vuex";
 import * as toast from "@/composables/useNotifications.ts";
 import { useLaravel } from "@/composables/useLaravel";
@@ -25,6 +28,7 @@ export default {
     name: "IndexView",
     components: {
         TableTests,
+        TableSkeleton
     },
     computed: {
         ...mapGetters(["user"]),
