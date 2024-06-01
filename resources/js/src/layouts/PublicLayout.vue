@@ -30,7 +30,8 @@ import ModalSearch from "@/components/modals/ModalSearch.vue";
 import AppHeader from "@/components/nav/AppHeader.vue";
 import AppBreadcrumbs from "@/components/nav/AppBreadcrumb.vue";
 import SidebarApp from "@/components/nav/SidebarApp.vue";
-
+import Hammer from 'hammerjs';
+import {mapActions} from "vuex";
 export default {
     name: "PublicLayout",
     components: {
@@ -50,11 +51,20 @@ export default {
         ...mapGetters(["modalSearch", "user"]),
     },
     methods: {
-        toggleSidebar(){
-            console.log('s')
-            this.collapsed = !this.collapsed;
-        }
-    }
+        ...mapActions(["closeSidebar", "openSidebar"]),
+    },
+    mounted() {
+        const hammer = new Hammer(this.$el);
+        hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+
+        hammer.on('swiperight', () => {
+            this.closeSidebar();
+        });
+
+        hammer.on('swipeleft', () => {
+            this.openSidebar();
+        });
+    },
 };
 </script>
 
