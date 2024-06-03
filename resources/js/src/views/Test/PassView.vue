@@ -1,10 +1,10 @@
 <template>
     <panel v-if="!testError && !testPassed" class="p-3">
-        <div class="test">
+        <div class="test" v-if="loaded">
             <div class="row mb-3 align-items-center justify-content-between">
                 <div class="order-2 order-md-1 col-12 col-md-6">
                     <question-switcher
-                        v-if="this.test.questions"
+                        v-if="this.test?.questions"
                         :selectedQuestion="this.selectedQuestion"
                         :questions="this.test.questions"
                         :testId="this.test.id"
@@ -45,6 +45,7 @@
                 </div>
             </div>
         </div>
+        <Skeleton style="width: 100%; height: 350px" v-else></Skeleton>
     </panel>
     <div class="background" v-else></div>
     <modal-end-test
@@ -124,6 +125,7 @@ export default {
             testError: false,
             modalShow: false,
             messages: "",
+            loaded: false,
         };
     },
     mounted() {
@@ -177,6 +179,7 @@ export default {
                 .getTestUser(testId, testUserId)
                 .then((res) => {
                     const test = res.data;
+                    this.loaded = true;
                     this.test.id = test.id;
                     this.testUser.id = test.test_user_id;
                     this.test.questions = test.questions;
