@@ -1,8 +1,7 @@
 <template>
     <div class="options d-flex flex-column gap-2">
         <template v-if="this.selectedQuestion?.type === QuestionType.Open" class="options__item">
-            <Textarea v-model="this.userAnswer.openAnswer" class="w-100" autoResize rows="5" cols="30"
-                      @blur="updateAnswerDb"/>
+            <Textarea v-model="this.userAnswer.openAnswer" class="w-100" autoResize rows="5" cols="30"/>
         </template>
         <template v-else>
             <div v-for="option in this.selectedQuestion?.options" :key="option.id"
@@ -86,6 +85,11 @@ export default {
             immediate: true,
             deep: true,
         },
+        'userAnswer.openAnswer': {
+            handler: function (newQuestion) {
+                this.updateAnswerDb();
+            },
+        }
     },
     methods: {
         ...mapActions(["updateUserAnswer"]),
