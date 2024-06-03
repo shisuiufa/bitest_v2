@@ -8,25 +8,17 @@
             />
         </div>
         <div class="card__content">
-            <router-link :to="''" class="card__category">
-                Категория
-            </router-link>
+<!--            <router-link :to="''" class="card__category">-->
+<!--                Категория-->
+<!--            </router-link>-->
             <h3 class="card__title">{{ this.test.title }}</h3>
             <div class="card__meta">
                 <span class="card__author">
-                    <router-link
-                        :to="{
-                            name: 'authors',
-                            params: { id: this.test.author.id },
-                        }"
-                        class="card__author_link"
-                    >
-                        {{
-                            this.test.author.last_name +
-                            " " +
-                            this.test.author.first_name
-                        }}
-                    </router-link>
+                    {{
+                        this.test.author.last_name +
+                        " " +
+                        this.test.author.first_name
+                    }}
                 </span>
                 -
                 <span class="card__date">
