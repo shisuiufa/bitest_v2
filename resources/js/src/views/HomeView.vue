@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    <div class="row" v-if="tests && tests.length">
+    <div class="row" v-if="loaded">
         <div class="col-12 mb-3">
             <card-list :tests="this.tests"></card-list>
         </div>
@@ -79,6 +79,7 @@ export default {
                 {id: 3, name: "По алфавиту", value: TestFilter.Name},
                 {id: 4, name: "По автору", value: TestFilter.Author},
             ],
+            loaded: false,
         };
     },
     mounted() {
@@ -98,7 +99,7 @@ export default {
                 })
                 .then((res) => {
                     this.pagination = res.meta;
-
+                    this.loaded = true;
                     if (this.pagination.current_page === 1) {
                         this.tests = res.data;
                     } else {
