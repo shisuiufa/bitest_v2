@@ -10,8 +10,10 @@ export default {
                     ctx.commit("setUser", res.data.data);
                     ctx.commit("setAuthenticated", true);
                 })
-                .catch(() => {
-                    ctx.dispatch("logout");
+                .catch((error) => {
+                    if (error.response && error.response.status !== 429) {
+                        ctx.dispatch("logout");
+                    }
                 });
         },
         async login(ctx) {
@@ -20,10 +22,12 @@ export default {
                 .then((res) => {
                     ctx.commit("setUser", res.data.data);
                     ctx.commit("setAuthenticated", true);
-                    router.push({ name: "home" });
+                    router.push({name: "home"});
                 })
-                .catch(() => {
-                    ctx.dispatch("logout");
+                .catch((error) => {
+                    if (error.response && error.response.status !== 429) {
+                        ctx.dispatch("logout");
+                    }
                 });
         },
         async updateState(ctx) {
